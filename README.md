@@ -9,7 +9,7 @@ Spam is prevented by requiring user browsers to submit the result to a Proof of 
 
 The Bandurria name refers to the _Bandurria Austral_ (Black-faced Ibis), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
 
-This project has been started after I used another similar comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a random blog (where user trust is possibly low), might discourage a lot of people from commenting.
+ℹ️ _This project has been started after I used another similar comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a random blog (where user trust is possibly low), might discourage a lot of people from commenting._
 
 _Tested at Rust version: `rustc 1.79.0 (129f3b996 2024-06-10)`_
 
