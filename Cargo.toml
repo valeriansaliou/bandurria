@@ -1,0 +1,33 @@
+[package]
+name = "bandurria"
+version = "0.0.1"
+description = "Self-hosted lightweight comment system that for static websites and blogs."
+readme = "README.md"
+license = "MPL-2.0"
+edition = "2021"
+homepage = "https://github.com/valeriansaliou/bandurria"
+repository = "https://github.com/valeriansaliou/bandurria.git"
+keywords = ["comment", "websites", "blogs"]
+categories = ["web-programming"]
+authors = ["Valerian Saliou <valerian@valeriansaliou.name>"]
+
+[[bin]]
+name = "bandurria"
+path = "src/main.rs"
+doc = false
+
+[dependencies]
+log = "0.4"
+
+[profile.dev]
+opt-level = 0
+debug = true
+debug-assertions = true
+
+[profile.release]
+opt-level = "s"
+lto = true
+debug = false
+debug-assertions = false
+panic = "abort"
+strip = true
