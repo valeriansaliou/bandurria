@@ -6,9 +6,70 @@
 
 #[macro_use]
 extern crate log;
+#[macro_use]
+extern crate lazy_static;
+#[macro_use]
+extern crate serde_derive;
+
+mod config;
+
+use std::ops::Deref;
+use std::str::FromStr;
+
+use clap::{Arg, Command};
+use log::LevelFilter;
+
+use config::config::Config;
+use config::logger::ConfigLogger;
+use config::reader::ConfigReader;
+
+struct AppArgs {
+    config: String,
+}
+
+lazy_static! {
+    static ref APP_ARGS: AppArgs = make_app_args();
+    static ref APP_CONF: Config = ConfigReader::make();
+}
+
+fn make_app_args() -> AppArgs {
+    let matches = Command::new(clap::crate_name!())
+        .version(clap::crate_version!())
+        .author(clap::crate_authors!())
+        .about(clap::crate_description!())
+        .arg(
+            Arg::new("config")
+                .short('c')
+                .long("config")
+                .help("Path to configuration file")
+                .default_value("./config.cfg"),
+        )
+        .get_matches();
+
+    // Generate owned app arguments
+    AppArgs {
+        config: matches
+            .get_one::<String>("config")
+            .expect("invalid config value")
+            .to_owned(),
+    }
+}
+
+fn ensure_states() {
+    // Ensure all statics are valid (a `deref` is enough to lazily initialize them)
+    let (_, _) = (APP_ARGS.deref(), APP_CONF.deref());
+}
 
 fn main() {
+    // Initialize shared logger
+    let _logger = ConfigLogger::init(
+        LevelFilter::from_str(&APP_CONF.server.log_level).expect("invalid log level"),
+    );
+
     info!("starting up");
+
+    // Ensure all states are bound
+    ensure_states();
 
     // TODO
 

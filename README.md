@@ -15,6 +15,89 @@ _Tested at Rust version: `rustc 1.79.0 (129f3b996 2024-06-10)`_
 
 **🇨🇱 Crafted in Santiago, Chile.**
 
+## Features
+
+* **Built-in spam control** with Proof of Work anti-bot system and Magic Link email verification
+* **Email-based notifications** and comment moderation (no complex Web admin UI)
+* **Zero-dependencies server runtime** and **lightweight JavaScript script**
+* **Compatible with any static website** or blog system (as long as your can add 1 line of JavaScript)
+* **Customize it in a few lines of CSS** to match your website or blog style
+
+## How to use it?
+
+### Installation
+
+**Install from Docker Hub:**
+
+You might find it convenient to run Bandurria via Docker. You can find the pre-built Bandurria image on Docker Hub as [valeriansaliou/bandurria](https://hub.docker.com/r/valeriansaliou/bandurria/).
+
+First, pull the `valeriansaliou/bandurria` image:
+
+```bash
+docker pull valeriansaliou/bandurria:v1.0.0
+```
+
+Then, provide a configuration file and run it (replace `/path/to/your/bandurria/config.cfg` with the path to your configuration file):
+
+```bash
+docker run -p 8080:8080 -v /path/to/your/bandurria/config.cfg:/etc/bandurria.cfg valeriansaliou/bandurria:v1.0.0
+```
+
+In the configuration file, ensure that:
+
+* `server.inet` is set to `0.0.0.0:8080` (this lets Bandurria be reached from outside the container)
+* `assets.path` is set to `./res/assets/` (this refers to an internal path in the container, as the assets are contained there)
+
+Bandurria will be reachable from `http://localhost:8080`.
+
+**Install from binary:**
+
+A pre-built binary of Bandurria is shared in the releases on GitHub. You can simply download the latest binary version from the [releases page](https://github.com/valeriansaliou/bandurria/releases), and run it on your server.
+
+You will still need to provide the binary with the configuration file, so make sure you have a Bandurria `config.cfg` file ready somewhere.
+
+_The binary provided is statically-linked, which means that it will be able to run on any Linux-based server. Still, it will not work on MacOS or Windows machines._
+
+👉 _Each release binary comes with an `.asc` signature file, which can be verified using [@valeriansaliou](https://github.com/valeriansaliou) GPG public key: [:key:valeriansaliou.gpg.pub.asc](https://valeriansaliou.name/files/keys/valeriansaliou.gpg.pub.asc)._
+
+**Install from Cargo:**
+
+If you prefer managing `bandurria` via Rust's Cargo, install it directly via `cargo install`:
+
+```bash
+cargo install bandurria
+```
+
+Ensure that your `$PATH` is properly configured to source the Crates binaries, and then run Bandurria using the `bandurria` command.
+
+**Install from source:**
+
+The last option is to pull the source code from Git and compile Bandurria via `cargo`:
+
+```bash
+cargo build --release
+```
+
+You can find the built binaries in the `./target/release` directory.
+
+### Configuration
+
+Use the sample [config.cfg](https://github.com/valeriansaliou/bandurria/blob/master/config.cfg) configuration file and adjust it to your own environment.
+
+You can also use environment variables with string interpolation in your configuration file, eg. `server.inet = ${BANDURRIA_INET}`.
+
+**Available configuration options are commented below, with allowed values:**
+
+**[server]**
+
+* `log_level` (type: _string_, allowed: `debug`, `info`, `warn`, `error`, default: `error`) — Verbosity of logging, set it to `error` in production
+
+### Run Bandurria
+
+Bandurria can be run as such:
+
+`./bandurria -c /path/to/config.cfg`
+
 ## :fire: Report A Vulnerability
 
 If you find a vulnerability in Bandurria, you are more than welcome to report it directly to [@valeriansaliou](https://github.com/valeriansaliou) by sending an encrypted email to [valerian@valeriansaliou.name](mailto:valerian@valeriansaliou.name). Do not report vulnerabilities in public GitHub issues, as they may be exploited by malicious people to target production servers running an unpatched Bandurria instance.
