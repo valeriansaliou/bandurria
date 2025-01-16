@@ -10,6 +10,7 @@ repository = "https://github.com/valeriansaliou/bandurria.git"
 keywords = ["comment", "websites", "blogs"]
 categories = ["web-programming"]
 authors = ["Valerian Saliou <valerian@valeriansaliou.name>"]
+exclude = ["dev/*"]
 
 [[bin]]
 name = "bandurria"

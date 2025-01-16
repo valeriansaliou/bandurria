@@ -1,6 +1,8 @@
 Bandurria
 =========
 
+[![Test and Build](https://github.com/valeriansaliou/bandurria/workflows/Test%20and%20Build/badge.svg?branch=master)](https://github.com/valeriansaliou/bandurria/actions?query=workflow%3A%22Test+and+Build%22) [![Build and Release](https://github.com/valeriansaliou/bandurria/workflows/Build%20and%20Release/badge.svg)](https://github.com/valeriansaliou/bandurria/actions?query=workflow%3A%22Build+and+Release%22) [![dependency status](https://deps.rs/repo/github/valeriansaliou/bandurria/status.svg)](https://deps.rs/repo/github/valeriansaliou/bandurria) [![Buy Me A Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg)](https://www.buymeacoffee.com/valeriansaliou)
+
 **Bandurria is a self-hosted lightweight comment system for static websites and blogs. Built in Rust, takes a few MB of RAM. Can be included with a single line of JavaScript.**
 
 This project has been started after I used another similar comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a random blog (where user trust is possibly low), might discourage a lot of people from commenting. Bandurria comes as a lighter and even simpler alternative to Schnack (without the memory overhead of NodeJS and installing NPM dependencies).
@@ -91,6 +93,11 @@ You can also use environment variables with string interpolation in your configu
 **[server]**
 
 * `log_level` (type: _string_, allowed: `debug`, `info`, `warn`, `error`, default: `error`) — Verbosity of logging, set it to `error` in production
+* `inet` (type: _string_, allowed: IPv4 / IPv6 + port, default: `[::1]:8080`) — Host and TCP port the Bandurria server should listen on
+
+**[assets]**
+
+* `path` (type: _string_, allowed: UNIX path, default: `./res/assets/`) — Path to Bandurria assets directory
 
 ### Run Bandurria
 
