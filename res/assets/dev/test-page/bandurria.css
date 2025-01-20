@@ -83,6 +83,10 @@
     color: blue;
 }
 
+.bandurria-banner--submiterror {
+    color: red;
+}
+
 /* Bandurria > Comments */
 
 ul.bandurria-comments {

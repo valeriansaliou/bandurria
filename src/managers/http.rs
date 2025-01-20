@@ -7,6 +7,7 @@
 use std::path::PathBuf;
 
 use rocket::config::Ident;
+use rocket::data::{Limits, ToByteUnit};
 use rocket::figment::Figment;
 use rocket::fs::FileServer;
 use rocket::{self, Config};
@@ -22,6 +23,7 @@ fn configure() -> Figment {
         workers: 1,
         max_blocking: 8,
         ident: Ident::try_new("Bandurria").unwrap(),
+        limits: Limits::default().limit("json", 256.kibibytes()),
         ..Config::default()
     };
 
@@ -39,9 +41,8 @@ fn assets_path(kind: &str) -> PathBuf {
 }
 
 pub async fn bootstrap() -> rocket::Rocket<rocket::Build> {
-    // TODO: dev not supposed to be here in release mode
     rocket::custom(configure())
-        .mount("/api", rocket::routes![api::get_base])
+        .mount("/api", rocket::routes![api::post_comment])
         .mount("/page", rocket::routes![page::get_comments])
         .mount("/assets", FileServer::from(assets_path("public")))
         .mount("/dev", FileServer::from(assets_path("dev")))

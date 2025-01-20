@@ -10,6 +10,7 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct Comment {
+    pub id: String,
     pub name: String,
     pub date: String,
     pub time: String,
@@ -24,6 +25,7 @@ pub async fn get_comments(page: String) -> Template {
 
     let comments = vec![
         Comment {
+            id: "e0753f41-e21e-44b5-82f2-49ed99afba27".to_string(),
             name: "Valerian".to_string(),
             date: "20/01/2025".to_string(),
             time: "2:58pm".to_string(),
@@ -43,6 +45,7 @@ pub async fn get_comments(page: String) -> Template {
             replies: vec![],
         },
         Comment {
+            id: "67827597-0374-4f1b-aefb-b136c2d2f3a2".to_string(),
             name: "Valerian".to_string(),
             date: "20/01/2025".to_string(),
             time: "2:58pm".to_string(),

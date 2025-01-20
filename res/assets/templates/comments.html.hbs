@@ -43,6 +43,13 @@
                 <strong>A confirmation link has been sent to your email address.</strong>
                 Your comment will be posted after confirming your email.
             </span>
+
+            <span
+                class="bandurria-banner bandurria-banner--submiterror"
+                style="display: none"
+            >
+                Your comment could not be submitted. Mind try again?
+            </span>
         </template>
 
         <form class="bandurria-form bandurria-form--main">
@@ -53,7 +60,7 @@
 
         <ul class="bandurria-comments">
             {{#each comments}}
-                <li class="bandurria-comment">
+                <li class="bandurria-comment" id="comment-{{id}}">
                     <div class="bandurria-metas">
                         <span class="bandurria-author">{{name}}</span>
                         <span class="bandurria-date">{{date}}, {{time}}:</span>
@@ -64,7 +71,10 @@
                             <p>{{this}}</p>
                         {{/each}}
 
-                        <form class="bandurria-form bandurria-form--reply">
+                        <form
+                            class="bandurria-form bandurria-form--reply"
+                            data-reply-to="{{id}}"
+                        >
                             <button
                                 class="bandurria-reply"
                                 type="button"

@@ -73,6 +73,40 @@
     bind_form_events(form, autofocus);
   };
 
+  var submit_form = function (form, identity, button, payload) {
+    // Submit comment
+    fetch(
+      options.base_url +
+        "/api/comment/?" +
+        new URLSearchParams({
+          page: options.page_path,
+        }).toString(),
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    )
+      .then(function (response) {
+        if (!response.ok) {
+          return Promise.error("Submit error");
+        }
+
+        identity.style.display = "none";
+        button.style.display = "none";
+
+        show_banner(form, "submitted");
+      })
+      .catch(function () {
+        button.disabled = false;
+
+        show_banner(form, "submiterror");
+      });
+  };
+
   var bind_form_events = function (form, autofocus) {
     var textarea = form.querySelector("textarea[name='comment_text']"),
       input_name = form.querySelector("input[name='comment_name']"),
@@ -98,10 +132,12 @@
           input_name.disabled = true;
           input_email.disabled = true;
 
-          identity.style.display = "none";
-          button.style.display = "none";
-
-          show_banner(form, "submitted");
+          submit_form(form, identity, button, {
+            name: input_name.value,
+            email: input_email.value,
+            text: textarea.value,
+            reply_to: form.dataset.replyTo || null,
+          });
         } else {
           // Require user to provide their name and email
           textarea.disabled = true;
