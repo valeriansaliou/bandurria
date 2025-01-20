@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="robots" content="noindex" />
+    </head>
+
+    <body>
+        <template class="bandurria-template bandurria-template--form">
+            <textarea
+                cols="1"
+                rows="1"
+                name="comment_text"
+                placeholder="Write your comment..."
+            ></textarea>
+
+            <span class="bandurria-identity" style="display: none">
+                <input
+                    type="text"
+                    name="comment_name"
+                    placeholder="What's your name?"
+                />
+                <input
+                    type="email"
+                    name="comment_email"
+                    placeholder="Enter your email"
+                />
+            </span>
+
+            <button class="bandurria-submit" type="submit" disabled>Post comment</button>
+
+            <span
+                class="bandurria-banner bandurria-banner--presubmit"
+                style="display: none"
+            >
+                Your email is only used to check you are not a bot, by sending
+                you a confirmation link. It will not be stored.
+            </span>
+
+            <span
+                class="bandurria-banner bandurria-banner--submitted"
+                style="display: none"
+            >
+                <strong>A confirmation link has been sent to your email address.</strong>
+                Your comment will be posted after confirming your email.
+            </span>
+        </template>
+
+        <form class="bandurria-form bandurria-form--main">
+            <p>Leave a comment:</p>
+
+            <!-- Form template will be injected after this line. -->
+        </form>
+
+        <ul class="bandurria-comments">
+            {{#each comments}}
+                <li class="bandurria-comment">
+                    <div class="bandurria-metas">
+                        <span class="bandurria-author">{{name}}</span>
+                        <span class="bandurria-date">{{date}}, {{time}}:</span>
+                    </div>
+
+                    <div class="bandurria-body">
+                        {{#each text}}
+                            <p>{{this}}</p>
+                        {{/each}}
+
+                        <form class="bandurria-form bandurria-form--reply">
+                            <button
+                                class="bandurria-reply"
+                                type="button"
+                            >Reply</button>
+                        </form>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+    </body>
+</html>

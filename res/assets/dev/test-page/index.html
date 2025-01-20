@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>Bandurria | Test Page</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+
+  <body>
+    <main>
+      <header class="post-header">
+        <h1 class="post-title">Generating SSL certificates in Nomad with Certbot</h1>
+
+        <div class="post-meta">
+          <time class="post-date">26th Dec 2024</time>
+        </div>
+      </header>
+
+      <div class="post-content light mb3 sm-mb4">
+        <p>Hosting applications in Nomad is easy, all it takes is writing a small HCL file and all your apps are now magically running on your Nomad cluster with Infrastructure as Code. Hosting your HTTP load balancer on Nomad, acting as a reverse proxy to your HTTP services, is another story: if I want to run my server over HTTPS, how do I generate SSL certificates within Nomad?</p>
+        <p>To address this need, you could take the easy path: routing ingress traffic to your HTTP load balancer running in Nomad with Cloudflare Tunnels. Cloudflare would handle SSL termination for you, so that you wouldn’t have to deal with SSL certificates.</p>
+        <p>However, not all people want to rely on Cloudflare to handle this task. The alternative would be to handle SSL termination on your own NGINX server, and acquire the SSL certificates with Certbot (via Let’s Encrypt). In a traditional Linux system setup, whenever your SSL certificate would get renewed, Certbot would signal NGINX to reload itself. In a Nomad cluster, that’d play out differently.</p>
+        <p>I have came up with an elegant method to manage SSL certificates in a Nomad-native way with Certbot, leveraging Nomad templates, which I’ll explain in details in this article. This method makes it possible to provide SSL certificates to any service running in Nomad, from a NGINX load balancer to a Postfix mail server. It also lets you reload Nomad jobs using your SSL certificates whenever they get renewed.</p>
+      </div>
+
+      <footer class="post-footer">
+        <aside id="comments" class="post-comments"></aside>
+      </footer>
+    </main>
+
+    <script src="http://localhost:8080/assets/embed.js"
+            data-bandurria-target=".post-comments">
+    </script>
+  </body>
+</html>

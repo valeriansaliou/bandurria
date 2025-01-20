@@ -12,16 +12,18 @@ extern crate lazy_static;
 extern crate serde_derive;
 
 mod config;
+mod managers;
+mod routes;
 
 use std::ops::Deref;
 use std::str::FromStr;
 
 use clap::{Arg, Command};
-use log::LevelFilter;
-
 use config::config::Config;
 use config::logger::ConfigLogger;
 use config::reader::ConfigReader;
+use log::LevelFilter;
+use managers::http;
 
 struct AppArgs {
     config: String,
@@ -60,7 +62,8 @@ fn ensure_states() {
     let (_, _) = (APP_ARGS.deref(), APP_CONF.deref());
 }
 
-fn main() {
+#[rocket::main]
+async fn main() {
     // Initialize shared logger
     let _logger = ConfigLogger::init(
         LevelFilter::from_str(&APP_CONF.server.log_level).expect("invalid log level"),
@@ -71,7 +74,11 @@ fn main() {
     // Ensure all states are bound
     ensure_states();
 
-    // TODO
+    // Start HTTP server
+    match http::bootstrap().await.launch().await {
+        Ok(_) => log::info!("stopped"),
+        Err(_) => log::error!("could not start"),
+    };
 
     error!("could not start");
 }

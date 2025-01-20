@@ -25,6 +25,9 @@ serde = { version = "1.0", default-features = false }
 serde_derive = "1.0"
 toml = "0.8"
 envsubst = "0.2"
+rocket = { version = "0.5", features = ["json"] }
+rocket_dyn_templates = { version = "0.2", features = ["handlebars"] }
+handlebars = { version = "6.3", default-features = false }
 
 [profile.dev]
 opt-level = 0
