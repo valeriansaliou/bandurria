@@ -1,0 +1,33 @@
+/* -------------------------------------------------------------
+ * Page base style
+ * ------------------------------------------------------------- */
+
+body {
+    font-family: sans-serif;
+    font-size: 15px;
+}
+
+main {
+    max-width: 800px;
+    margin: 50px auto;
+}
+
+.post-title {
+    margin-bottom: 16px;
+}
+
+.post-meta {
+    color: gray;
+}
+
+.post-content {
+    font-size: 1em;
+    line-height: 1.5em;
+    margin-top: 40px;
+}
+
+.post-footer {
+    border-top: 1px gray solid;
+    margin-top: 50px;
+    padding-top: 40px;
+}
