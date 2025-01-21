@@ -12,6 +12,7 @@ extern crate lazy_static;
 extern crate serde_derive;
 
 mod config;
+mod helpers;
 mod managers;
 mod routes;
 

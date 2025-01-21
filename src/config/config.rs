@@ -13,6 +13,8 @@ use super::defaults;
 pub struct Config {
     pub server: ConfigServer,
     pub assets: ConfigAssets,
+    pub database: ConfigDatabase,
+    pub site: ConfigSite,
 }
 
 #[derive(Deserialize)]
@@ -28,4 +30,20 @@ pub struct ConfigServer {
 pub struct ConfigAssets {
     #[serde(default = "defaults::assets_path")]
     pub path: PathBuf,
+}
+
+#[derive(Deserialize)]
+pub struct ConfigDatabase {
+    pub mysql: ConfigDatabaseMySQL,
+}
+
+#[derive(Deserialize)]
+pub struct ConfigDatabaseMySQL {
+    pub uri: String,
+}
+
+#[derive(Deserialize)]
+pub struct ConfigSite {
+    pub base_url: String,
+    pub admin_emails: Vec<String>,
 }

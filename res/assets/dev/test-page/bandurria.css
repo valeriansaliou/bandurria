@@ -128,6 +128,17 @@ li.bandurria-comment:last-child {
     margin-bottom: 0;
 }
 
+/* Bandurria > Nested Comments */
+
+.bandurria-body > ul.bandurria-comments {
+    margin: 1rem 0 0;
+}
+
+.bandurria-body > ul.bandurria-comments .bandurria-body {
+    border-color: whitesmoke;
+    margin-bottom: 0;
+}
+
 /* Bandurria > Comment Reply */
 
 .bandurria-reply {

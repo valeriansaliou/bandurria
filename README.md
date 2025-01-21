@@ -7,7 +7,7 @@ Bandurria
 
 This project has been started after I used another similar comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a random blog (where user trust is possibly low), might discourage a lot of people from commenting. Bandurria comes as a lighter and even simpler alternative to Schnack (without the memory overhead of NodeJS and installing NPM dependencies).
 
-_Tested at Rust version: `rustc 1.79.0 (129f3b996 2024-06-10)`_
+_Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 **🇨🇱 Crafted in Santiago, Chile.**
 
@@ -24,6 +24,23 @@ Bandurria provides no administration interface. It solely relies on email notifi
 Spam is prevented by requiring user browsers to submit the result to a Proof of Work challenge (based on an improved variant of Hashcash), while the user is typing their comment. This spam prevention method is CAPTCHA-free and hassle-free, since the proof will already be computed when the user will be ready to submit their comment. Upon submission of their comment, the user will receive a Magic Link over email they will need to click on to confirm their identity and submit their comment. Then, you (the administrator) will receive the user comment over email for moderation. If the user has already sent approved comments in the past under the same email, then their comment will be auto-approved. If not, you will need to approve the comment which will also trust the user. Either way, Bandurria notifies people of new replies to their comments over email.
 
 **Oh and what about that name?!** Well, the Bandurria name refers to the _Bandurria Austral_ ([Black-faced Ibis](https://en.wikipedia.org/wiki/Black-faced_ibis)), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
+
+## Goals
+
+- No social auth, no admin interface, no multiple notification channels, do it all over email notifications with magic links
+- Public users can write their comment, give a name and email and submit in a simple way (WordPress like)
+    - Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation as done in Crisp), with ability to configure difficulty
+- Upon sending a comment and passing the PoW, ask the user to click on a magic link sent over their email (double spam prevention and email verification to authenticate themselves)
+- Admin user can manage comment and remove or allow them from the comment UI after logging in over magic link with email
+- Once an user first comment got approved then all further comments will be auto approved (unless the user gets banned by the admin)
+- Notify admin of new comments over email, and notify of replies to user comments over email to users (enable engagement, which was an issue with Schnack since users didn’t get notified of replies to their own comments)
+- Built in theme is to be generic and simple with no colors, it can be extended by the user by styling CSS classes in their own blog theme (CSS class names should be stable, and never use important rules)
+- Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file
+- Built with Rust, goal is to produce a 4MB binary using the same amount of RAM and distribute lightweight Docker images for all platforms
+- Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database)
+- Upon submitting a comment and waiting for the user to confirm their identity over email with the magic link, store the pending comment in a temporary table, and purge it every day or so, if the user submits a comment but never validate anything over email (garbage collect periodically to ensure we do not store a growing list of pending comments, especially if spammers with fake emails manage to pass the PoW step)
+- Store everything in a simple SQLite database
+- Experiment with a new Web/HTTP framework in Rust, and JWT et al
 
 ## How to use it?
 
@@ -98,6 +115,8 @@ You can also use environment variables with string interpolation in your configu
 **[assets]**
 
 * `path` (type: _string_, allowed: UNIX path, default: `./res/assets/`) — Path to Bandurria assets directory
+
+TODO: add all other fields
 
 ### Run Bandurria
 

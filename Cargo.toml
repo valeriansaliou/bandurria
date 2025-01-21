@@ -25,8 +25,12 @@ serde = { version = "1.0", default-features = false }
 serde_derive = "1.0"
 toml = "0.8"
 envsubst = "0.2"
+sha2 = "0.10"
+uuid = { version = "1.12", features = ["v4"] }
+chrono = { version = "0.4", features = ["clock"] }
 rocket = { version = "0.5", features = ["json"] }
 rocket_dyn_templates = { version = "0.2", features = ["handlebars"] }
+rocket_db_pools = { version = "0.2", features = ["sqlx_mysql"] }
 handlebars = { version = "6.3", default-features = false }
 
 [profile.dev]
