@@ -158,7 +158,10 @@ Bandurria can be run as such:
 
 `./bandurria -c /path/to/config.cfg`
 
-You will also need to make sure the [MySQL database fixtures](https://github.com/valeriansaliou/bandurria/blob/master/doc/fixtures/bandurria.sql) are imported in your database.
+**Things you should consider before running Bandurria:**
+
+1. Create your MySQL database: `CREATE DATABASE bandurria CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
+2. Import the [MySQL database schema](https://github.com/valeriansaliou/bandurria/blob/master/doc/fixtures/bandurria.sql)
 
 ## :fire: Report A Vulnerability
 
