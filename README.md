@@ -42,7 +42,7 @@ All features might not have yet been implemented, but this is what Bandurria aim
 - [x] Admin users can manage comments and remove or allow them from their email inbox using magic links.
 - [x] Notify admin of new comments over email.
 - [x] Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
-- [ ] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
+- [x] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
 - [ ] Verify origin of comments to be from the same domain as the site, and also prevent CORS (for security and anti-spam reasons).
 - [ ] Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation), with ability to configure difficulty.
 - [ ] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
@@ -154,6 +154,7 @@ You can also use environment variables with string interpolation in your configu
 **[security]**
 
 * `secret_key` (type: _string_, allowed: any hexadecimal string, default: auto-generated secret) — Secret key to use to sign all authenticated payloads (generate yours with `openssl rand -hex 32`)
+* `check_pages_exist` (type: _boolean_, allowed: `true`, `false`, default: `false`) — Whether to check over HTTP that a page a comment is left on actually exists (when sending the first comment for that page, it is safer to enable)
 
 **[i18n]**
 

@@ -10,6 +10,8 @@ use std::path::PathBuf;
 use hex;
 use uuid::Uuid;
 
+/* [server] */
+
 pub fn server_log_level() -> String {
     "error".to_string()
 }
@@ -18,9 +20,13 @@ pub fn server_inet() -> SocketAddr {
     "[::1]:8080".parse().unwrap()
 }
 
+/* [assets] */
+
 pub fn assets_path() -> PathBuf {
     PathBuf::from("./res/assets/")
 }
+
+/* [email] */
 
 pub fn email_smtp_server_port() -> u16 {
     587
@@ -38,6 +44,8 @@ pub fn email_identity_from_name() -> String {
     "Comments".into()
 }
 
+/* [security] */
+
 pub fn security_secret_key() -> String {
     // While we recommend that the user pass their own secret key in the \
     //   configuration, thus ensuring that all signed URLs persist across \
@@ -45,6 +53,12 @@ pub fn security_secret_key() -> String {
     //   a random UUIDv4-based secret key if none is provided.
     hex::encode(Uuid::new_v4().as_bytes())
 }
+
+pub fn security_check_pages_exist() -> bool {
+    false
+}
+
+/* [i18n] */
 
 pub fn i18n_field_write_your_comment() -> String {
     "Write your comment...".into()

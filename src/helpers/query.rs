@@ -11,8 +11,8 @@ use rocket_db_pools::{sqlx, sqlx::Row};
 use serde::Serialize;
 use uuid::Uuid;
 
-use super::{normalize, time};
-use crate::managers::http::DbConn;
+use super::{checker, normalize, time};
+use crate::{managers::http::DbConn, APP_CONF};
 
 #[derive(Serialize)]
 pub struct Comment {
@@ -52,6 +52,19 @@ pub async fn find_or_create_page_id(db: &mut DbConn, page: &str) -> Result<Strin
     match find_page_id(db, page).await? {
         Some(page_id) => Ok(page_id),
         None => {
+            // Check that page exists over HTTP first?
+            // Notice: this makes sure that attacks cannot fill Bandurria's \
+            //   database with random pages, since the page URL will be \
+            //   checked over HTTP and must return HTTP 200 (proof of \
+            //   existence).
+            if APP_CONF.security.check_pages_exist {
+                // Actual page do not exist over HTTP, short-circuit here
+                if !checker::page_url_exists(&page_url).await {
+                    return Err(Status::Gone);
+                }
+            }
+
+            // Insert new page in the database
             let page_id = Uuid::new_v4().to_string();
 
             sqlx::query(

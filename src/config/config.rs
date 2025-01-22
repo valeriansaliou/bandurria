@@ -88,6 +88,9 @@ pub struct ConfigSite {
 pub struct ConfigSecurity {
     #[serde(default = "defaults::security_secret_key")]
     pub secret_key: String,
+
+    #[serde(default = "defaults::security_check_pages_exist")]
+    pub check_pages_exist: bool,
 }
 
 #[derive(Deserialize, Serialize)]
