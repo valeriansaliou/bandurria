@@ -1,7 +1,7 @@
 Bandurria
 =========
 
-[![Test and Build](https://github.com/valeriansaliou/bandurria/workflows/Test%20and%20Build/badge.svg?branch=master)](https://github.com/valeriansaliou/bandurria/actions?query=workflow%3A%22Test+and+Build%22) [![Build and Release](https://github.com/valeriansaliou/bandurria/workflows/Build%20and%20Release/badge.svg)](https://github.com/valeriansaliou/bandurria/actions?query=workflow%3A%22Build+and+Release%22) [![dependency status](https://deps.rs/repo/github/valeriansaliou/bandurria/status.svg)](https://deps.rs/repo/github/valeriansaliou/bandurria) [![Buy Me A Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg)](https://www.buymeacoffee.com/valeriansaliou)
+[![Test and Build](https://github.com/valeriansaliou/bandurria/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/valeriansaliou/bandurria/actions/workflows/test.yml) [![Build and Release](https://github.com/valeriansaliou/bandurria/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/valeriansaliou/bandurria/actions/workflows/build.yml) [![dependency status](https://deps.rs/repo/github/valeriansaliou/bandurria/status.svg)](https://deps.rs/repo/github/valeriansaliou/bandurria) [![Buy Me A Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg)](https://www.buymeacoffee.com/valeriansaliou)
 
 **Bandurria is a self-hosted lightweight comment system for static websites and blogs. Built in Rust, takes a few MB of RAM. Can be included with a single line of JavaScript.**
 
