@@ -17,7 +17,7 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 ## Features
 
-* **Built-in spam control** with Proof of Work anti-bot system and Magic Link email verification
+* **Built-in spam control** with Proof of Work anti-bot system and Magic Link verifications over email
 * **Email-based notifications** and comment moderation (no complex Web admin UI)
 * **Zero-dependencies server runtime** and **lightweight JavaScript script**
 * **Compatible with any static website** or blog system (as long as your can add 1 line of JavaScript)
