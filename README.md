@@ -39,10 +39,11 @@ All features might not have yet been implemented, but this is what Bandurria aim
 - [x] Built in theme is to be generic and simple with no colors, it can be extended by the user by styling CSS classes in their own blog theme (CSS class names should be stable, and never use important rules).
 - [x] Built with Rust, goal is to produce a 2MB binary using the same amount of RAM and distribute lightweight Docker images for all platforms.
 - [x] Format URLs into clickable links and make comments anchorable when clicking on the comment date.
+- [x] Admin users can manage comments and remove or allow them from their email inbox using magic links.
+- [x] Notify admin of new comments over email.
 - [ ] Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation), with ability to configure difficulty.
 - [ ] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
-- [ ] Admin users can manage comments and remove or allow them from their email inbox using magic links.
-- [ ] Notify admin of new comments over email, and notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
+- [ ] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
 - [ ] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
 - [ ] Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
 - [ ] Verify origin of comments to be from the same domain as the site, and also prevent CORS (for security and anti-spam reasons).
