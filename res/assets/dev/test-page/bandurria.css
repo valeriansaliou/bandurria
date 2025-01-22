@@ -45,7 +45,8 @@
     resize: vertical;
 }
 
-.bandurria-form textarea:focus {
+.bandurria-form textarea:focus,
+.bandurria-form input:focus {
     border-color: blue;
 }
 
