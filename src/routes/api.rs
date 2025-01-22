@@ -26,6 +26,14 @@ pub struct BaseResponse<D> {
     pub data: D,
 }
 
+#[get("/")]
+pub async fn get_base() -> Result<Json<BaseResponse<()>>, Status> {
+    Ok(Json(BaseResponse {
+        reason: "welcome",
+        data: (),
+    }))
+}
+
 #[post("/comment?<page>", format = "json", data = "<comment>")]
 pub async fn post_comment(
     mut db: DbConn,

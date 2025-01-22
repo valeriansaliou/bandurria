@@ -59,7 +59,11 @@ pub async fn bootstrap() -> rocket::Rocket<rocket::Build> {
         .attach(Template::fairing())
         .mount(
             "/api",
-            rocket::routes![api::post_comment, api::get_admin_moderate_comment],
+            rocket::routes![
+                api::get_base,
+                api::post_comment,
+                api::get_admin_moderate_comment
+            ],
         )
         .mount("/page", rocket::routes![page::get_comments])
         .mount("/assets", FileServer::from(assets_path("public")))
