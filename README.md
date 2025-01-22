@@ -25,9 +25,9 @@ Spam is prevented by requiring user browsers to submit the result to a Proof of 
 
 **Oh and what about that name?!** Well, the Bandurria name refers to the _Bandurria Austral_ ([Black-faced Ibis](https://en.wikipedia.org/wiki/Black-faced_ibis)), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
 
-## End Goals
+## 🚧 Work In Progress
 
-All goals might not have yet been implemented, but this is what Bandurria aims for:
+All features might not have yet been implemented, but this is what Bandurria aims for:
 
 - [ ] No social auth, no admin interface, no multiple notification channels, do it all over email notifications with magic links.
 - [x] Public users can write their comment, give a name and email and submit in a simple way (WordPress like).
