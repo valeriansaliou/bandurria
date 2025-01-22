@@ -11,6 +11,8 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 **🇨🇱 Crafted in Santiago, Chile.**
 
+![Bandurria](https://valeriansaliou.github.io/bandurria/images/bandurria.png)
+
 ## Features
 
 * **Built-in spam control** with Proof of Work anti-bot system and Magic Link email verification
