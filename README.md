@@ -42,6 +42,7 @@ All goals might not have yet been implemented, but this is what Bandurria aims f
 - [ ] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
 - [ ] Upon submitting a comment and waiting for the user to confirm their identity over email with the magic link, store the pending comment in a temporary table, and purge it every day or so, if the user submits a comment but never validate anything over email (garbage collect periodically to ensure we do not store a growing list of pending comments, especially if spammers with fake emails manage to pass the PoW step).
 - [x] Store everything in a simple MySQL database.
+- [ ] Verify origin of comments to be from the same domain as the site, and also prevent CORS (for security and anti-spam reasons).
 
 ## How to use it?
 
