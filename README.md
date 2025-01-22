@@ -11,6 +11,8 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 **🇨🇱 Crafted in Santiago, Chile.**
 
+**👉 See a live demo of Bandurria on my [personal blog](https://valeriansaliou.name/blog/3d-printing-formlabs-enclosure-project/) (scroll down to the bottom of the page).**
+
 ![Bandurria](https://valeriansaliou.github.io/bandurria/images/bandurria.png)
 
 ## Features
