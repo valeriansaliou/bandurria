@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: bandurria
--- Generation Time: 2025-01-21 17:10:27.4660
+-- Generation Time: 2025-01-21 22:07:16.6980
 -- -------------------------------------------------------------
 
 
@@ -23,7 +23,7 @@ CREATE TABLE `authors` (
   `name` varchar(255) NOT NULL,
   `email_hash` char(64) NOT NULL,
   `trusted` tinyint(1) NOT NULL DEFAULT '0',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` char(19) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -34,7 +34,7 @@ CREATE TABLE `comments` (
   `approved` tinyint(1) NOT NULL DEFAULT '0',
   `author_id` char(36) NOT NULL,
   `page_id` char(36) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` char(19) NOT NULL DEFAULT '',
   `reply_to_id` char(36) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `author_id` (`author_id`),
@@ -48,7 +48,7 @@ CREATE TABLE `comments` (
 CREATE TABLE `pages` (
   `id` char(36) NOT NULL DEFAULT '',
   `page` varchar(2048) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` char(19) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
