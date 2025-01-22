@@ -29,19 +29,19 @@ Spam is prevented by requiring user browsers to submit the result to a Proof of 
 
 All goals might not have yet been implemented, but this is what Bandurria aims for:
 
-- No social auth, no admin interface, no multiple notification channels, do it all over email notifications with magic links.
-- Public users can write their comment, give a name and email and submit in a simple way (WordPress like).
-- Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation), with ability to configure difficulty.
-- Upon sending a comment and passing the PoW, ask the user to click on a magic link sent over their email (double spam prevention and email verification to authenticate themselves).
-- Admin user can manage comment and remove or allow them from the comment UI after logging in over magic link with email.
-- Once an user first comment got approved then all further comments will be auto approved (unless the user gets banned by the admin).
-- Notify admin of new comments over email, and notify of replies to user comments over email to users (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
-- Built in theme is to be generic and simple with no colors, it can be extended by the user by styling CSS classes in their own blog theme (CSS class names should be stable, and never use important rules).
-- Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
-- Built with Rust, goal is to produce a 4MB binary using the same amount of RAM and distribute lightweight Docker images for all platforms.
-- Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
-- Upon submitting a comment and waiting for the user to confirm their identity over email with the magic link, store the pending comment in a temporary table, and purge it every day or so, if the user submits a comment but never validate anything over email (garbage collect periodically to ensure we do not store a growing list of pending comments, especially if spammers with fake emails manage to pass the PoW step).
-- Store everything in a simple MySQL database.
+- [ ] No social auth, no admin interface, no multiple notification channels, do it all over email notifications with magic links.
+- [x] Public users can write their comment, give a name and email and submit in a simple way (WordPress like).
+- [ ] Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation), with ability to configure difficulty.
+- [ ] Upon sending a comment and passing the PoW, ask the user to click on a magic link sent over their email (double spam prevention and email verification to authenticate themselves).
+- [ ] Admin user can manage comment and remove or allow them from the comment UI after logging in over magic link with email.
+- [x] Once an user first comment got approved then all further comments will be auto approved (unless the user gets banned by the admin).
+- [ ] Notify admin of new comments over email, and notify of replies to user comments over email to users (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
+- [x] Built in theme is to be generic and simple with no colors, it can be extended by the user by styling CSS classes in their own blog theme (CSS class names should be stable, and never use important rules).
+- [ ] Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
+- [x] Built with Rust, goal is to produce a 4MB binary using the same amount of RAM and distribute lightweight Docker images for all platforms.
+- [ ] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
+- [ ] Upon submitting a comment and waiting for the user to confirm their identity over email with the magic link, store the pending comment in a temporary table, and purge it every day or so, if the user submits a comment but never validate anything over email (garbage collect periodically to ensure we do not store a growing list of pending comments, especially if spammers with fake emails manage to pass the PoW step).
+- [x] Store everything in a simple MySQL database.
 
 ## How to use it?
 
