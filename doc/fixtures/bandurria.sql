@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: bandurria
--- Generation Time: 2025-01-22 00:15:00.5940
+-- Generation Time: 2025-01-22 01:37:45.4640
 -- -------------------------------------------------------------
 
 
@@ -19,23 +19,24 @@
 
 
 CREATE TABLE `authors` (
-  `id` char(36) NOT NULL DEFAULT '',
-  `name` varchar(255) NOT NULL,
-  `email_hash` char(64) NOT NULL,
+  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_hash` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `trusted` tinyint(1) NOT NULL DEFAULT '0',
-  `created_at` char(19) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `created_at` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email_hash` (`email_hash`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `comments` (
-  `id` char(36) NOT NULL DEFAULT '',
-  `text` text NOT NULL,
+  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   `approved` tinyint(1) NOT NULL DEFAULT '0',
-  `author_id` char(36) NOT NULL,
-  `page_id` char(36) NOT NULL,
-  `created_at` char(19) NOT NULL DEFAULT '',
-  `reply_to_id` char(36) DEFAULT NULL,
+  `author_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `page_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `reply_to_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `author_id` (`author_id`),
   KEY `reply_to_id` (`reply_to_id`),
@@ -43,14 +44,15 @@ CREATE TABLE `comments` (
   CONSTRAINT `comments_ibfk_3` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_ibfk_4` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_ibfk_5` FOREIGN KEY (`reply_to_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `pages` (
-  `id` char(36) NOT NULL DEFAULT '',
-  `page` varchar(2048) NOT NULL,
-  `created_at` char(19) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `page` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `page` (`page`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
