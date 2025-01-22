@@ -58,13 +58,13 @@ You might find it convenient to run Bandurria via Docker. You can find the pre-b
 First, pull the `valeriansaliou/bandurria` image:
 
 ```bash
-docker pull valeriansaliou/bandurria:v0.2.0
+docker pull valeriansaliou/bandurria:v0.3.0
 ```
 
 Then, provide a configuration file and run it (replace `/path/to/your/bandurria/config.cfg` with the path to your configuration file):
 
 ```bash
-docker run -p 8080:8080 -v /path/to/your/bandurria/config.cfg:/etc/bandurria.cfg valeriansaliou/bandurria:v0.2.0
+docker run -p 8080:8080 -v /path/to/your/bandurria/config.cfg:/etc/bandurria.cfg valeriansaliou/bandurria:v0.3.0
 ```
 
 In the configuration file, ensure that:
