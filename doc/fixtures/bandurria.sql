@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: bandurria
--- Generation Time: 2025-01-21 22:07:16.6980
+-- Generation Time: 2025-01-22 00:15:00.5940
 -- -------------------------------------------------------------
 
 
@@ -38,8 +38,8 @@ CREATE TABLE `comments` (
   `reply_to_id` char(36) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `author_id` (`author_id`),
-  KEY `page_id` (`page_id`),
   KEY `reply_to_id` (`reply_to_id`),
+  KEY `page_id_verified_approved_created_at` (`page_id`,`verified`,`approved`,`created_at`) USING BTREE,
   CONSTRAINT `comments_ibfk_3` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_ibfk_4` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_ibfk_5` FOREIGN KEY (`reply_to_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
