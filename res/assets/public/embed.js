@@ -46,11 +46,12 @@
     // Inject form
     inject_form(form_template, document.body.querySelector(".bandurria-form"));
 
-    // Bind comment events
-    bind_comment_events(
-      form_template,
-      document.body.querySelector(".bandurria-comments"),
-    );
+    // Bind comment events (if any)
+    var comments = document.body.querySelector(".bandurria-comments");
+
+    if (comments) {
+      bind_comment_events(form_template, comments);
+    }
 
     // Inject all document contents
     while (document.body.firstChild) {

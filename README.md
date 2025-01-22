@@ -25,22 +25,23 @@ Spam is prevented by requiring user browsers to submit the result to a Proof of 
 
 **Oh and what about that name?!** Well, the Bandurria name refers to the _Bandurria Austral_ ([Black-faced Ibis](https://en.wikipedia.org/wiki/Black-faced_ibis)), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
 
-## Goals
+## End Goals
 
-- No social auth, no admin interface, no multiple notification channels, do it all over email notifications with magic links
-- Public users can write their comment, give a name and email and submit in a simple way (WordPress like)
-    - Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation as done in Crisp), with ability to configure difficulty
-- Upon sending a comment and passing the PoW, ask the user to click on a magic link sent over their email (double spam prevention and email verification to authenticate themselves)
-- Admin user can manage comment and remove or allow them from the comment UI after logging in over magic link with email
-- Once an user first comment got approved then all further comments will be auto approved (unless the user gets banned by the admin)
-- Notify admin of new comments over email, and notify of replies to user comments over email to users (enable engagement, which was an issue with Schnack since users didn’t get notified of replies to their own comments)
-- Built in theme is to be generic and simple with no colors, it can be extended by the user by styling CSS classes in their own blog theme (CSS class names should be stable, and never use important rules)
-- Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file
-- Built with Rust, goal is to produce a 4MB binary using the same amount of RAM and distribute lightweight Docker images for all platforms
-- Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database)
-- Upon submitting a comment and waiting for the user to confirm their identity over email with the magic link, store the pending comment in a temporary table, and purge it every day or so, if the user submits a comment but never validate anything over email (garbage collect periodically to ensure we do not store a growing list of pending comments, especially if spammers with fake emails manage to pass the PoW step)
-- Store everything in a simple SQLite database
-- Experiment with a new Web/HTTP framework in Rust, and JWT et al
+All goals might not have yet been implemented, but this is what Bandurria aims for:
+
+- No social auth, no admin interface, no multiple notification channels, do it all over email notifications with magic links.
+- Public users can write their comment, give a name and email and submit in a simple way (WordPress like).
+- Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation), with ability to configure difficulty.
+- Upon sending a comment and passing the PoW, ask the user to click on a magic link sent over their email (double spam prevention and email verification to authenticate themselves).
+- Admin user can manage comment and remove or allow them from the comment UI after logging in over magic link with email.
+- Once an user first comment got approved then all further comments will be auto approved (unless the user gets banned by the admin).
+- Notify admin of new comments over email, and notify of replies to user comments over email to users (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
+- Built in theme is to be generic and simple with no colors, it can be extended by the user by styling CSS classes in their own blog theme (CSS class names should be stable, and never use important rules).
+- Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
+- Built with Rust, goal is to produce a 4MB binary using the same amount of RAM and distribute lightweight Docker images for all platforms.
+- Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
+- Upon submitting a comment and waiting for the user to confirm their identity over email with the magic link, store the pending comment in a temporary table, and purge it every day or so, if the user submits a comment but never validate anything over email (garbage collect periodically to ensure we do not store a growing list of pending comments, especially if spammers with fake emails manage to pass the PoW step).
+- Store everything in a simple MySQL database.
 
 ## How to use it?
 
@@ -116,13 +117,46 @@ You can also use environment variables with string interpolation in your configu
 
 * `path` (type: _string_, allowed: UNIX path, default: `./res/assets/`) — Path to Bandurria assets directory
 
-TODO: add all other fields
+**[database]**
+
+**[database.mysql]**
+
+* `uri` (type: _string_, allowed: MySQL connection URI, no default) — MySQL URI (ie. `mysql://user:password@server:port/database`)
+
+**[email]**
+
+**[email.smtp]**
+
+* `server_host` (type: _string_, allowed: hostname, IPv4, IPv6, default: no default) — SMTP host to connect to
+* `server_port` (type: _integer_, allowed: TCP port, default: `587`) — SMTP TCP port to connect to
+* `server_starttls` (type: _boolean_, allowed: `true`, `false`, default: `true`) — Whether to encrypt SMTP connection with `STARTTLS` or not
+* `server_tls` (type: _boolean_, allowed: `true`, `false`, default: `false`) — Whether to encrypt SMTP connection with `TLS` or not
+* `auth_user` (type: _string_, allowed: any string, default: no default) — SMTP username to use for authentication (if any)
+* `auth_password` (type: _string_, allowed: any string, default: no default) — SMTP password to use for authentication (if any)
+
+**[email.identity]**
+
+* `from_name` (type: _string_, allowed: any string, default: `Comments`) — Name to send the emails from
+* `from_email` (type: _string_, allowed: email address, default: no default) — Email to send the emails from
+
+**[site]**
+
+* `name` (type: _string_, allowed: any string, default: no default) — Name of the site
+* `admin_emails` (type: _array[string]_, allowed: email addresses, default: no default) — Email addresses of site administrators
+* `site_url` (type: _string_, allowed: URL, default: no default) — URL of the site
+* `comments_url` (type: _string_, allowed: URL, default: no default) — URL of the comment system
+
+**[security]**
+
+* `secret_key` (type: _string_, allowed: any hexadecimal string, default: auto-generated secret) — Secret key to use to sign all authenticated payloads (generate yours with `openssl rand -hex 32`)
 
 ### Run Bandurria
 
 Bandurria can be run as such:
 
 `./bandurria -c /path/to/config.cfg`
+
+You will also need to make sure the [MySQL database fixtures](https://github.com/valeriansaliou/bandurria/blob/master/doc/fixtures/bandurria.sql) are imported in your database.
 
 ## :fire: Report A Vulnerability
 

@@ -32,16 +32,15 @@
                 class="bandurria-banner bandurria-banner--presubmit"
                 style="display: none"
             >
-                Your email is only used to check you are not a bot, by sending
-                you a confirmation link. It will not be stored.
+                Your email is only used to check you are not a bot. It will not be stored.
             </span>
 
             <span
                 class="bandurria-banner bandurria-banner--submitted"
                 style="display: none"
             >
-                <strong>A confirmation link has been sent to your email address.</strong>
-                Your comment will be posted after confirming your email.
+                <strong>Your comment has been submitted.</strong>
+                It will appear here after it gets accepted by moderation.
             </span>
 
             <span
@@ -58,6 +57,8 @@
             <!-- Form template will be injected after this line. -->
         </form>
 
-        {{> partials/comments comments=comments replies=replies }}
+        {{#if comments}}
+            {{> partials/comments comments=comments replies=replies }}
+        {{/if}}
     </body>
 </html>

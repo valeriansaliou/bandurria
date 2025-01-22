@@ -6,5 +6,6 @@
 
 pub mod authentication;
 pub mod normalize;
+pub mod notifier;
 pub mod query;
 pub mod time;

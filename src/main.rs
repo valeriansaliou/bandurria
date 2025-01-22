@@ -24,7 +24,7 @@ use config::config::Config;
 use config::logger::ConfigLogger;
 use config::reader::ConfigReader;
 use log::LevelFilter;
-use managers::http;
+use managers::{email, http};
 
 struct AppArgs {
     config: String,
@@ -61,6 +61,9 @@ fn make_app_args() -> AppArgs {
 fn ensure_states() {
     // Ensure all statics are valid (a `deref` is enough to lazily initialize them)
     let (_, _) = (APP_ARGS.deref(), APP_CONF.deref());
+
+    // Ensure all foreign states
+    email::ensure_states();
 }
 
 #[rocket::main]
