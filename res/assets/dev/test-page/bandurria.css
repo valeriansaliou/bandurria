@@ -11,55 +11,60 @@
 
 .bandurria-form button[type="submit"]:disabled,
 .bandurria-form textarea,
-.bandurria-form input {
+.bandurria-form input[type] {
     color: black;
-    background-color: transparent;
+    background-color: #fff;
 }
 
 .bandurria-form button[type="submit"],
 .bandurria-form textarea,
-.bandurria-form input {
+.bandurria-form input[type] {
     border: 1px solid black;
     border-radius: 3px;
 }
 
 .bandurria-form button[type="submit"],
-.bandurria-form input {
-    font-size: 0.8rem;
+.bandurria-form input[type] {
+    font-size: 0.95em;
+    height: 2.25rem;
     margin-top: 6px;
-    padding: 0.35rem 0.7rem;
+    padding: 0.5rem 0.75rem;
 }
 
-.bandurria-form input {
+.bandurria-form button {
+    box-shadow: none;
+}
+
+.bandurria-form input[type] {
     width: 200px;
     max-width: 200px;
 }
 
 .bandurria-form textarea {
-    font-size: 0.85rem;
-    line-height: 1.2rem;
+    font-size: 1em;
+    line-height: 1.35em;
     margin-top: 12px;
-    padding: 8px 12px;
+    padding: 0.55rem 0.75rem;
     width: 100%;
-    max-height: 240px;
+    max-height: 15rem;
     resize: vertical;
 }
 
 .bandurria-form textarea:focus,
-.bandurria-form input:focus {
-    border-color: blue;
+.bandurria-form input[type]:focus {
+    border-color: black;
 }
 
 .bandurria-form--main textarea {
-    min-height: 80px;
+    min-height: 5rem;
 }
 
 .bandurria-form--reply textarea {
-    min-height: 60px;
+    min-height: 4rem;
 }
 
 .bandurria-form button[type="submit"]:not(:disabled) {
-    color: white;
+    color: #fff;
     background-color: black;
     cursor: pointer;
 }
@@ -71,34 +76,34 @@
 /* Bandurria > Banners */
 
 .bandurria-banner {
-    font-size: 0.9rem;
-    line-height: 1.15rem;
+    font-size: 0.95em;
+    line-height: 1.35em;
     margin-top: 18px;
 }
 
 .bandurria-banner--presubmit {
-    color: black;
+    color: #000;
+    font-style: italic;
 }
 
 .bandurria-banner--submitted {
-    color: blue;
+    color: #001aea;
 }
 
 .bandurria-banner--submiterror {
-    color: red;
+    color: #e80000;
 }
 
 /* Bandurria > Comments */
 
 ul.bandurria-comments {
-    margin: 2rem 0;
+    margin: 1.4rem 0 0;
     padding: 0;
 }
 
 li.bandurria-comment {
     list-style: none;
-    margin: 0 0 0.6rem;
-    padding: 0.25rem;
+    margin: 0 0 1rem;
 }
 
 li.bandurria-comment:last-child {
@@ -109,8 +114,9 @@ li.bandurria-comment:last-child {
 
 .bandurria-body {
     font-style: normal;
-    line-height: 1.2rem;
-    min-height: 1.2rem;
+    hyphens: auto;
+    line-height: 1.35em;
+    min-height: 1.35em;
     position: relative;
     margin: 4px 0 10px;
     padding: 3px 0 3px 14px;
@@ -132,7 +138,7 @@ li.bandurria-comment:last-child {
 /* Bandurria > Nested Comments */
 
 .bandurria-body > ul.bandurria-comments {
-    margin: 1rem 0 0;
+    margin: 0.8rem 0 0;
 }
 
 .bandurria-body > ul.bandurria-comments .bandurria-body {
@@ -146,7 +152,7 @@ li.bandurria-comment:last-child {
     background-color: transparent;
     border: 0 none;
     color: gray;
-    font-size: 0.8rem;
+    font-size: 0.9em;
     font-weight: bold;
     margin-top: 10px;
     padding: 0;
