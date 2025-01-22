@@ -21,7 +21,7 @@ pub struct Comment {
     pub name: String,
     pub date: String,
     pub time: String,
-    pub text: Vec<String>,
+    pub lines: Vec<String>,
 }
 
 pub async fn find_page_id(db: &mut DbConn, page: &str) -> Result<Option<String>, Status> {
@@ -277,7 +277,7 @@ pub async fn list_comments_for_page_id(
             name: comment.get("name"),
             date: time::datetime_to_date_string(&datetime),
             time: time::datetime_to_time_string(&datetime),
-            text: text_lines,
+            lines: text_lines,
         }
     })
     .collect();

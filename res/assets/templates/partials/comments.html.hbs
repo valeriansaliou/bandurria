@@ -8,8 +8,8 @@
                 </div>
 
                 <div class="bandurria-body">
-                    {{#each text}}
-                        <p>{{this}}</p>
+                    {{#each lines}}
+                        <p>{{format-line this}}</p>
                     {{/each}}
 
                     <form

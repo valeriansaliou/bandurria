@@ -15,6 +15,7 @@ use rocket_db_pools::sqlx;
 use rocket_db_pools::{Connection, Database};
 use rocket_dyn_templates::Template;
 
+use crate::helpers::template;
 use crate::routes::{api, page};
 use crate::APP_CONF;
 
@@ -56,7 +57,11 @@ fn assets_path(kind: &str) -> PathBuf {
 pub async fn bootstrap() -> rocket::Rocket<rocket::Build> {
     rocket::custom(configure())
         .attach(Db::init())
-        .attach(Template::fairing())
+        .attach(Template::custom(|engines| {
+            engines
+                .handlebars
+                .register_helper("format-line", Box::new(template::format_line));
+        }))
         .mount(
             "/api",
             rocket::routes![
