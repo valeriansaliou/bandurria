@@ -12,6 +12,7 @@ use rocket_dyn_templates::{context, Template};
 
 use crate::helpers::query;
 use crate::managers::http::DbConn;
+use crate::APP_CONF;
 
 #[get("/comments?<page>")]
 pub async fn get_comments(mut db: DbConn, page: &str) -> Result<Template, Status> {
@@ -23,6 +24,6 @@ pub async fn get_comments(mut db: DbConn, page: &str) -> Result<Template, Status
 
     Ok(Template::render(
         "bandurria",
-        context! { comments, replies },
+        context! { comments, replies, i18n: &APP_CONF.i18n },
     ))
 }

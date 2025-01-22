@@ -10,55 +10,55 @@
                 cols="1"
                 rows="1"
                 name="comment_text"
-                placeholder="Write your comment..."
+                placeholder="{{i18n.field_write_your_comment}}"
             ></textarea>
 
             <span class="bandurria-identity" style="display: none">
                 <input
                     type="text"
                     name="comment_name"
-                    placeholder="What's your name?"
+                    placeholder="{{i18n.field_whats_your_name}}"
                 />
                 <input
                     type="email"
                     name="comment_email"
-                    placeholder="Enter your email"
+                    placeholder="{{i18n.field_whats_your_email}}"
                 />
             </span>
 
-            <button class="bandurria-submit" type="submit" disabled>Post comment</button>
+            <button class="bandurria-submit" type="submit" disabled>{{i18n.button_post_comment}}</button>
 
             <span
                 class="bandurria-banner bandurria-banner--presubmit"
                 style="display: none"
             >
-                Your email is only used to check you are not a bot. It will not be stored.
+                {{i18n.banner_presubmit}}
             </span>
 
             <span
                 class="bandurria-banner bandurria-banner--submitted"
                 style="display: none"
             >
-                <strong>Your comment has been submitted.</strong>
-                It will appear here after it gets accepted by moderation.
+                <strong>{{i18n.banner_submitted_important}}</strong>
+                {{i18n.banner_submitted_notice}}
             </span>
 
             <span
                 class="bandurria-banner bandurria-banner--submiterror"
                 style="display: none"
             >
-                Your comment could not be submitted. Mind try again?
+                {{i18n.banner_submiterror}}
             </span>
         </template>
 
         <form class="bandurria-form bandurria-form--main">
-            <p>Leave a comment:</p>
+            <p>{{i18n.label_leave_a_comment}}</p>
 
             <!-- Form template will be injected after this line. -->
         </form>
 
         {{#if comments}}
-            {{> partials/comments comments=comments replies=replies }}
+            {{> partials/comments comments=comments replies=replies i18n=i18n }}
         {{/if}}
     </body>
 </html>

@@ -35,7 +35,7 @@ pub fn email_smtp_server_tls() -> bool {
 }
 
 pub fn email_identity_from_name() -> String {
-    return "Comments".to_string();
+    "Comments".into()
 }
 
 pub fn security_secret_key() -> String {
@@ -44,4 +44,44 @@ pub fn security_secret_key() -> String {
     //   restarts, we still provide a convenient way to start Bandurria with \
     //   a random UUIDv4-based secret key if none is provided.
     hex::encode(Uuid::new_v4().as_bytes())
+}
+
+pub fn i18n_field_write_your_comment() -> String {
+    "Write your comment...".into()
+}
+
+pub fn i18n_field_whats_your_name() -> String {
+    "What's your name?".into()
+}
+
+pub fn i18n_field_whats_your_email() -> String {
+    "Enter your email".into()
+}
+
+pub fn i18n_button_post_comment() -> String {
+    "Post comment".into()
+}
+
+pub fn i18n_button_reply() -> String {
+    "Reply".into()
+}
+
+pub fn i18n_label_leave_a_comment() -> String {
+    "Leave a comment:".into()
+}
+
+pub fn i18n_banner_presubmit() -> String {
+    "Your email is only used to check you are not a bot. It will not be stored.".into()
+}
+
+pub fn i18n_banner_submitted_important() -> String {
+    "Your comment has been submitted.".into()
+}
+
+pub fn i18n_banner_submitted_notice() -> String {
+    "It will appear here after it gets accepted by moderation.".into()
+}
+
+pub fn i18n_banner_submiterror() -> String {
+    "Your comment could not be submitted. Mind try again?".into()
 }

@@ -17,6 +17,7 @@ pub struct Config {
     pub email: ConfigEmail,
     pub site: ConfigSite,
     pub security: ConfigSecurity,
+    pub i18n: ConfigI18N,
 }
 
 #[derive(Deserialize)]
@@ -87,4 +88,37 @@ pub struct ConfigSite {
 pub struct ConfigSecurity {
     #[serde(default = "defaults::security_secret_key")]
     pub secret_key: String,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct ConfigI18N {
+    #[serde(default = "defaults::i18n_field_write_your_comment")]
+    pub field_write_your_comment: String,
+
+    #[serde(default = "defaults::i18n_field_whats_your_name")]
+    pub field_whats_your_name: String,
+
+    #[serde(default = "defaults::i18n_field_whats_your_email")]
+    pub field_whats_your_email: String,
+
+    #[serde(default = "defaults::i18n_button_post_comment")]
+    pub button_post_comment: String,
+
+    #[serde(default = "defaults::i18n_button_reply")]
+    pub button_reply: String,
+
+    #[serde(default = "defaults::i18n_label_leave_a_comment")]
+    pub label_leave_a_comment: String,
+
+    #[serde(default = "defaults::i18n_banner_presubmit")]
+    pub banner_presubmit: String,
+
+    #[serde(default = "defaults::i18n_banner_submitted_important")]
+    pub banner_submitted_important: String,
+
+    #[serde(default = "defaults::i18n_banner_submitted_notice")]
+    pub banner_submitted_notice: String,
+
+    #[serde(default = "defaults::i18n_banner_submiterror")]
+    pub banner_submiterror: String,
 }

@@ -41,12 +41,12 @@ All features might not have yet been implemented, but this is what Bandurria aim
 - [x] Format URLs into clickable links and make comments anchorable when clicking on the comment date.
 - [x] Admin users can manage comments and remove or allow them from their email inbox using magic links.
 - [x] Notify admin of new comments over email.
+- [x] Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
+- [ ] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
+- [ ] Verify origin of comments to be from the same domain as the site, and also prevent CORS (for security and anti-spam reasons).
 - [ ] Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation), with ability to configure difficulty.
 - [ ] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
 - [ ] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
-- [ ] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
-- [ ] Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
-- [ ] Verify origin of comments to be from the same domain as the site, and also prevent CORS (for security and anti-spam reasons).
 
 ## How to use it?
 
@@ -154,6 +154,19 @@ You can also use environment variables with string interpolation in your configu
 **[security]**
 
 * `secret_key` (type: _string_, allowed: any hexadecimal string, default: auto-generated secret) — Secret key to use to sign all authenticated payloads (generate yours with `openssl rand -hex 32`)
+
+**[i18n]**
+
+* `field_write_your_comment` (type: _string_, allowed: any string, default: `Write your comment...`) — Translated string for the comment textarea
+* `field_whats_your_name` (type: _string_, allowed: any string, default: `What's your name?`) — Translated string for the name input
+* `field_whats_your_email` (type: _string_, allowed: any string, default: `Enter your email`) — Translated string for the email input
+* `button_post_comment` (type: _string_, allowed: any string, default: `Post comment`) — Translated string for the submit button
+* `button_reply` (type: _string_, allowed: any string, default: `Reply`) — Translated string for the reply button
+* `label_leave_a_comment` (type: _string_, allowed: any string, default: `Leave a comment:`) — Translated string for the main label
+* `banner_presubmit` (type: _string_, allowed: any string, default: `Your email is only used to check you are not a bot. It will not be stored.`) — Translated string for the pre-submit banner
+* `banner_submitted_important` (type: _string_, allowed: any string, default: `Your comment has been submitted.`) — Translated string for the submitted banner (important part)
+* `banner_submitted_notice` (type: _string_, allowed: any string, default: `It will appear here after it gets accepted by moderation.`) — Translated string for the submitted banner (notice part)
+* `banner_submiterror` (type: _string_, allowed: any string, default: `Your comment could not be submitted. Mind try again?`) — Translated string for the error banner
 
 ### Run Bandurria
 
