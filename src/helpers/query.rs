@@ -89,7 +89,12 @@ pub async fn find_author_id(
 
             Status::InternalServerError
         })?
-        .map(|author| (author.get("id"), author.get("trusted")));
+        .map(|author| {
+            // Do not trust anyone at this point
+            let trusted = false;
+
+            (author.get("id"), trusted)
+        });
 
     Ok(author)
 }
