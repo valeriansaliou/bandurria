@@ -158,19 +158,19 @@ You can also use environment variables with string interpolation in your configu
 
 ### Run Bandurria
 
-#### 1. Create SQL database
+#### 1. Create the SQL database
 
 Before you can run Bandurria, you need to create its SQL database in MySQL:
 
 1. Create your MySQL database: `CREATE DATABASE bandurria CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
 2. Import the [MySQL database schema](https://github.com/valeriansaliou/bandurria/blob/master/doc/fixtures/bandurria.sql)
-3. Adjust the Bandurria configuration file so that `database.mysql.uri` points to your MySQL database
+3. Adjust the Bandurria configuration file so that the configuration value at `database.mysql.uri` points to your MySQL database
 
 #### 2. Start Bandurria
 
 When you are ready, you can start Bandurria as such:
 
-`./bandurria -c /path/to/config.cfg`
+`./bandurria -c /path/to/bandurria/config.cfg`
 
 If you use Docker, refer to the Docker instructions above ("_Install from Docker Hub_").
 
@@ -181,6 +181,8 @@ Now that Bandurria is running, we can include the script on our website!
 **First, create the HTML container where your comments will be injected by Bandurria:**
 
 ```html
+<!-- Your blog article is right before that -->
+
 <aside id="comments" class="post-comments"></aside>
 ```
 
@@ -189,10 +191,16 @@ This container is usually placed at the end of blog articles (if you are includi
 **Then, add the Bandurria loader script right before the `</body>` closing tag:**
 
 ```html
-<script
-    src="/bandurria/assets/embed.js"
-    data-bandurria-target=".post-comments"
-></script>
+<html>
+    <body>
+        <!-- The rest of your body goes here -->
+
+        <script
+            src="/bandurria/assets/embed.js"
+            data-bandurria-target=".post-comments"
+        ></script>
+    </body>
+</html>
 ```
 
 We are assuming here that Bandurria is running over a reverse proxy such as NGINX, proxying the `/bandurria/` path to Bandurria's root.
@@ -200,7 +208,13 @@ We are assuming here that Bandurria is running over a reverse proxy such as NGIN
 **Finally, in your `<head>` section, include Bandurria's style, which you may customize to fit your own design:**
 
 ```html
-<link rel="stylesheet" type="text/css" href="/path/to/your/own/bandurria.css" />
+<html>
+    <head>
+        <!-- The rest of your head goes here -->
+
+        <link rel="stylesheet" type="text/css" href="/path/to/your/own/bandurria.css" />
+    </head>
+</html>
 ```
 
 You may copy and paste the example [bandurria.css](https://github.com/valeriansaliou/bandurria/blob/master/res/assets/dev/test-page/bandurria.css) file that we provide, and start from there.
