@@ -43,7 +43,6 @@ All features might not have yet been implemented, but this is what Bandurria aim
 - [x] Notify admin of new comments over email.
 - [x] Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
 - [x] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
-- [ ] Verify origin of comments to be from the same domain as the site, and also prevent CORS (for security and anti-spam reasons).
 - [ ] Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation), with ability to configure difficulty.
 - [ ] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
 - [ ] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
