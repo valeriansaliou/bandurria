@@ -47,6 +47,8 @@ All features might not have yet been implemented, but this is what Bandurria aim
 - [ ] Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation), with ability to configure difficulty.
 - [ ] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
 - [ ] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
+- [ ] Perform a static analysis and security review of the source code.
+- [ ] Write a personal blog article about Bandurria and direct all demo URLs to this article (instead of the current one).
 
 ## How to use it?
 
