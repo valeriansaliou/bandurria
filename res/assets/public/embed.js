@@ -220,11 +220,15 @@
       var anchor_comment = comments.querySelector(location.hash);
 
       if (anchor_comment) {
-        anchor_comment.classList.add(anchored_class);
+        // Process at next tick, since we want to re-trigger animations for \
+        //   sub-comments if their parent was previously anchored.
+        setTimeout(function () {
+          anchor_comment.classList.add(anchored_class);
 
-        if (scroll_to === true) {
-          anchor_comment.scrollIntoView();
-        }
+          if (scroll_to === true) {
+            anchor_comment.scrollIntoView();
+          }
+        }, 10);
       }
     }
   };
