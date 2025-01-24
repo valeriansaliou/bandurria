@@ -198,7 +198,7 @@ If you use Docker, refer to the Docker instructions above ("_Install from Docker
 
 #### 3. Create a proxy rule on NGINX
 
-On your NGINX reverse proxy (or any other similar HTTP server), add the following location block:
+On your NGINX reverse proxy, add the following location block:
 
 ```nginx
 location /bandurria/ {
@@ -213,6 +213,8 @@ location /bandurria/ {
     proxy_set_header X-Real-IP $remote_addr;
 }
 ```
+
+If you are using a different HTTP server, the proxying configuration will be different. Please adapt it to your needs.
 
 #### 4. Include Bandurria on your site
 
