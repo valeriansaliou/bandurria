@@ -19,15 +19,15 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 ## Features
 
-* **Built-in spam control** with Proof of Work anti-bot system and Magic Link verifications over email
+* **Built-in spam control** with a Proof of Work anti-bot system (without annoying CAPTCHAs!)
 * **Email-based notifications** and comment moderation (no complex Web admin UI)
 * **Zero-dependencies server runtime** and **lightweight JavaScript script**
 * **Compatible with any static website** or blog system (as long as your can add 1 line of JavaScript)
 * **Customize it in a few lines of CSS** to match your website or blog style
 
-Bandurria provides no administration interface. It solely relies on email notifications for moderation and Magic Links for approving or rejecting comments. It also does not provide any built-in CSS styles, only CSS classes in its injected HTML that you can freely style to match your blog or website style. It however comes with an [example CSS](https://github.com/valeriansaliou/bandurria/blob/master/res/assets/dev/test-page/bandurria.css) you can copy and paste to start with.
+Bandurria provides no administration interface. It solely relies on email notifications for moderation and Magic Links for approving or rejecting comments. It also does not provide any built-in CSS styles, only CSS classes in its injected HTML that you can freely style to match your blog or website style. For convenience, it comes with an [example CSS](https://github.com/valeriansaliou/bandurria/blob/master/res/assets/dev/test-page/bandurria.css) you can copy and paste to start with.
 
-Spam is prevented by requiring user browsers to submit the result to a Proof of Work challenge (based on an improved variant of [Hashcash](http://www.hashcash.org/papers/hashcash.pdf)), while the user is typing their comment. This spam prevention method is CAPTCHA-free and hassle-free, since the proof will already be computed when the user will be ready to submit their comment. Upon submission of their comment, the user will be informed that their comment has been submitted and is awaiting moderation. Then, you (the administrator) will receive the user comment over email for moderation. Bandurria also notifies people of new replies to their comments over email.
+Spam is prevented by requiring user browsers to submit the result to a Proof of Work challenge (based on an improved variant of [Hashcash](http://www.hashcash.org/papers/hashcash.pdf)), minted in a Web Worker in the background while the user is typing their comment. This spam prevention method is CAPTCHA-free and hassle-free, since the proof will already be computed when the user will be ready to submit their comment. Upon submission of their comment, the user will be informed that their comment has been submitted and is awaiting moderation. Then, you (the administrator) will receive the user comment over email for moderation. Bandurria also notifies people of new replies to their comments over email.
 
 **Oh and what about that name?!** Well, the Bandurria name refers to the _Bandurria Austral_ ([Black-faced Ibis](https://en.wikipedia.org/wiki/Black-faced_ibis)), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
 
