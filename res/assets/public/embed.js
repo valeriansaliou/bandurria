@@ -11,8 +11,19 @@
   var embed_script = document.currentScript;
   var embed_path = "/assets/embed.js";
 
+  // Define states
+  var load_fired = false;
+
   // Define methods
   var load_comments = function (options) {
+    // Safety: assert that we did not load twice
+    if (load_fired === true) {
+      throw new Error("Comments load already fired. Cannot load twice!");
+    }
+
+    load_fired = true;
+
+    // Fetch comments
     fetch(
       options.base_url +
         "/page/comments/?" +
@@ -58,6 +69,13 @@
       options.target.appendChild(
         document.body.removeChild(document.body.firstChild),
       );
+    }
+
+    // Fire dummy hash change event? (if we have comments)
+    // Notice: this will auto-detect if an anchor is set on URL upon loading, \
+    //   and no nothing otherwise.
+    if (comments) {
+      handle_comment_anchor_change(comments);
     }
   };
 
@@ -166,6 +184,30 @@
 
         inject_form(form_template, form, true);
       };
+    }
+
+    window.addEventListener("hashchange", function () {
+      handle_comment_anchor_change(comments);
+    });
+  };
+
+  var handle_comment_anchor_change = function (comments) {
+    if ((location.hash || "").startsWith("#comment-") === true) {
+      var anchored_class = "bandurria-comment--anchored";
+
+      // Clear existing anchor (if any)
+      var anchored_comment = comments.querySelector("." + anchored_class);
+
+      if (anchored_comment) {
+        anchored_comment.classList.remove(anchored_class);
+      }
+
+      // Add new anchor (if comment found)
+      var anchor_comment = comments.querySelector(location.hash);
+
+      if (anchor_comment) {
+        anchor_comment.classList.add(anchored_class);
+      }
     }
   };
 

@@ -110,6 +110,10 @@ li.bandurria-comment:last-child {
     margin-bottom: 0;
 }
 
+li.bandurria-comment.bandurria-comment--anchored .bandurria-body {
+    animation: bandurria-flash 3s 1 ease-out;
+}
+
 /* Bandurria > Comment Body */
 
 .bandurria-body {
@@ -180,4 +184,29 @@ li.bandurria-comment:last-child {
 
 .bandurria-date {
     color: gray;
+}
+
+.bandurria-date > a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.bandurria-date > a:hover {
+    text-decoration: underline;
+}
+
+/* Bandurria > Animations */
+
+@keyframes bandurria-flash {
+    0% {
+        background-color: rgba(255, 255, 100, 0);
+    }
+
+    15% {
+        background-color: rgba(255, 255, 100, 0.3);
+    }
+
+    100% {
+        background-color: rgba(255, 255, 255, 0);
+    }
 }
