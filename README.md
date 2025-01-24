@@ -5,7 +5,9 @@ Bandurria
 
 **Bandurria is a self-hosted lightweight comment system for static websites and blogs. Built in Rust, it consumes only 4MB of RAM. Can be included with a single line of JavaScript (6KB!).**
 
-This project has been started after I used another similar comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a random blog (where user trust is possibly low), might discourage a lot of people from commenting. Bandurria comes as a lighter and even simpler alternative to Schnack (without the memory overhead of NodeJS and installing NPM dependencies).
+This project has been started after I used another similar comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a random blog (where user trust is possibly low), might discourage a lot of people from commenting.
+
+Bandurria comes as a lighter and even simpler alternative to Schnack (without the memory overhead of NodeJS and installing NPM dependencies).
 
 _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
@@ -23,9 +25,9 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 * **Compatible with any static website** or blog system (as long as your can add 1 line of JavaScript)
 * **Customize it in a few lines of CSS** to match your website or blog style
 
-Bandurria provides no administration interface. It solely relies on email notifications for moderation and Magic Links for identity verification. It also does not provide any CSS preset, only CSS classes in its injected HTML that you can freely style to match your blog or website style.
+Bandurria provides no administration interface. It solely relies on email notifications for moderation and Magic Links for approving or rejecting comments. It also does not provide any built-in CSS styles, only CSS classes in its injected HTML that you can freely style to match your blog or website style. It however comes with an [example CSS](https://github.com/valeriansaliou/bandurria/blob/master/res/assets/dev/test-page/bandurria.css) you can copy and paste to start with.
 
-Spam is prevented by requiring user browsers to submit the result to a Proof of Work challenge (based on an improved variant of Hashcash), while the user is typing their comment. This spam prevention method is CAPTCHA-free and hassle-free, since the proof will already be computed when the user will be ready to submit their comment. Upon submission of their comment, the user will receive a Magic Link over email they will need to click on to confirm their identity and submit their comment. Then, you (the administrator) will receive the user comment over email for moderation. If the user has already sent approved comments in the past under the same email, then their comment will be auto-approved. If not, you will need to approve the comment which will also trust the user. Either way, Bandurria notifies people of new replies to their comments over email.
+Spam is prevented by requiring user browsers to submit the result to a Proof of Work challenge (based on an improved variant of [Hashcash](http://www.hashcash.org/papers/hashcash.pdf)), while the user is typing their comment. This spam prevention method is CAPTCHA-free and hassle-free, since the proof will already be computed when the user will be ready to submit their comment. Upon submission of their comment, the user will be informed that their comment has been submitted and is awaiting moderation. Then, you (the administrator) will receive the user comment over email for moderation. Bandurria also notifies people of new replies to their comments over email.
 
 **Oh and what about that name?!** Well, the Bandurria name refers to the _Bandurria Austral_ ([Black-faced Ibis](https://en.wikipedia.org/wiki/Black-faced_ibis)), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
 
@@ -44,10 +46,11 @@ All features might not have yet been implemented, but this is what Bandurria aim
 - [x] Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
 - [x] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
 - [x] Make comments anchorable when clicking on the comment date, and auto-scroll to the target comment when page URL has anchor.
-- [ ] Proof of work anti spam mechanism, with progress bar (multiple parallel hash computation), with ability to configure difficulty.
-- [ ] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
+- [x] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
+- [ ] Proof of work anti spam mechanism, with progress bar if still computing upon submitting the comment (multiple parallel hash computation), with ability to configure difficulty and parallel games.
 - [ ] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
-- [ ] Perform a static analysis and security review of the source code.
+- [ ] Remove the trusted flag in the authors database table, and the verified flag in the comments database table (not used anymore).
+- [ ] Perform a static analysis and security review of the source code (once 100% of features have been implemented).
 - [ ] Write a personal blog article about Bandurria and direct all demo URLs to this article (instead of the current one).
 
 ## How to use it?
