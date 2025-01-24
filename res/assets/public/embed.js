@@ -75,7 +75,7 @@
     // Notice: this will auto-detect if an anchor is set on URL upon loading, \
     //   and no nothing otherwise.
     if (comments) {
-      handle_comment_anchor_change(comments);
+      handle_comment_anchor_change(comments, true);
     }
   };
 
@@ -187,11 +187,11 @@
     }
 
     window.addEventListener("hashchange", function () {
-      handle_comment_anchor_change(comments);
+      handle_comment_anchor_change(comments, false);
     });
   };
 
-  var handle_comment_anchor_change = function (comments) {
+  var handle_comment_anchor_change = function (comments, scroll_to) {
     if ((location.hash || "").startsWith("#comment-") === true) {
       var anchored_class = "bandurria-comment--anchored";
 
@@ -207,6 +207,10 @@
 
       if (anchor_comment) {
         anchor_comment.classList.add(anchored_class);
+
+        if (scroll_to === true) {
+          anchor_comment.scrollIntoView();
+        }
       }
     }
   };
