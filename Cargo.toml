@@ -1,6 +1,6 @@
 [package]
 name = "bandurria"
-version = "0.3.0"
+version = "0.4.0"
 description = "Self-hosted lightweight comment system for static websites and blogs."
 readme = "README.md"
 license = "MPL-2.0"
