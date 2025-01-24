@@ -196,7 +196,25 @@ When you are ready, you can start Bandurria as such:
 
 If you use Docker, refer to the Docker instructions above ("_Install from Docker Hub_").
 
-#### 3. Include Bandurria on your site
+#### 3. Create a proxy rule on NGINX
+
+On your NGINX reverse proxy (or any other similar HTTP server), add the following location block:
+
+```nginx
+location /bandurria/ {
+    proxy_pass http://localhost:8080;
+
+    # Important: remove the '/bandurria' prefix from the URL upon proxying!
+    rewrite ^/bandurria/(.*)$ /$1 break;
+
+    proxy_http_version 1.1;
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}
+```
+
+#### 4. Include Bandurria on your site
 
 Now that Bandurria is running, we can include the script on our website!
 
