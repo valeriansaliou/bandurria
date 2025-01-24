@@ -27,7 +27,9 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 Bandurria provides no administration interface. It solely relies on email notifications for moderation and Magic Links for approving or rejecting comments. It also does not provide any built-in CSS styles, only CSS classes in its injected HTML that you can freely style to match your blog or website style. For convenience, it comes with an [example CSS](https://github.com/valeriansaliou/bandurria/blob/master/res/assets/dev/test-page/bandurria.css) you can copy and paste to start with.
 
-Spam is prevented by requiring user browsers to submit the result to a Proof of Work challenge (based on an improved variant of [Hashcash](http://www.hashcash.org/papers/hashcash.pdf)), minted in a Web Worker in the background while the user is typing their comment. This spam prevention method is CAPTCHA-free and hassle-free, since the proof will already be computed when the user will be ready to submit their comment. Upon submission of their comment, the user will be informed that their comment has been submitted and is awaiting moderation. Then, you (the administrator) will receive the user comment over email for moderation. Bandurria also notifies people of new replies to their comments over email.
+Spam is prevented by requiring user browsers to submit the result to a Proof of Work challenge (based on an improved variant of [Hashcash](http://www.hashcash.org/papers/hashcash.pdf)), minted in a Web Worker in the background while the user is typing their comment. This spam prevention method is CAPTCHA-free and hassle-free, since the proof should already be computed when the user will be ready to submit their comment.
+
+Upon submission of their comment, the user will be informed that their comment has been submitted and is awaiting moderation. Then, you (the administrator) will receive the user comment over email for moderation. Bandurria also notifies people of new replies to their comments over email.
 
 **Oh and what about that name?!** Well, the Bandurria name refers to the _Bandurria Austral_ ([Black-faced Ibis](https://en.wikipedia.org/wiki/Black-faced_ibis)), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
 
@@ -86,7 +88,7 @@ A pre-built binary of Bandurria is shared in the releases on GitHub. You can sim
 
 You will still need to provide the binary with the configuration file, so make sure you have a Bandurria `config.cfg` file ready somewhere.
 
-_The binary provided is statically-linked, which means that it will be able to run on any Linux-based server. Still, it will not work on MacOS or Windows machines._
+_The binary provided is statically-linked, which means that it will be able to run on any Linux-based system. Still, it will not work on MacOS or Windows machines._
 
 👉 _Each release binary comes with an `.asc` signature file, which can be verified using [@valeriansaliou](https://github.com/valeriansaliou) GPG public key: [:key:valeriansaliou.gpg.pub.asc](https://valeriansaliou.name/files/keys/valeriansaliou.gpg.pub.asc)._
 
@@ -175,6 +177,8 @@ You can also use environment variables with string interpolation in your configu
 * `banner_submiterror` (type: _string_, allowed: any string, default: `Your comment could not be submitted. Mind try again?`) — Translated string for the error banner
 
 ### Run Bandurria
+
+In order to run Bandurria on your server and add comments to your blog or website, follow those steps in order:
 
 #### 1. Create the SQL database
 
