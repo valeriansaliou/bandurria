@@ -8,15 +8,22 @@ use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::{get, post};
 use serde::{Deserialize, Serialize};
+use validator::Validate;
 
 use crate::helpers::{authentication, notifier, query};
 use crate::managers::http::DbConn;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Validate)]
 pub struct CommentData {
+    #[validate(length(min = 1))]
     name: String,
+
+    #[validate(email)]
     email: String,
+
+    #[validate(length(min = 1))]
     text: String,
+
     reply_to: Option<String>,
 }
 
@@ -40,6 +47,11 @@ pub async fn post_comment(
     page: &str,
     comment: Json<CommentData>,
 ) -> Result<Json<BaseResponse<()>>, Status> {
+    // Data is invalid?
+    if comment.validate().is_err() {
+        return Err(Status::UnprocessableEntity);
+    }
+
     // Clean input data
     let email = comment.email.trim();
     let name = comment.name.trim();
