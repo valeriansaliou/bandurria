@@ -39,12 +39,26 @@
       },
     )
       .then(function (response) {
+        if (!response.ok) {
+          return Promise.reject(
+            response.status
+              ? response.status + " " + response.statusText
+              : response,
+          );
+        }
+
         return response.text();
       })
       .then(function (html) {
         var document = new DOMParser().parseFromString(html, "text/html");
 
         inject_document(options, document);
+      })
+      .catch(function (error) {
+        console.error(
+          "Could not load comments from Bandurria: is the database healthy?",
+          error,
+        );
       });
   };
 
