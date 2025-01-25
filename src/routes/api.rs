@@ -46,7 +46,8 @@ pub struct ChallengeResponseData {
     comment_id: String,
     attestation: String,
     problems: Vec<String>,
-    solutions_expect: u8,
+    difficulty_expect: mint::MintDifficulty,
+    solutions_expect: mint::MintSolutions,
 }
 
 #[get("/")]
@@ -131,7 +132,7 @@ pub async fn post_challenge(
     let attestation = authentication::generate_challenge_attestation(page, &comment_id)?;
 
     // Generate challenge
-    let (problems, solutions_expect) =
+    let (problems, difficulty_expect, solutions_expect) =
         mint::challenge(&comment_id).or(Err(Status::InternalServerError))?;
 
     Ok(Json(BaseResponse {
@@ -140,6 +141,7 @@ pub async fn post_challenge(
             comment_id,
             attestation,
             problems,
+            difficulty_expect,
             solutions_expect,
         },
     }))

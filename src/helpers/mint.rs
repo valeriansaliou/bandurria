@@ -15,15 +15,16 @@ use sha2::{Digest, Sha256};
 
 use super::authentication;
 
-type MintSolutions = u8;
-type MintDifficulty = u8;
+pub type MintSolutions = u8;
+pub type MintDifficulty = u8;
+
 type MintIndex = u8;
 type MintTimestamp = u64;
 
 const CHALLENGES_TOTAL: MintSolutions = 10;
 const SOLUTIONS_REQUIRED: MintSolutions = 6;
 
-const DIFFICULTY: MintDifficulty = 18;
+const DIFFICULTY: MintDifficulty = 17;
 const VALIDITY: Duration = Duration::from_secs(300);
 
 const ALGORITHM: &'static str = "SHA-256";
@@ -33,7 +34,7 @@ lazy_static! {
         Regex::new(r"^H:([0-9]+):([0-9]+):([^:/]+)/([0-9]+):([^:]+):([^:]+):([^:]+)$").unwrap();
 }
 
-pub fn challenge(comment_id: &str) -> Result<(Vec<String>, MintSolutions), ()> {
+pub fn challenge(comment_id: &str) -> Result<(Vec<String>, MintDifficulty, MintSolutions), ()> {
     // Generate expire time (the challenge has a validity period)
     let expire_at_time = SystemTime::now() + VALIDITY;
 
@@ -51,7 +52,7 @@ pub fn challenge(comment_id: &str) -> Result<(Vec<String>, MintSolutions), ()> {
 
     info!("generated mint challenge problems: {:?}", problems);
 
-    Ok((problems, SOLUTIONS_REQUIRED))
+    Ok((problems, DIFFICULTY, SOLUTIONS_REQUIRED))
 }
 
 pub fn verify(reference_comment_id: &str, solutions: &[String]) -> Result<bool, ()> {

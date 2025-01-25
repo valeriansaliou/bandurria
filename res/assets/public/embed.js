@@ -10,6 +10,7 @@
   // Acquire context
   var embed_script = document.currentScript;
   var embed_path = "/assets/embed.js";
+  var worker_mint_path = "/assets/workers/mint.js";
 
   // Define states
   var load_fired = false;
@@ -82,7 +83,7 @@
       })
       .catch(function (error) {
         console.error(
-          "Could not load comments from Bandurria: is the database healthy?",
+          "[Bandurria] Could not load comments: is the database healthy?",
           error,
         );
       });
@@ -141,6 +142,7 @@
         // Mint solutions
         return mint_challenge_solutions(
           challenge.data.problems,
+          challenge.data.difficulty_expect,
           challenge.data.solutions_expect,
         );
       })
@@ -256,13 +258,32 @@
     }
   };
 
-  var mint_challenge_solutions = function (problems, solutions_expect) {
-    // TODO
-    return Promise.resolve(
-      problems.map(function (problem, index) {
-        return problem + ":" + "000" + index;
-      }),
-    );
+  var mint_challenge_solutions = function (
+    problems,
+    difficulty_expect,
+    solutions_expect,
+  ) {
+    return new Promise(function (resolve, reject) {
+      var worker = new Worker(options.base_url + worker_mint_path);
+
+      worker.addEventListener("message", function (event) {
+        worker.terminate();
+
+        resolve(event.data);
+      });
+
+      worker.addEventListener("error", function (event) {
+        worker.terminate();
+
+        reject(event.message || "Cannot spawn");
+      });
+
+      worker.postMessage({
+        problems: problems,
+        difficulty_expect: difficulty_expect,
+        solutions_expect: solutions_expect,
+      });
+    });
   };
 
   // Read options
@@ -277,7 +298,7 @@
     load_comments(options);
   } else {
     console.error(
-      "Could not initialize Bandurria: does bandurria-target exist?",
+      "[Bandurria] Could not initialize: does bandurria-target exist?",
     );
   }
 })();
