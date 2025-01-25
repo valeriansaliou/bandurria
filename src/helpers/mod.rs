@@ -7,6 +7,7 @@
 pub mod authentication;
 pub mod checker;
 pub mod formatter;
+pub mod mint;
 pub mod normalize;
 pub mod notifier;
 pub mod query;

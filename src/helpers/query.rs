@@ -318,12 +318,13 @@ pub async fn list_comments_for_page_id(
 
 pub async fn insert_comment_for_page_id_and_author_id(
     db: &mut DbConn,
+    comment_id: &str,
     text: &str,
     page_id: &str,
     author_id: &str,
     author_trusted: bool,
     reply_to_id: &Option<String>,
-) -> Result<String, Status> {
+) -> Result<(), Status> {
     // Security: verify that the replied to comment is on the same page
     if let Some(reply_to_id) = reply_to_id {
         match resolve_comment_page_id(db, reply_to_id).await? {
@@ -348,8 +349,6 @@ pub async fn insert_comment_for_page_id_and_author_id(
         }
     }
 
-    let comment_id = Uuid::new_v4().to_string();
-
     // Notice: auto-verify the comment if the author is trusted
     sqlx::query(
         r#"INSERT INTO comments (
@@ -357,7 +356,7 @@ pub async fn insert_comment_for_page_id_and_author_id(
         )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"#,
     )
-    .bind(&comment_id)
+    .bind(comment_id)
     .bind(text)
     .bind(author_trusted)
     .bind(author_trusted)
@@ -373,5 +372,5 @@ pub async fn insert_comment_for_page_id_and_author_id(
         Status::InternalServerError
     })?;
 
-    Ok(comment_id)
+    Ok(())
 }

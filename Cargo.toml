@@ -21,6 +21,7 @@ doc = false
 log = "0.4"
 clap = { version = "4.5", features = ["std", "cargo"] }
 lazy_static = "1.5"
+regex = { version = "1.11", default-features = false }
 serde = { version = "1.0", default-features = false }
 serde_derive = "1.0"
 toml = "0.8"
@@ -28,6 +29,7 @@ envsubst = "0.2"
 sha2 = "0.10"
 hmac = "0.12"
 hex = "0.4"
+base64-url = "3.0"
 linkify = "0.10"
 validator = { version = "0.20", features = ["derive"] }
 uuid = { version = "1.12", features = ["v4", "fast-rng"] }

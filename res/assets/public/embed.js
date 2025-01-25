@@ -15,6 +15,32 @@
   var load_fired = false;
 
   // Define methods
+  var request_api = function (action, payload) {
+    return fetch(
+      options.base_url +
+        "/api/" +
+        action +
+        "/?" +
+        new URLSearchParams({
+          page: options.page_path,
+        }).toString(),
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    ).then(function (response) {
+      if (!response.ok) {
+        return Promise.error("API error: " + action);
+      }
+
+      return response.json();
+    });
+  };
+
   var load_comments = function (options) {
     // Safety: assert that we did not load twice
     if (load_fired === true) {
@@ -107,27 +133,24 @@
   };
 
   var submit_form = function (form, identity, button, payload) {
-    // Submit comment
-    fetch(
-      options.base_url +
-        "/api/comment/?" +
-        new URLSearchParams({
-          page: options.page_path,
-        }).toString(),
-      {
-        method: "POST",
-        body: JSON.stringify(payload),
+    request_api("challenge", payload)
+      .then(function (challenge) {
+        payload.comment_id = challenge.data.comment_id;
+        payload.attestation = challenge.data.attestation;
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    )
-      .then(function (response) {
-        if (!response.ok) {
-          return Promise.error("Submit error");
-        }
+        // Mint solutions
+        return mint_challenge_solutions(
+          challenge.data.problems,
+          challenge.data.solutions_expect,
+        );
+      })
+      .then(function (solutions) {
+        payload.mints = solutions;
 
+        // Submit comment
+        return request_api("comment", payload);
+      })
+      .then(function () {
         identity.style.display = "none";
         button.style.display = "none";
 
@@ -231,6 +254,15 @@
         }, 10);
       }
     }
+  };
+
+  var mint_challenge_solutions = function (problems, solutions_expect) {
+    // TODO
+    return Promise.resolve(
+      problems.map(function (problem, index) {
+        return problem + ":" + "000" + index;
+      }),
+    );
   };
 
   // Read options

@@ -67,6 +67,7 @@ pub async fn bootstrap() -> rocket::Rocket<rocket::Build> {
             rocket::routes![
                 api::get_base,
                 api::post_comment,
+                api::post_challenge,
                 api::get_admin_moderate_comment
             ],
         )

@@ -8,13 +8,20 @@ use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::{get, post};
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 use validator::Validate;
 
-use crate::helpers::{authentication, notifier, query};
+use crate::helpers::{authentication, mint, notifier, query};
 use crate::managers::http::DbConn;
 
 #[derive(Deserialize, Validate)]
 pub struct CommentData {
+    #[validate(length(equal = 36))]
+    comment_id: String,
+
+    #[validate(length(equal = 64))]
+    attestation: String,
+
     #[validate(length(min = 1))]
     name: String,
 
@@ -24,6 +31,7 @@ pub struct CommentData {
     #[validate(length(min = 1))]
     text: String,
 
+    mints: Vec<String>,
     reply_to: Option<String>,
 }
 
@@ -31,6 +39,14 @@ pub struct CommentData {
 pub struct BaseResponse<D> {
     pub reason: &'static str,
     pub data: D,
+}
+
+#[derive(Serialize)]
+pub struct ChallengeResponseData {
+    comment_id: String,
+    attestation: String,
+    problems: Vec<String>,
+    solutions_expect: u8,
 }
 
 #[get("/")]
@@ -52,6 +68,10 @@ pub async fn post_comment(
         return Err(Status::UnprocessableEntity);
     }
 
+    // Read raw input data
+    let comment_id = comment.comment_id.as_str();
+    let attestation = comment.attestation.as_str();
+
     // Clean input data
     let email = comment.email.trim();
     let name = comment.name.trim();
@@ -62,14 +82,28 @@ pub async fn post_comment(
         return Err(Status::BadRequest);
     }
 
+    // Verify attestation
+    if !authentication::verify_challenge_attestation(page, comment_id, attestation) {
+        return Err(Status::Unauthorized);
+    }
+
+    // Verify mints
+    let is_mint_verified =
+        mint::verify(comment_id, &comment.mints).or(Err(Status::InternalServerError))?;
+
+    if !is_mint_verified {
+        return Err(Status::PaymentRequired);
+    }
+
     // Acquire page and author identifiers
     let page_id = query::find_or_create_page_id(&mut db, page).await?;
     let (author_id, author_trusted) =
         query::find_or_create_author_id(&mut db, &email, &name).await?;
 
     // Insert comment for page and author
-    let comment_id = query::insert_comment_for_page_id_and_author_id(
+    query::insert_comment_for_page_id_and_author_id(
         &mut db,
+        comment_id,
         &text,
         &page_id,
         &author_id,
@@ -79,12 +113,35 @@ pub async fn post_comment(
     .await?;
 
     // Notify admins of new comment
-    notifier::alert_of_new_comment_to_admins(&comment_id, page, name, email, text, author_trusted)
+    notifier::alert_of_new_comment_to_admins(comment_id, page, name, email, text, author_trusted)
         .await;
 
     Ok(Json(BaseResponse {
         reason: "submitted",
         data: (),
+    }))
+}
+
+#[post("/challenge?<page>", format = "json")]
+pub async fn post_challenge(
+    page: &str,
+) -> Result<Json<BaseResponse<ChallengeResponseData>>, Status> {
+    // Generate a future comment ID and sign it to attest of its origin
+    let comment_id = Uuid::new_v4().to_string();
+    let attestation = authentication::generate_challenge_attestation(page, &comment_id)?;
+
+    // Generate challenge
+    let (problems, solutions_expect) =
+        mint::challenge(&comment_id).or(Err(Status::InternalServerError))?;
+
+    Ok(Json(BaseResponse {
+        reason: "generated",
+        data: ChallengeResponseData {
+            comment_id,
+            attestation,
+            problems,
+            solutions_expect,
+        },
     }))
 }
 
