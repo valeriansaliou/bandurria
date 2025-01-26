@@ -121,8 +121,13 @@
   };
 
   var show_banner = function (form, name) {
-    form.querySelector(".bandurria-banner").style.display = "none";
-    form.querySelector(".bandurria-banner--" + name).style.display = "block";
+    for (var banner of form.querySelectorAll(".bandurria-banner")) {
+      banner.style.display = "none";
+    }
+
+    if (name) {
+      form.querySelector(".bandurria-banner--" + name).style.display = "block";
+    }
   };
 
   var inject_form = function (form_template, form, autofocus) {
@@ -134,6 +139,8 @@
   };
 
   var submit_form = function (form, identity, button, payload) {
+    show_banner(form, "submitting");
+
     request_api("challenge", payload)
       .then(function (challenge) {
         payload.comment_id = challenge.data.comment_id;
@@ -181,6 +188,8 @@
 
     form.onsubmit = function (event) {
       event.preventDefault();
+
+      show_banner(form, null);
 
       if (textarea.value) {
         button.disabled = true;

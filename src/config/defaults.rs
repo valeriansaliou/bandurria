@@ -104,6 +104,10 @@ pub fn i18n_banner_presubmit() -> String {
     "Your email is only used to check you are not a bot. It will not be stored.".into()
 }
 
+pub fn i18n_banner_submitting() -> String {
+    "Sending and proving you are not a bot. This might take a few seconds...".into()
+}
+
 pub fn i18n_banner_submitted_important() -> String {
     "Your comment has been submitted.".into()
 }

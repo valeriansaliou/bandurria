@@ -130,6 +130,9 @@ pub struct ConfigI18N {
     #[serde(default = "defaults::i18n_banner_presubmit")]
     pub banner_presubmit: String,
 
+    #[serde(default = "defaults::i18n_banner_submitting")]
+    pub banner_submitting: String,
+
     #[serde(default = "defaults::i18n_banner_submitted_important")]
     pub banner_submitted_important: String,
 
