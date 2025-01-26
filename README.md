@@ -5,9 +5,9 @@ Bandurria
 
 **Bandurria is a self-hosted lightweight comment system for static websites and blogs. Built in Rust, it consumes only 4MB of RAM. Can be included with a single line of JavaScript (8KB!).**
 
-This project has been started after I used another similar comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a random blog (where user trust is possibly low), might discourage a lot of people from commenting.
+This project has been started after I used another Schnack comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a public blog might discourage a lot of people from commenting, since user trust in the blog is possibly low.
 
-Bandurria comes as a lighter and even simpler alternative to Schnack (without the memory overhead of NodeJS and installing NPM dependencies). If you come from Schnack, migrating to Bandurria is very easy: the include script and CSS classes are very similar; you could also easily convert Schnack's SQLite database into Bandurria's MySQL database with a simple script.
+Bandurria comes as a lighter and even simpler alternative to Schnack (without Schnack's memory overhead due to NodeJS and installing 60MB+ of NPM dependencies — _Bandurria comes as a single tiny binary_). I'd however like to thank Schnack's author for his work, and the inspiration it's been for Bandurria. If you come from Schnack, migrating to Bandurria is very easy: the include script and CSS classes are very similar; you could also easily convert Schnack's SQLite database into Bandurria's MySQL database with a simple script.
 
 _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
@@ -20,8 +20,8 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 ## Features
 
 * **Built-in spam control** with a Proof of Work anti-bot system (without annoying CAPTCHAs!)
-* **Email-based notifications** and comment moderation (no complex Web admin UI)
-* **Zero-dependencies server runtime** and **lightweight JavaScript script**
+* **Email-based notifications** and Magic Link comment moderation (no complicated Web admin UI)
+* **Zero-dependencies server runtime (4MB)** and **lightweight JavaScript script (8KB)**
 * **Compatible with any static website** or blog system (as long as your can add 1 line of JavaScript)
 * **Customize it in a few lines of CSS** to match your website or blog style
 
