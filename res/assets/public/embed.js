@@ -7,24 +7,25 @@
 // Try Bandurria: https://github.com/valeriansaliou/bandurria
 
 (function () {
-  // Acquire context
+  /* CONTEXT */
+
   var embed_script = document.currentScript;
   var embed_path = "/assets/embed.js";
   var worker_mint_path = "/assets/workers/mint.js";
 
-  // Define states
-  var load_fired = false;
+  /* SELECTORS */
 
-  // Define methods
+  var select = function (element, all) {
+    return function (selector) {
+      return element[all ? "querySelectorAll" : "querySelector"](selector);
+    };
+  };
+
+  /* METHODS */
+
   var request_api = function (action, payload) {
     return fetch(
-      options.base_url +
-        "/api/" +
-        action +
-        "/?" +
-        new URLSearchParams({
-          page: options.page_path,
-        }).toString(),
+      options.base_url + "/api/" + action + "/?" + options.page_query,
       {
         method: "POST",
         body: JSON.stringify(payload),
@@ -43,28 +44,13 @@
   };
 
   var load_comments = function (options) {
-    // Safety: assert that we did not load twice
-    if (load_fired === true) {
-      throw new Error("Comments load already fired. Cannot load twice!");
-    }
+    fetch(options.base_url + "/page/comments/?" + options.page_query, {
+      method: "GET",
 
-    load_fired = true;
-
-    // Fetch comments
-    fetch(
-      options.base_url +
-        "/page/comments/?" +
-        new URLSearchParams({
-          page: options.page_path,
-        }).toString(),
-      {
-        method: "GET",
-
-        headers: {
-          Accept: "text/html",
-        },
+      headers: {
+        Accept: "text/html",
       },
-    )
+    })
       .then(function (response) {
         if (!response.ok) {
           return Promise.reject(
@@ -77,9 +63,9 @@
         return response.text();
       })
       .then(function (html) {
-        var document = new DOMParser().parseFromString(html, "text/html");
+        var page = new DOMParser().parseFromString(html, "text/html");
 
-        inject_document(options, document);
+        inject_page(options, page);
       })
       .catch(function (error) {
         console.error(
@@ -89,30 +75,29 @@
       });
   };
 
-  var inject_document = function (options, document) {
+  var inject_page = function (options, page) {
+    var $ = select(page.body),
+      $$ = select(page.body, true);
+
     // Read form template
-    var form_template = document.body.querySelector(
-      ".bandurria-template--form",
-    );
+    var form_template = $(".bandurria-template--form");
 
     // Inject form
-    inject_form(form_template, document.body.querySelector(".bandurria-form"));
+    inject_form(form_template, $(".bandurria-form"));
 
     // Bind comment events (if any)
-    var comments = document.body.querySelector(".bandurria-comments");
+    var comments = $(".bandurria-comments");
 
     if (comments) {
       bind_comment_events(form_template, comments);
     }
 
     // Localize datetimes
-    localize_datetimes(document.body.querySelectorAll("[data-datetime]"));
+    localize_datetimes($$("[data-datetime]"));
 
-    // Inject all document contents
-    while (document.body.firstChild) {
-      options.target.appendChild(
-        document.body.removeChild(document.body.firstChild),
-      );
+    // Inject all page contents
+    while (page.body.firstChild) {
+      options.target.appendChild(page.body.removeChild(page.body.firstChild));
     }
 
     // Fire dummy hash change event? (if we have comments)
@@ -124,12 +109,15 @@
   };
 
   var show_banner = function (form, name) {
-    for (var banner of form.querySelectorAll(".bandurria-banner")) {
+    var $ = select(form),
+      $$ = select(form, true);
+
+    for (var banner of $$(".bandurria-banner")) {
       banner.style.display = "none";
     }
 
     if (name) {
-      form.querySelector(".bandurria-banner--" + name).style.display = "block";
+      $(".bandurria-banner--" + name).style.display = "block";
     }
   };
 
@@ -146,14 +134,16 @@
 
     request_api("challenge", payload)
       .then(function (challenge) {
-        payload.comment_id = challenge.data.comment_id;
-        payload.attestation = challenge.data.attestation;
+        var data = challenge.data;
+
+        payload.comment_id = data.comment_id;
+        payload.attestation = data.attestation;
 
         // Mint solutions
         return mint_challenge_solutions(
-          challenge.data.problems,
-          challenge.data.difficulty_expect,
-          challenge.data.solutions_expect,
+          data.problems,
+          data.difficulty_expect,
+          data.solutions_expect,
         );
       })
       .then(function (solutions) {
@@ -176,11 +166,13 @@
   };
 
   var bind_form_events = function (form, autofocus) {
-    var textarea = form.querySelector("textarea[name='comment_text']"),
-      input_name = form.querySelector("input[name='comment_name']"),
-      input_email = form.querySelector("input[name='comment_email']"),
-      identity = form.querySelector(".bandurria-identity"),
-      button = form.querySelector("button");
+    var $ = select(form);
+
+    var textarea = $("textarea[name='comment_text']"),
+      input_name = $("input[name='comment_name']"),
+      input_email = $("input[name='comment_email']"),
+      identity = $(".bandurria-identity"),
+      button = $("button");
 
     textarea.onkeyup = function () {
       button.disabled = textarea.value ? false : true;
@@ -227,7 +219,9 @@
   };
 
   var bind_comment_events = function (form_template, comments) {
-    for (var comment_reply of comments.querySelectorAll(".bandurria-reply")) {
+    var $$ = select(comments, true);
+
+    for (var comment_reply of $$(".bandurria-reply")) {
       comment_reply.onclick = function (event) {
         var form = event.target.parentNode;
 
@@ -243,18 +237,20 @@
   };
 
   var handle_comment_anchor_change = function (comments, scroll_to) {
+    var $ = select(comments);
+
     if ((location.hash || "").startsWith("#comment-") === true) {
       var anchored_class = "bandurria-comment--anchored";
 
       // Clear existing anchor (if any)
-      var anchored_comment = comments.querySelector("." + anchored_class);
+      var anchored_comment = $("." + anchored_class);
 
       if (anchored_comment) {
         anchored_comment.classList.remove(anchored_class);
       }
 
       // Add new anchor (if comment found)
-      var anchor_comment = comments.querySelector(location.hash);
+      var anchor_comment = $(location.hash);
 
       if (anchor_comment) {
         // Process at next tick, since we want to re-trigger animations for \
@@ -284,7 +280,7 @@
           datetime.innerText = formatter.format(new Date(datetime_utc));
         } catch (error) {
           console.error(
-            "[Bandurria] Failed localizing UTC datetime: " + datetime_utc,
+            "[Bandurria] Failed localizing datetime: " + datetime_utc,
             error,
           );
         }
@@ -327,14 +323,19 @@
     });
   };
 
-  // Read options
+  /* OPTIONS */
+
   var options = {
     base_url: embed_script.src.replace(embed_path, ""),
-    page_path: window.location.pathname,
-    target: document.querySelector(embed_script.dataset.bandurriaTarget),
+    target: select(document)(embed_script.dataset.bandurriaTarget),
+
+    page_query: new URLSearchParams({
+      page: window.location.pathname,
+    }).toString(),
   };
 
-  // Load comments? (injection target is defined)
+  /* INITIALIZE */
+
   if (options.target) {
     load_comments(options);
   } else {
