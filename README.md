@@ -15,7 +15,7 @@ Bandurria comes as a lighter and even simpler alternative to Schnack, without Sc
 
 ---
 
-If you come from Schnack, migrating to Bandurria is very easy: the include script and CSS classes are very similar; you could also easily convert Schnack's SQLite database into Bandurria's MySQL database with a simple script. I'd like to thank [Schnack's authors](https://github.com/orgs/schn4ck/people) for their work, and the inspiration it's been for Bandurria.
+❤️ If you come from Schnack, migrating to Bandurria is very easy: the include script and CSS classes are very similar; you could also easily convert Schnack's SQLite database into Bandurria's MySQL database with a simple script. I'd like to thank [Schnack's authors](https://github.com/orgs/schn4ck/people) for their work, and the inspiration it's been for Bandurria.
 
 _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
