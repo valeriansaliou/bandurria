@@ -15,13 +15,15 @@ Bandurria comes as a lighter and even simpler alternative to Schnack, without Sc
 
 ---
 
-❤️ If you come from Schnack, migrating to Bandurria is very easy: the include script and CSS classes are very similar; you could also easily convert Schnack's SQLite database into Bandurria's MySQL database with a simple script. I'd like to thank [Schnack's authors](https://github.com/orgs/schn4ck/people) for their work, and the inspiration it's been for Bandurria.
+👉 If you come from Schnack, migrating to Bandurria is very easy: the include script and CSS classes are very similar; you could also easily convert Schnack's SQLite database into Bandurria's MySQL database with a simple script. I'd like to thank [Schnack's authors](https://github.com/orgs/schn4ck/people) for their work, and the inspiration it's been for Bandurria.
 
 _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 **🇨🇱 Crafted in Santiago, Chile.**
 
-**👉 See a live demo of Bandurria on my [personal blog](https://valeriansaliou.name/blog/3d-printing-formlabs-enclosure-project/#comments) (Bandurria is included at the end of the article).**
+## Live Demo
+
+You can try Bandurria live on my [personal blog](https://valeriansaliou.name/blog/3d-printing-formlabs-enclosure-project/#comments). Bandurria is included at the end of the article. Note that I might not accept all comments going through moderation.
 
 ![Bandurria Screenshot](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot.png)
 
@@ -59,9 +61,9 @@ All features might not have yet been implemented, but this is what Bandurria aim
 - [x] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
 - [x] Proof of work anti spam mechanism, with progress bar if still computing upon submitting the comment (multiple parallel hash computation), with ability to configure difficulty and parallel games.
 - [x] Remove the trusted flag in the authors database table, and the verified flag in the comments database table (not used anymore).
+- [x] Generate a cool drawing of a Bandurria with AI and include it in this read-me
 - [ ] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
 - [ ] Perform a static analysis and security review of the source code, especially the PoW part (once 100% of features have been implemented).
-- [ ] Generate a cool drawing of a Bandurria with AI and include it in this read-me
 - [ ] Release first stable version (`v1.0.0`)
 - [ ] Write a personal blog article about Bandurria and direct all demo URLs to this article (instead of the current one).
 
