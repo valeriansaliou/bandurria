@@ -27,14 +27,6 @@ pub fn sign_payload(payload: &str) -> Result<String, ()> {
     Ok(hex::encode(sign_payload_bytes(payload)?))
 }
 
-pub fn verify_payload(payload: &str, signature: &str) -> bool {
-    if let Ok(reference_signature) = sign_payload(payload) {
-        reference_signature == signature
-    } else {
-        false
-    }
-}
-
 pub fn generate_challenge_attestation(page: &str, comment_id: &str) -> Result<String, Status> {
     let page_url = normalize::page_url(page)?;
 
@@ -44,6 +36,19 @@ pub fn generate_challenge_attestation(page: &str, comment_id: &str) -> Result<St
 pub fn verify_challenge_attestation(page: &str, comment_id: &str, attestation: &str) -> bool {
     if let Ok(reference_attestation) = generate_challenge_attestation(page, comment_id) {
         reference_attestation == attestation
+    } else {
+        false
+    }
+}
+
+pub fn generate_admin_comment_signature(action: &str, comment_id: &str) -> Result<String, Status> {
+    return sign_payload(&format!("admin/{action}/{comment_id}"))
+        .or(Err(Status::UnprocessableEntity));
+}
+
+pub fn verify_admin_comment_signature(action: &str, comment_id: &str, signature: &str) -> bool {
+    if let Ok(reference_signature) = generate_admin_comment_signature(action, comment_id) {
+        reference_signature == signature
     } else {
         false
     }

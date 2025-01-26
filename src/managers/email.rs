@@ -5,6 +5,7 @@
 // License: Mozilla Public License v2.0 (MPL v2.0)
 
 use std::ops::Deref;
+use std::time::Duration;
 
 use lettre::message::Mailbox;
 use lettre::transport::smtp::authentication::Credentials;
@@ -13,6 +14,8 @@ use lettre::transport::smtp::SmtpTransportBuilder;
 use lettre::{Message, SmtpTransport, Transport};
 
 use crate::APP_CONF;
+
+const SMTP_TIMEOUT: Duration = Duration::from_secs(6);
 
 lazy_static! {
     static ref SMTP_TRANSPORT: SmtpTransport = make_smtp_transport();
@@ -33,8 +36,10 @@ fn make_smtp_transport() -> SmtpTransport {
         panic!("Cannot create SMTP transport, need at least STARTTLS or TLS")
     };
 
-    // Add port
-    transport = transport.port(config.server_port);
+    // Add port and timeout
+    transport = transport
+        .port(config.server_port)
+        .timeout(Some(SMTP_TIMEOUT));
 
     // Add credentials
     if config.auth_user.is_some() || config.auth_password.is_some() {

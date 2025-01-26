@@ -96,6 +96,11 @@ pub async fn post_comment(
         return Err(Status::PaymentRequired);
     }
 
+    // Comment already exists? (this should not happen!)
+    if query::check_comment_exists(&mut db, comment_id).await? {
+        return Err(Status::Conflict);
+    }
+
     // Acquire page and author identifiers
     let page_id = query::find_or_create_page_id(&mut db, page).await?;
     let author_id = query::find_or_create_author_id(&mut db, &email, &name).await?;
@@ -152,7 +157,7 @@ pub async fn get_admin_moderate_comment(
     action: &str,
 ) -> Result<&'static str, Status> {
     // Important: verify signature first things first
-    if !authentication::verify_payload(comment_id, signature) {
+    if !authentication::verify_admin_comment_signature("moderate", comment_id, signature) {
         return Err(Status::Unauthorized);
     }
 

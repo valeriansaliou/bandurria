@@ -22,7 +22,9 @@ pub async fn alert_of_new_comment_to_admins(
         APP_CONF.site.comments_url, comment_id
     );
 
-    let moderation_signature = authentication::sign_payload(comment_id).unwrap_or("".to_string());
+    let moderation_signature =
+        authentication::generate_admin_comment_signature("moderate", comment_id)
+            .unwrap_or("".to_string());
 
     // Generate moderation links
     let moderation_links = format!(

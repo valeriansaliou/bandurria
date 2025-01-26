@@ -138,6 +138,24 @@ pub async fn find_or_create_author_id(
     }
 }
 
+pub async fn check_comment_exists(db: &mut DbConn, comment_id: &str) -> Result<bool, Status> {
+    let comment_exists = sqlx::query("SELECT id FROM comments WHERE id = ?")
+        .bind(comment_id)
+        .fetch_optional(&mut ***db)
+        .await
+        .map_err(|err| {
+            error!(
+                "Failed checking if comment exists: {}, because: {}",
+                comment_id, err
+            );
+
+            Status::InternalServerError
+        })?
+        .is_some();
+
+    Ok(comment_exists)
+}
+
 pub async fn resolve_comment_status(
     db: &mut DbConn,
     comment_id: &str,
@@ -288,8 +306,18 @@ pub async fn insert_comment_for_page_id_and_author_id(
     author_id: &str,
     reply_to_id: &Option<String>,
 ) -> Result<(), Status> {
-    // Security: verify that the replied to comment is on the same page
+    // Security: verify that the replied to comment is on the same page, and \
+    //   that replied comment does not loop back to same comment.
     if let Some(reply_to_id) = reply_to_id {
+        if reply_to_id == comment_id {
+            warn!(
+                "Attempted to insert a self-referencing comment reply: {}",
+                reply_to_id
+            );
+
+            return Err(Status::ImATeapot);
+        }
+
         match resolve_comment_page_id(db, reply_to_id).await? {
             None => {
                 warn!(
