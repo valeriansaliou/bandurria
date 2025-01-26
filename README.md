@@ -135,7 +135,7 @@ You can also use environment variables with string interpolation in your configu
 
 **[database.mysql]**
 
-* `uri` (type: _string_, allowed: MySQL connection URI, no default) — MySQL URI (ie. `mysql://user:password@server:port/database`)
+* `uri` (type: _string_, allowed: MySQL connection URI, no default) — MySQL URI (format: `mysql://user:password@server:port/database`)
 
 **[email]**
 
@@ -163,7 +163,7 @@ You can also use environment variables with string interpolation in your configu
 **[security]**
 
 * `secret_key` (type: _string_, allowed: any hexadecimal string, default: auto-generated secret) — Secret key to use to sign all authenticated payloads (generate yours with `openssl rand -hex 32`)
-* `check_pages_exist` (type: _boolean_, allowed: `true`, `false`, default: `false`) — Whether to check over HTTP that a page a comment is left on actually exists (when sending the first comment for that page, it is safer to enable)
+* `check_pages_exist` (type: _boolean_, allowed: `true`, `false`, default: `false`) — Whether to check over HTTP that a page a comment is left on actually exists (when sending the first comment for that page; _it is safer to enable_)
 
 **[antispam]**
 
