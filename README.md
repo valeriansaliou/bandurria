@@ -50,8 +50,8 @@ All features might not have yet been implemented, but this is what Bandurria aim
 - [x] Make comments anchorable when clicking on the comment date, and auto-scroll to the target comment when page URL has anchor.
 - [x] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
 - [ ] Proof of work anti spam mechanism, with progress bar if still computing upon submitting the comment (multiple parallel hash computation), with ability to configure difficulty and parallel games.
-- [ ] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
 - [ ] Remove the trusted flag in the authors database table, and the verified flag in the comments database table (not used anymore).
+- [ ] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
 - [ ] Perform a static analysis and security review of the source code (once 100% of features have been implemented).
 - [ ] Write a personal blog article about Bandurria and direct all demo URLs to this article (instead of the current one).
 
