@@ -14,7 +14,6 @@ pub async fn alert_of_new_comment_to_admins(
     name: &str,
     email: &str,
     text: &str,
-    auto_approved: bool,
 ) {
     let site_url = &APP_CONF.site.site_url;
 
@@ -26,25 +25,15 @@ pub async fn alert_of_new_comment_to_admins(
     let moderation_signature = authentication::sign_payload(comment_id).unwrap_or("".to_string());
 
     // Generate moderation links
-    let moderation_links = if auto_approved {
-        format!(
-            r#"This comment has been auto-approved since its author is trusted.
-
-You can still remove the comment and untrust its author:
-
-🗑️ {moderation_url}?signature={moderation_signature}&action=reject"#
-        )
-    } else {
-        format!(
-            r#"You can approve this comment:
+    let moderation_links = format!(
+        r#"You can approve this comment:
 
 ✅ {moderation_url}?signature={moderation_signature}&action=approve
 
 Or reject it (this will remove the comment):
 
 ❌ {moderation_url}?signature={moderation_signature}&action=reject"#
-        )
-    };
+    );
 
     // Generate email contents
     let email_subject = format!("💬 New comment on {}", APP_CONF.site.name);

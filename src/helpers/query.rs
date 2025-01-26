@@ -87,13 +87,10 @@ pub async fn find_or_create_page_id(db: &mut DbConn, page: &str) -> Result<Strin
     }
 }
 
-pub async fn find_author_id(
-    db: &mut DbConn,
-    email: &str,
-) -> Result<Option<(String, bool)>, Status> {
+pub async fn find_author_id(db: &mut DbConn, email: &str) -> Result<Option<String>, Status> {
     let email_hash = normalize::email_hash(email);
 
-    let author = sqlx::query("SELECT id, trusted FROM authors WHERE email_hash = ?")
+    let author = sqlx::query("SELECT id FROM authors WHERE email_hash = ?")
         .bind(email_hash)
         .fetch_optional(&mut ***db)
         .await
@@ -102,12 +99,7 @@ pub async fn find_author_id(
 
             Status::InternalServerError
         })?
-        .map(|author| {
-            // Do not trust anyone at this point
-            let trusted = false;
-
-            (author.get("id"), trusted)
-        });
+        .map(|author| author.get("id"));
 
     Ok(author)
 }
@@ -116,26 +108,22 @@ pub async fn find_or_create_author_id(
     db: &mut DbConn,
     email: &str,
     name: &str,
-) -> Result<(String, bool), Status> {
+) -> Result<String, Status> {
     match find_author_id(db, email).await? {
         Some(author) => Ok(author),
         None => {
             let author_id = Uuid::new_v4().to_string();
             let email_hash = normalize::email_hash(email);
 
-            // Do not trust anyone at this point
-            let trusted = false;
-
             sqlx::query(
                 r#"INSERT INTO authors (
-                    id, email_hash, name, trusted, created_at
+                    id, email_hash, name, created_at
                 )
-                    VALUES (?, ?, ?, ?, ?)"#,
+                    VALUES (?, ?, ?, ?)"#,
             )
             .bind(&author_id)
             .bind(email_hash)
             .bind(name)
-            .bind(trusted)
             .bind(time::now_datetime_string())
             .execute(&mut ***db)
             .await
@@ -145,50 +133,27 @@ pub async fn find_or_create_author_id(
                 Status::InternalServerError
             })?;
 
-            Ok((author_id, trusted))
+            Ok(author_id)
         }
     }
 }
 
-pub async fn update_author_trusted(
-    db: &mut DbConn,
-    author_id: &str,
-    trusted: bool,
-) -> Result<(), Status> {
-    sqlx::query("UPDATE authors SET trusted = ? WHERE id = ?")
-        .bind(trusted)
-        .bind(author_id)
-        .execute(&mut ***db)
-        .await
-        .map_err(|err| {
-            error!(
-                "Failed updating author: {} trusted marker, because: {}",
-                author_id, err
-            );
-
-            Status::InternalServerError
-        })?;
-
-    Ok(())
-}
-
-pub async fn resolve_comment_status_and_author_id(
+pub async fn resolve_comment_status(
     db: &mut DbConn,
     comment_id: &str,
     status_key: &str,
-) -> Result<Option<(bool, String)>, Status> {
-    let comment_status_value = sqlx::query(&format!(
-        "SELECT {status_key}, author_id FROM comments WHERE id = ?"
-    ))
-    .bind(comment_id)
-    .fetch_optional(&mut ***db)
-    .await
-    .map_err(|err| {
-        error!("Failed resolving comment: {}, because: {}", comment_id, err);
+) -> Result<Option<bool>, Status> {
+    let comment_status_value =
+        sqlx::query(&format!("SELECT {status_key} FROM comments WHERE id = ?"))
+            .bind(comment_id)
+            .fetch_optional(&mut ***db)
+            .await
+            .map_err(|err| {
+                error!("Failed resolving comment: {}, because: {}", comment_id, err);
 
-        Status::InternalServerError
-    })?
-    .map(|comment| (comment.get(status_key), comment.get("author_id")));
+                Status::InternalServerError
+            })?
+            .map(|comment| comment.get(status_key));
 
     Ok(comment_status_value)
 }
@@ -258,8 +223,7 @@ pub async fn list_comments_for_page_id(
         r#"SELECT comments.id, comments.text, comments.created_at,
                 comments.reply_to_id, authors.name
             FROM comments INNER JOIN authors ON authors.id = comments.author_id
-            WHERE comments.page_id = ? AND
-                comments.verified = 1 AND comments.approved = 1
+            WHERE comments.page_id = ? AND comments.approved = 1
             ORDER BY comments.created_at DESC"#,
     )
     .bind(page_id)
@@ -322,7 +286,6 @@ pub async fn insert_comment_for_page_id_and_author_id(
     text: &str,
     page_id: &str,
     author_id: &str,
-    author_trusted: bool,
     reply_to_id: &Option<String>,
 ) -> Result<(), Status> {
     // Security: verify that the replied to comment is on the same page
@@ -349,17 +312,14 @@ pub async fn insert_comment_for_page_id_and_author_id(
         }
     }
 
-    // Notice: auto-verify the comment if the author is trusted
     sqlx::query(
         r#"INSERT INTO comments (
-            id, text, verified, approved, created_at, author_id, page_id, reply_to_id
+            id, text, created_at, author_id, page_id, reply_to_id
         )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)"#,
+            VALUES (?, ?, ?, ?, ?, ?)"#,
     )
     .bind(comment_id)
     .bind(text)
-    .bind(author_trusted)
-    .bind(author_trusted)
     .bind(time::now_datetime_string())
     .bind(author_id)
     .bind(page_id)

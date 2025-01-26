@@ -98,8 +98,7 @@ pub async fn post_comment(
 
     // Acquire page and author identifiers
     let page_id = query::find_or_create_page_id(&mut db, page).await?;
-    let (author_id, author_trusted) =
-        query::find_or_create_author_id(&mut db, &email, &name).await?;
+    let author_id = query::find_or_create_author_id(&mut db, &email, &name).await?;
 
     // Insert comment for page and author
     query::insert_comment_for_page_id_and_author_id(
@@ -108,14 +107,12 @@ pub async fn post_comment(
         &text,
         &page_id,
         &author_id,
-        author_trusted,
         &comment.reply_to,
     )
     .await?;
 
     // Notify admins of new comment
-    notifier::alert_of_new_comment_to_admins(comment_id, page, name, email, text, author_trusted)
-        .await;
+    notifier::alert_of_new_comment_to_admins(comment_id, page, name, email, text).await;
 
     Ok(Json(BaseResponse {
         reason: "submitted",
@@ -160,30 +157,22 @@ pub async fn get_admin_moderate_comment(
     }
 
     // Resolve comment
-    let comment =
-        query::resolve_comment_status_and_author_id(&mut db, comment_id, "approved").await?;
+    let comment = query::resolve_comment_status(&mut db, comment_id, "approved").await?;
 
-    if let Some((comment_status, comment_author_id)) = comment {
+    if let Some(comment_status) = comment {
         // Process moderation
         if action == "approve" {
             if comment_status == true {
                 Ok("Comment has already been approved.")
             } else {
-                // Approve comment (mark comment as verified)
+                // Approve comment (mark comment as approved)
                 query::update_comment_status(&mut db, comment_id, "approved", true).await?;
-                query::update_comment_status(&mut db, comment_id, "verified", true).await?;
-
-                // Mark user as trusted (if not already trusted)
-                query::update_author_trusted(&mut db, &comment_author_id, true).await?;
 
                 Ok("Comment approved.")
             }
         } else if action == "reject" {
             // Remove comment
             query::remove_comment(&mut db, comment_id).await?;
-
-            // Reset user trust marker (marking the user as not trusted)
-            query::update_author_trusted(&mut db, &comment_author_id, false).await?;
 
             Ok("Comment rejected.")
         } else {
