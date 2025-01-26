@@ -575,11 +575,10 @@ var mint = function (vector) {
     }
   }
 
-  console.debug(
-    "[Bandurria] Proven not to be a bot in " + (time_end - time_start) + "ms",
-  );
-
-  return solutions;
+  return {
+    mint: solutions,
+    cost: time_end - time_start,
+  };
 };
 
 /* WORKER IPC */

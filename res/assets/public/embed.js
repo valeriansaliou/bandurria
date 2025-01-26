@@ -299,7 +299,11 @@
       worker.addEventListener("message", function (event) {
         worker.terminate();
 
-        resolve(event.data);
+        console.debug(
+          "[Bandurria] Proven not to be a bot in " + event.data.cost + "ms",
+        );
+
+        resolve(event.data.mint);
       });
 
       worker.addEventListener("error", function (event) {
