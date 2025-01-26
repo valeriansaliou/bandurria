@@ -105,6 +105,9 @@
       bind_comment_events(form_template, comments);
     }
 
+    // Localize datetimes
+    localize_datetimes(document.body.querySelectorAll("[data-datetime]"));
+
     // Inject all document contents
     while (document.body.firstChild) {
       options.target.appendChild(
@@ -263,6 +266,28 @@
             anchor_comment.scrollIntoView();
           }
         }, 10);
+      }
+    }
+  };
+
+  var localize_datetimes = function (datetimes) {
+    if (datetimes.length > 0) {
+      var formatter = new Intl.DateTimeFormat(undefined, {
+        dateStyle: "short",
+        timeStyle: "short",
+      });
+
+      for (var datetime of datetimes) {
+        var datetime_utc = datetime.dataset.datetime || "";
+
+        try {
+          datetime.innerText = formatter.format(new Date(datetime_utc));
+        } catch (error) {
+          console.error(
+            "[Bandurria] Failed localizing UTC datetime: " + datetime_utc,
+            error,
+          );
+        }
       }
     }
   };

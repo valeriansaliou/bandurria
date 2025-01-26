@@ -11,6 +11,7 @@ const DATETIME_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
 
 const DATETIME_TO_DATE_FORMAT: &'static str = "%d/%m/%Y";
 const DATETIME_TO_TIME_FORMAT: &'static str = "%Hh%M";
+const DATETIME_TO_UTC_FORMAT: &'static str = "%Y-%m-%dT%H:%M:%SZ";
 
 const FALLBACK_DATETIME_STRING: &'static str = "(?)";
 
@@ -41,4 +42,8 @@ pub fn datetime_to_date_string(datetime: &Option<NaiveDateTime>) -> String {
 
 pub fn datetime_to_time_string(datetime: &Option<NaiveDateTime>) -> String {
     datetime_to_string(datetime, DATETIME_TO_TIME_FORMAT)
+}
+
+pub fn datetime_to_utc_string(datetime: &Option<NaiveDateTime>) -> String {
+    datetime_to_string(datetime, DATETIME_TO_UTC_FORMAT)
 }
