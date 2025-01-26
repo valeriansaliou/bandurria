@@ -25,7 +25,7 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 You can try Bandurria live on my [personal blog](https://valeriansaliou.name/blog/3d-printing-formlabs-enclosure-project/#comments). Bandurria is included at the end of the article. Note that I might not accept all comments going through moderation.
 
-![Bandurria Screenshot](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot.png)
+[![Bandurria Screenshot](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot.png)](https://valeriansaliou.name/blog/3d-printing-formlabs-enclosure-project/#comments)
 
 ## Features
 
