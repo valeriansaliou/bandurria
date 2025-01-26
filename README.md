@@ -5,7 +5,7 @@ Bandurria
 
 **Bandurria is a self-hosted lightweight comment system for static websites and blogs. Built in Rust, it consumes only 4MB of RAM. Can be included with a single line of JavaScript (8KB!).**
 
-![Bandurria Comic](https://valeriansaliou.github.io/bandurria/images/bandurria-comic.png)
+<img align="left" height="80" src="https://valeriansaliou.github.io/bandurria/images/bandurria-comic.png" alt="Bandurria Comic">
 
 This project has been started after I used another Schnack comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a public blog might discourage a lot of people from commenting, since user trust in the blog is possibly low.
 
