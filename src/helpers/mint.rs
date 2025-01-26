@@ -234,24 +234,33 @@ fn verify_solution(
     let solution_hash = hasher.finalize();
 
     // Count leading zero bytes in the hash
-    let mut leading_zeroes_count = 0;
+    let mut leading_zeroes_count: u32 = 0;
+    let leading_zeroes_overflow_cap = MintDifficulty::MAX as u32;
 
     for solution_hash_byte in solution_hash {
-        // Zero found? Increment.
-        if solution_hash_byte == 0 {
-            leading_zeroes_count += 1;
+        let byte_leading_zeroes = solution_hash_byte.leading_zeros();
+
+        // Increment by the number of found zeroes.
+        leading_zeroes_count += byte_leading_zeroes;
+
+        // Not full leading zeroes found in this byte? Stop count here
+        if byte_leading_zeroes < u8::BITS {
+            break;
         }
 
-        // Not a zero, stop count here
-        break;
+        // Guard against integer overflows, since we will convert back the \
+        //   counter to a difficulty type right after
+        if leading_zeroes_count >= leading_zeroes_overflow_cap {
+            break;
+        }
     }
 
     // Return whether we had enough leading zeroes or not (we require at \
     //   least 'required_difficulty' leading zeroes), more is accepted but not \
     //   necessary.
     (
-        leading_zeroes_count >= required_difficulty,
-        leading_zeroes_count,
+        leading_zeroes_count as MintDifficulty >= required_difficulty,
+        leading_zeroes_count as MintDifficulty,
     )
 }
 
