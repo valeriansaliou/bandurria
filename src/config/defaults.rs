@@ -10,6 +10,8 @@ use std::path::PathBuf;
 use hex;
 use uuid::Uuid;
 
+use crate::helpers::mint::{MintDifficulty, MintSolutions};
+
 /* [server] */
 
 pub fn server_log_level() -> String {
@@ -56,6 +58,20 @@ pub fn security_secret_key() -> String {
 
 pub fn security_check_pages_exist() -> bool {
     false
+}
+
+/* [antispam] */
+
+pub fn antispam_difficulty() -> MintDifficulty {
+    17
+}
+
+pub fn antispam_problems_parallel() -> MintSolutions {
+    10
+}
+
+pub fn antispam_solutions_require() -> MintSolutions {
+    6
 }
 
 /* [i18n] */

@@ -163,6 +163,12 @@ You can also use environment variables with string interpolation in your configu
 * `secret_key` (type: _string_, allowed: any hexadecimal string, default: auto-generated secret) — Secret key to use to sign all authenticated payloads (generate yours with `openssl rand -hex 32`)
 * `check_pages_exist` (type: _boolean_, allowed: `true`, `false`, default: `false`) — Whether to check over HTTP that a page a comment is left on actually exists (when sending the first comment for that page, it is safer to enable)
 
+**[antispam]**
+
+* `difficulty` (type: _integer_, allowed: any number, default: `17`) — Difficulty of the antispam PoW problem (not too low, not too high, `17` takes 3 seconds on a MacBook Pro M1 Pro)
+* `problems_parallel` (type: _integer_, allowed: any number, default: `10`) — Number of antispam PoW problems to solve in parallel (this value should usually not be changed)
+* `solutions_require` (type: _integer_, allowed: any number, default: `6`) — Number of antispam PoW problems to solve to pass the test (should be less or equal to `problems_parallel`, 60% of its value is a sweet spot, [read why](https://friendlycaptcha.com/insights/controlling-variance-in-proof-of-work-algorithms/))
+
 **[i18n]**
 
 * `field_write_your_comment` (type: _string_, allowed: any string, default: `Write your comment...`) — Translated string for the comment textarea

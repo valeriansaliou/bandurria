@@ -14,6 +14,7 @@ use regex::Regex;
 use sha2::{Digest, Sha256};
 
 use super::authentication;
+use crate::APP_CONF;
 
 pub type MintSolutions = u8;
 pub type MintDifficulty = u8;
@@ -21,12 +22,7 @@ pub type MintDifficulty = u8;
 type MintIndex = u8;
 type MintTimestamp = u64;
 
-const CHALLENGES_TOTAL: MintSolutions = 10;
-const SOLUTIONS_REQUIRED: MintSolutions = 6;
-
-const DIFFICULTY: MintDifficulty = 17;
 const VALIDITY: Duration = Duration::from_secs(300);
-
 const ALGORITHM: &'static str = "SHA-256";
 
 lazy_static! {
@@ -44,15 +40,24 @@ pub fn challenge(comment_id: &str) -> Result<(Vec<String>, MintDifficulty, MintS
         .as_secs();
 
     // Generate all problem strings
-    let mut problems = Vec::with_capacity(CHALLENGES_TOTAL as usize);
+    let mut problems = Vec::with_capacity(APP_CONF.antispam.problems_parallel as usize);
 
-    for index in 0..CHALLENGES_TOTAL {
-        problems.push(make_problem(DIFFICULTY, index, comment_id, expire_at)?);
+    for index in 0..APP_CONF.antispam.problems_parallel {
+        problems.push(make_problem(
+            APP_CONF.antispam.difficulty,
+            index,
+            comment_id,
+            expire_at,
+        )?);
     }
 
     info!("generated mint challenge problems: {:?}", problems);
 
-    Ok((problems, DIFFICULTY, SOLUTIONS_REQUIRED))
+    Ok((
+        problems,
+        APP_CONF.antispam.difficulty,
+        APP_CONF.antispam.solutions_require,
+    ))
 }
 
 pub fn verify(reference_comment_id: &str, solutions: &[String]) -> Result<bool, ()> {
@@ -193,7 +198,7 @@ pub fn verify(reference_comment_id: &str, solutions: &[String]) -> Result<bool, 
     }
 
     // 3. Ensure we have at least SOLUTIONS_REQUIRED verified solutions
-    Ok(verified_solutions >= SOLUTIONS_REQUIRED)
+    Ok(verified_solutions >= APP_CONF.antispam.solutions_require)
 }
 
 fn make_problem(
@@ -219,7 +224,7 @@ fn make_problem(
     )?;
 
     Ok(format!(
-        "H:{DIFFICULTY}:{expire_at}:{comment_id}/{index}:{nonce}:{ALGORITHM}"
+        "H:{difficulty}:{expire_at}:{comment_id}/{index}:{nonce}:{ALGORITHM}"
     ))
 }
 

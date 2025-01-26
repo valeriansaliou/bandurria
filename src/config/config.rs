@@ -8,6 +8,7 @@ use std::net::SocketAddr;
 use std::path::PathBuf;
 
 use super::defaults;
+use crate::helpers::mint::{MintDifficulty, MintSolutions};
 
 #[derive(Deserialize)]
 pub struct Config {
@@ -17,6 +18,7 @@ pub struct Config {
     pub email: ConfigEmail,
     pub site: ConfigSite,
     pub security: ConfigSecurity,
+    pub antispam: ConfigAntispam,
     pub i18n: ConfigI18N,
 }
 
@@ -91,6 +93,18 @@ pub struct ConfigSecurity {
 
     #[serde(default = "defaults::security_check_pages_exist")]
     pub check_pages_exist: bool,
+}
+
+#[derive(Deserialize)]
+pub struct ConfigAntispam {
+    #[serde(default = "defaults::antispam_difficulty")]
+    pub difficulty: MintDifficulty,
+
+    #[serde(default = "defaults::antispam_problems_parallel")]
+    pub problems_parallel: MintSolutions,
+
+    #[serde(default = "defaults::antispam_solutions_require")]
+    pub solutions_require: MintSolutions,
 }
 
 #[derive(Deserialize, Serialize)]
