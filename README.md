@@ -166,7 +166,7 @@ You can also use environment variables with string interpolation in your configu
 
 **[antispam]**
 
-* `difficulty` (type: _integer_, allowed: any number, default: `17`) — Difficulty of the antispam PoW problem (not too low, not too high, `17` takes 3 seconds on a MacBook Pro M1 Pro, while `20` takes 20 seconds on the same device!)
+* `difficulty` (type: _integer_, allowed: any number, default: `17`) — Difficulty of the antispam PoW problem (not too low, not too high: `17` takes 3 seconds on a MacBook Pro M1 Pro, while `20` takes 21 seconds on the same device!)
 * `problems_parallel` (type: _integer_, allowed: any number, default: `10`) — Number of antispam PoW problems to solve in parallel (this value should usually not be changed)
 * `solutions_require` (type: _integer_, allowed: any number, default: `6`) — Number of antispam PoW problems to solve to pass the test (should be less or equal to `problems_parallel`, 60% of its value is a sweet spot, [read why](https://friendlycaptcha.com/insights/controlling-variance-in-proof-of-work-algorithms/))
 
