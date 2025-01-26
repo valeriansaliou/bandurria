@@ -282,9 +282,16 @@
       });
 
       worker.addEventListener("error", function (event) {
+        var error = event.message || "Cannot spawn";
+
+        console.error(
+          "[Bandurria] Could not start anti-bot: are Web Workers allowed?",
+          error,
+        );
+
         worker.terminate();
 
-        reject(event.message || "Cannot spawn");
+        reject(error);
       });
 
       worker.postMessage({
