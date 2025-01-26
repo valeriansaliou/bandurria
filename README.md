@@ -11,7 +11,7 @@ Bandurria
 
 This project has been started after I used another Schnack comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a public blog might discourage a lot of people from commenting, since user trust in the blog is possibly low.
 
-Bandurria comes as a lighter and even simpler alternative to Schnack, without Schnack's memory overhead due to NodeJS and installing 60MB+ of NPM dependencies. Bandurria is a single tiny portable binary, that comes with an official Docker image.
+Bandurria comes as a lighter and even simpler alternative to Schnack, without Schnack's memory overhead due to NodeJS and installing 60MB+ of NPM dependencies. Bandurria is a single tiny portable binary, that comes with an [official Docker image](https://hub.docker.com/r/valeriansaliou/bandurria/).
 
 ---
 
