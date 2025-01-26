@@ -7,7 +7,7 @@ Bandurria
 
 This project has been started after I used another Schnack comment system on my [personal blog](https://valeriansaliou.name/blog/), named [Schnack](https://schnack.cool), that requires users to authenticate through OAuth (eg. via Google) before they can send their comment. I have noticed that requiring to OAuth to a Google or GitHub account to send a comment on a public blog might discourage a lot of people from commenting, since user trust in the blog is possibly low.
 
-Bandurria comes as a lighter and even simpler alternative to Schnack (without Schnack's memory overhead due to NodeJS and installing 60MB+ of NPM dependencies — _Bandurria comes as a single tiny binary_). I'd however like to thank Schnack's author for his work, and the inspiration it's been for Bandurria. If you come from Schnack, migrating to Bandurria is very easy: the include script and CSS classes are very similar; you could also easily convert Schnack's SQLite database into Bandurria's MySQL database with a simple script.
+Bandurria comes as a lighter and even simpler alternative to Schnack (without Schnack's memory overhead due to NodeJS and installing 60MB+ of NPM dependencies — _Bandurria is a single tiny binary_). If you come from Schnack, migrating to Bandurria is very easy: the include script and CSS classes are very similar; you could also easily convert Schnack's SQLite database into Bandurria's MySQL database with a simple script. I'd like to thank [Schnack's authors](https://github.com/orgs/schn4ck/people) for their work, and the inspiration it's been for Bandurria.
 
 _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
