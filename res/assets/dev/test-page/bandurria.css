@@ -86,12 +86,65 @@
     font-style: italic;
 }
 
+.bandurria-banner--submitting {
+    color: #636363;
+}
+
 .bandurria-banner--submitted {
-    color: #001aea;
+    color: #00781e;
 }
 
 .bandurria-banner--submiterror {
     color: #e80000;
+}
+
+.bandurria-banner > .bandurria-wait {
+    margin-top: -10px;
+    margin-bottom: -10px;
+    margin-right: 4px;
+    opacity: 0.6;
+}
+
+/* Bandurria > Wait */
+
+.bandurria-wait {
+    color: currentColor;
+}
+
+.bandurria-wait,
+.bandurria-wait > span {
+    box-sizing: border-box;
+}
+
+.bandurria-wait {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    position: relative;
+}
+
+.bandurria-wait > span {
+    background-color: currentColor;
+    display: inline-block;
+    position: absolute;
+    left: 3px;
+    width: 6px;
+    animation: bandurria-wait 2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+.bandurria-wait > span:nth-child(1) {
+    left: 3px;
+    animation-delay: -0.24s;
+}
+
+.bandurria-wait > span:nth-child(2) {
+    left: 12px;
+    animation-delay: -0.12s;
+}
+
+.bandurria-wait > span:nth-child(3) {
+    left: 21px;
+    animation-delay: 0s;
 }
 
 /* Bandurria > Comments */
@@ -208,5 +261,20 @@ li.bandurria-comment.bandurria-comment--anchored .bandurria-body {
 
     100% {
         background-color: rgba(255, 255, 255, 0);
+    }
+}
+
+@keyframes bandurria-wait {
+    0% {
+        top: 3px;
+        height: 24px;
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        top: 9px;
+        height: 12px;
+        opacity: 0.4;
     }
 }
