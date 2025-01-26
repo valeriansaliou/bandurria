@@ -542,7 +542,7 @@ var mint = function (vector) {
 
       if (solution_string === null) {
         throw new Error(
-          `Invalid solution string: ${work_recall[_p]} on problem: #${p}`,
+          "Invalid solution string: " + work_recall[p] + " on problem: #" + p,
         );
       }
 
