@@ -45,30 +45,6 @@ Upon submission of their comment, the user will be informed that their comment h
 
 **Oh and what about that name?!** Well, the Bandurria name refers to the _Bandurria Austral_ ([Black-faced Ibis](https://en.wikipedia.org/wiki/Black-faced_ibis)), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
 
-## 🚧 Work In Progress
-
-All features might not have yet been implemented, but this is what Bandurria aims for:
-
-- [x] No social auth, no admin interface, no multiple notification channels, do it all over email notifications with magic links.
-- [x] Public users can write their comment, give a name and email and submit in a simple way (WordPress like).
-- [x] Once an user first comment got approved then all further comments will be auto approved (unless the user gets banned by the admin).
-- [x] Built in theme is to be generic and simple with no colors, it can be extended by the user by styling CSS classes in their own blog theme (CSS class names should be stable, and never use important rules).
-- [x] Built with Rust, goal is to produce a 4MB binary using the same amount of RAM and distribute lightweight Docker images for all platforms.
-- [x] Format URLs into clickable links.
-- [x] Admin users can manage comments and remove or allow them from their email inbox using magic links.
-- [x] Notify admin of new comments over email.
-- [x] Provide ability to customize every action, button and input placeholder wordings, since there will be no internationalization, it will solely be done via configuring custom eg. button labels from the configuration file.
-- [x] Upon sending the first comment for a given page, internally check that the blog page exists with a HTTP request (it should return 200), if the page already exists in database then no need to check again (this prevents inserting junk in the database).
-- [x] Make comments anchorable when clicking on the comment date, and auto-scroll to the target comment when page URL has anchor.
-- [x] Upon sending a comment and passing the PoW, always require administrators to moderate the comment, even if it comes from an administrator email (no-fault spam prevention).
-- [x] Proof of work anti spam mechanism, with progress bar if still computing upon submitting the comment (multiple parallel hash computation), with ability to configure difficulty and parallel games.
-- [x] Remove the trusted flag in the authors database table, and the verified flag in the comments database table (not used anymore).
-- [x] Generate a cool drawing of a Bandurria with AI and include it in this read-me
-- [x] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
-- [ ] Perform a static analysis and security review of the source code, especially the PoW part (once 100% of features have been implemented).
-- [ ] Release first stable version (`v1.0.0`)
-- [ ] Write a personal blog article about Bandurria and direct all demo URLs to this article (instead of the current one).
-
 ## How to use it?
 
 ### Installation
