@@ -94,7 +94,8 @@ pub async fn alert_of_reply_comment_from_admin_if_needed(
 
             // Parent comment has an email set?
             if let Some(parent_email) = parent_email {
-                // Reply author is administrator?
+                // Reply author is administrator? (we only want to notify of \
+                //   replies from administrators)
                 if authentication::check_email_hash_is_admin(&reply_email_hash) {
                     info!(
                         "will alert of reply comment to: {} (from admin and opted-in)",
@@ -125,7 +126,7 @@ pub async fn alert_of_reply_comment_from_admin_if_needed(
         }
         _ => {
             error!(
-                "could not alert of reply comment for chain: {} -> {}",
+                "error alerting of reply comment for comment chain: {} -> {}",
                 reply_comment_id, parent_comment_id
             )
         }

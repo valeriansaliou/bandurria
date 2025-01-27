@@ -41,7 +41,7 @@ Bandurria provides no administration interface. It solely relies on email notifi
 
 Spam is prevented by requiring user browsers to submit the result to a Proof of Work challenge, based on an improved variant of [Hashcash](http://www.hashcash.org/papers/hashcash.pdf) in order to [reduce the mint time variance](https://friendlycaptcha.com/insights/controlling-variance-in-proof-of-work-algorithms/). A solution to the server challenge is computed when the user submits their comment. This spam prevention method is CAPTCHA-free and hassle-free, as it should only take a few seconds to compute under normal circumstances.
 
-Upon submission of their comment, the user will be informed that their comment has been submitted and is awaiting moderation. Then, you (the administrator) will receive the user comment over email for moderation. Bandurria also notifies people of new replies to their comments over email (if they opted in to receive reply alerts).
+Upon submission of their comment, the user will be informed that their comment has been submitted and is awaiting moderation. Then, you (the administrator) will receive the user comment over email for moderation. Bandurria also notifies people of new replies to their comments from administrators, over email (if they opted in to receive reply alerts).
 
 **Oh and what about that name?!** Well, the Bandurria name refers to the _Bandurria Austral_ ([Black-faced Ibis](https://en.wikipedia.org/wiki/Black-faced_ibis)), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
 
