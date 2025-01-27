@@ -31,7 +31,7 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 ![Bandurria Screenshot 2](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot-2.png)
 
-**Waiting for the anti-bot PoW to complete:**
+**Waiting for the anti-bot Proof of Work to complete:**
 
 ![Bandurria Screenshot 3](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot-3.png)
 
