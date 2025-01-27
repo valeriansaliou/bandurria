@@ -191,7 +191,8 @@ You can also use environment variables with string interpolation in your configu
 * `button_post_comment` (type: _string_, allowed: any string, default: `Post comment`) — Translated string for the submit button
 * `button_reply` (type: _string_, allowed: any string, default: `Reply`) — Translated string for the reply button
 * `label_leave_a_comment` (type: _string_, allowed: any string, default: `Leave a comment:`) — Translated string for the main label
-* `banner_presubmit` (type: _string_, allowed: any string, default: `Your email is only used to check you are not a bot. It will not be stored.`) — Translated string for the pre-submit banner
+* `label_subscribe_replies` (type: _string_, allowed: any string, default: `I want to get notified over email when the site owner replies.`) — Translated string for the replies subscribe label
+* `banner_presubmit` (type: _string_, allowed: any string, default: `Your email is only stored if you opt-in to receive replies to your comment.`) — Translated string for the pre-submit banner
 * `banner_submitting` (type: _string_, allowed: any string, default: `Sending and proving you are not a bot. This might take a few seconds...`) — Translated string for the submitting banner
 * `banner_submitted_important` (type: _string_, allowed: any string, default: `Your comment has been submitted.`) — Translated string for the submitted banner (important part)
 * `banner_submitted_notice` (type: _string_, allowed: any string, default: `It will appear here after it gets accepted by moderation.`) — Translated string for the submitted banner (notice part)

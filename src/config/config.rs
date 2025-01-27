@@ -127,6 +127,9 @@ pub struct ConfigI18N {
     #[serde(default = "defaults::i18n_label_leave_a_comment")]
     pub label_leave_a_comment: String,
 
+    #[serde(default = "defaults::i18n_label_subscribe_replies")]
+    pub label_subscribe_replies: String,
+
     #[serde(default = "defaults::i18n_banner_presubmit")]
     pub banner_presubmit: String,
 

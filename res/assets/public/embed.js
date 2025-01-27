@@ -171,6 +171,8 @@
     var textarea = $("textarea[name='comment_text']"),
       input_name = $("input[name='comment_name']"),
       input_email = $("input[name='comment_email']"),
+      input_subscribe = $("input[name='alerts_subscribe']"),
+      consent = $(".bandurria-consent"),
       identity = $(".bandurria-identity"),
       button = $("button");
 
@@ -193,18 +195,22 @@
           // Submit comment form
           input_name.disabled = true;
           input_email.disabled = true;
+          input_subscribe.disabled = true;
+
+          consent.style.display = "none";
 
           submit_form(form, identity, button, {
             name: input_name.value,
             email: input_email.value,
             text: textarea.value,
             reply_to: form.dataset.replyTo || null,
-            alerts_subscribe: true, // TODO: honor user choice
+            alerts_subscribe: input_subscribe.checked || false,
           });
         } else {
           // Require user to provide their name and email
           textarea.disabled = true;
 
+          consent.style.display = "block";
           identity.style.display = "inline-block";
 
           show_banner(form, "presubmit");

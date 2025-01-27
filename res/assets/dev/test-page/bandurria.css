@@ -11,20 +11,23 @@
 
 .bandurria-form button[type="submit"]:disabled,
 .bandurria-form textarea,
-.bandurria-form input[type] {
+.bandurria-form input[type="text"],
+.bandurria-form input[type="email"] {
     color: black;
     background-color: #fff;
 }
 
 .bandurria-form button[type="submit"],
 .bandurria-form textarea,
-.bandurria-form input[type] {
+.bandurria-form input[type="text"],
+.bandurria-form input[type="email"] {
     border: 1px solid black;
     border-radius: 3px;
 }
 
 .bandurria-form button[type="submit"],
-.bandurria-form input[type] {
+.bandurria-form input[type="text"],
+.bandurria-form input[type="email"] {
     font-size: 0.95em;
     height: 2.25rem;
     margin-top: 6px;
@@ -35,7 +38,8 @@
     box-shadow: none;
 }
 
-.bandurria-form input[type] {
+.bandurria-form input[type="text"],
+.bandurria-form input[type="email"] {
     width: 200px;
     max-width: 200px;
 }
@@ -51,7 +55,8 @@
 }
 
 .bandurria-form textarea:focus,
-.bandurria-form input[type]:focus {
+.bandurria-form input[type="text"]:focus,
+.bandurria-form input[type="email"]:focus {
     border-color: black;
 }
 
@@ -71,6 +76,18 @@
 
 .bandurria-form button[type="submit"]:not(:disabled):active {
     transform: translateY(1px);
+}
+
+.bandurria-form label {
+    line-height: 1.2em;
+    margin-top: 15px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.bandurria-form label input[type="checkbox"] {
+    margin: 0 7px 0 1px;
 }
 
 /* Bandurria > Banners */

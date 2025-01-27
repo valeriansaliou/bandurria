@@ -100,8 +100,12 @@ pub fn i18n_label_leave_a_comment() -> String {
     "Leave a comment:".into()
 }
 
+pub fn i18n_label_subscribe_replies() -> String {
+    "I want to get notified over email when the site owner replies.".into()
+}
+
 pub fn i18n_banner_presubmit() -> String {
-    "Your email is only used to check you are not a bot. It will not be stored.".into()
+    "Your email is only stored if you opt-in to receive replies to your comment.".into()
 }
 
 pub fn i18n_banner_submitting() -> String {
