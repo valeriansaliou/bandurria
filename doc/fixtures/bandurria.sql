@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: bandurria
--- Generation Time: 2025-01-25 22:08:30.5340
+-- Generation Time: 2025-01-26 20:19:52.4200
 -- -------------------------------------------------------------
 
 
@@ -20,8 +20,9 @@
 
 CREATE TABLE `authors` (
   `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_hash` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `email` varchar(320) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_hash` (`email_hash`) USING BTREE

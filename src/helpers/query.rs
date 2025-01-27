@@ -38,7 +38,7 @@ pub async fn find_page_id(db: &mut DbConn, page: &str) -> Result<Option<String>,
         .fetch_optional(&mut ***db)
         .await
         .map_err(|err| {
-            error!("Failed loading page: {}, because: {}", page, err);
+            error!("failed loading page: {}, because: {}", page, err);
 
             Status::InternalServerError
         })?
@@ -83,7 +83,7 @@ pub async fn find_or_create_page_id(db: &mut DbConn, page: &str) -> Result<Strin
             .execute(&mut ***db)
             .await
             .map_err(|err| {
-                error!("Failed creating page: {}, because: {}", page, err);
+                error!("failed creating page: {}, because: {}", page, err);
 
                 Status::InternalServerError
             })?;
@@ -101,7 +101,7 @@ pub async fn find_author_id(db: &mut DbConn, email: &str) -> Result<Option<Strin
         .fetch_optional(&mut ***db)
         .await
         .map_err(|err| {
-            error!("Failed loading author: {}, because: {}", email, err);
+            error!("failed loading author: {}, because: {}", email, err);
 
             Status::InternalServerError
         })?
@@ -134,7 +134,7 @@ pub async fn find_or_create_author_id(
             .execute(&mut ***db)
             .await
             .map_err(|err| {
-                error!("Failed creating author: {}, because: {}", email, err);
+                error!("failed creating author: {}, because: {}", email, err);
 
                 Status::InternalServerError
             })?;
@@ -144,6 +144,30 @@ pub async fn find_or_create_author_id(
     }
 }
 
+pub async fn update_author_email(
+    db: &mut DbConn,
+    author_id: &str,
+    email: Option<&str>,
+) -> Result<(), Status> {
+    let email = email.map(|email| normalize::email(email));
+
+    sqlx::query(&format!("UPDATE authors SET email = ? WHERE id = ?"))
+        .bind(email)
+        .bind(author_id)
+        .execute(&mut ***db)
+        .await
+        .map_err(|err| {
+            error!(
+                "failed updating author: {} email, because: {}",
+                author_id, err
+            );
+
+            Status::InternalServerError
+        })?;
+
+    Ok(())
+}
+
 pub async fn check_comment_exists(db: &mut DbConn, comment_id: &str) -> Result<bool, Status> {
     let comment_exists = sqlx::query("SELECT id FROM comments WHERE id = ?")
         .bind(comment_id)
@@ -151,7 +175,7 @@ pub async fn check_comment_exists(db: &mut DbConn, comment_id: &str) -> Result<b
         .await
         .map_err(|err| {
             error!(
-                "Failed checking if comment exists: {}, because: {}",
+                "failed checking if comment exists: {}, because: {}",
                 comment_id, err
             );
 
@@ -162,24 +186,25 @@ pub async fn check_comment_exists(db: &mut DbConn, comment_id: &str) -> Result<b
     Ok(comment_exists)
 }
 
-pub async fn resolve_comment_status(
+pub async fn resolve_comment_status_and_reply_to_id(
     db: &mut DbConn,
     comment_id: &str,
     status_key: &str,
-) -> Result<Option<bool>, Status> {
-    let comment_status_value =
-        sqlx::query(&format!("SELECT {status_key} FROM comments WHERE id = ?"))
-            .bind(comment_id)
-            .fetch_optional(&mut ***db)
-            .await
-            .map_err(|err| {
-                error!("Failed resolving comment: {}, because: {}", comment_id, err);
+) -> Result<Option<(bool, Option<String>)>, Status> {
+    let comment_status_and_reply = sqlx::query(&format!(
+        "SELECT {status_key}, reply_to_id FROM comments WHERE id = ?"
+    ))
+    .bind(comment_id)
+    .fetch_optional(&mut ***db)
+    .await
+    .map_err(|err| {
+        error!("failed resolving comment: {}, because: {}", comment_id, err);
 
-                Status::InternalServerError
-            })?
-            .map(|comment| comment.get(status_key));
+        Status::InternalServerError
+    })?
+    .map(|comment| (comment.get(status_key), comment.get("reply_to_id")));
 
-    Ok(comment_status_value)
+    Ok(comment_status_and_reply)
 }
 
 pub async fn update_comment_status(
@@ -197,7 +222,7 @@ pub async fn update_comment_status(
     .await
     .map_err(|err| {
         error!(
-            "Failed updating comment: {} status: {}, because: {}",
+            "failed updating comment: {} status: {}, because: {}",
             comment_id, status_key, err
         );
 
@@ -207,13 +232,69 @@ pub async fn update_comment_status(
     Ok(())
 }
 
+pub async fn resolve_comment_author_email_name(
+    db: &mut DbConn,
+    comment_id: &str,
+) -> Result<Option<(String, Option<String>, String)>, Status> {
+    let comment_author = sqlx::query(
+        r#"SELECT authors.email_hash, authors.email, authors.name
+            FROM comments INNER JOIN authors ON authors.id = comments.author_id
+            WHERE comments.id = ?"#,
+    )
+    .bind(comment_id)
+    .fetch_optional(&mut ***db)
+    .await
+    .map_err(|err| {
+        error!(
+            "failed resolving comment author email: {}, because: {}",
+            comment_id, err
+        );
+
+        Status::InternalServerError
+    })?
+    .map(|comment| {
+        (
+            comment.get("email_hash"),
+            comment.get("email"),
+            comment.get("name"),
+        )
+    });
+
+    Ok(comment_author)
+}
+
+pub async fn resolve_comment_page_and_text(
+    db: &mut DbConn,
+    comment_id: &str,
+) -> Result<Option<(String, String)>, Status> {
+    let comment_page_and_text = sqlx::query(
+        r#"SELECT pages.page, comments.text
+            FROM comments INNER JOIN pages ON pages.id = comments.page_id
+            WHERE comments.id = ?"#,
+    )
+    .bind(comment_id)
+    .fetch_optional(&mut ***db)
+    .await
+    .map_err(|err| {
+        error!(
+            "failed resolving comment page and text: {}, because: {}",
+            comment_id, err
+        );
+
+        Status::InternalServerError
+    })?
+    .map(|comment| (comment.get("page"), comment.get("text")));
+
+    Ok(comment_page_and_text)
+}
+
 pub async fn remove_comment(db: &mut DbConn, comment_id: &str) -> Result<(), Status> {
     sqlx::query("DELETE FROM comments WHERE id = ?")
         .bind(comment_id)
         .execute(&mut ***db)
         .await
         .map_err(|err| {
-            error!("Failed removing comment: {}, because: {}", comment_id, err);
+            error!("failed removing comment: {}, because: {}", comment_id, err);
 
             Status::InternalServerError
         })?;
@@ -230,7 +311,7 @@ pub async fn resolve_comment_page_id(
         .fetch_optional(&mut ***db)
         .await
         .map_err(|err| {
-            error!("Failed resolving comment: {}, because: {}", comment_id, err);
+            error!("failed resolving comment: {}, because: {}", comment_id, err);
 
             Status::InternalServerError
         })?
@@ -254,7 +335,7 @@ pub async fn list_comments_for_page_id(
     .fetch_all(&mut ***db)
     .await
     .map_err(|err| {
-        error!("Failed loading comments: {}", err);
+        error!("failed loading comments: {}", err);
 
         Status::InternalServerError
     })?
@@ -320,7 +401,7 @@ pub async fn insert_comment_for_page_id_and_author_id(
     if let Some(reply_to_id) = reply_to_id {
         if reply_to_id == comment_id {
             warn!(
-                "Attempted to insert a self-referencing comment reply: {}",
+                "attempted to insert a self-referencing comment reply: {}",
                 reply_to_id
             );
 
@@ -330,7 +411,7 @@ pub async fn insert_comment_for_page_id_and_author_id(
         match resolve_comment_page_id(db, reply_to_id).await? {
             None => {
                 warn!(
-                    "Attempted to insert comment reply to non-existing comment: {}",
+                    "attempted to insert comment reply to non-existing comment: {}",
                     reply_to_id
                 );
 
@@ -339,7 +420,7 @@ pub async fn insert_comment_for_page_id_and_author_id(
             Some(reply_page_id) => {
                 if reply_page_id != page_id {
                     warn!(
-                        "Attempted to insert comment reply on different page: {}",
+                        "attempted to insert comment reply on different page: {}",
                         reply_to_id
                     );
 
@@ -364,7 +445,7 @@ pub async fn insert_comment_for_page_id_and_author_id(
     .execute(&mut ***db)
     .await
     .map_err(|err| {
-        error!("Failed inserting comment: {}", err);
+        error!("failed inserting comment: {}", err);
 
         Status::InternalServerError
     })?;

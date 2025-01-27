@@ -23,7 +23,7 @@ pub fn parse_datetime_string(datetime: &str) -> Option<NaiveDateTime> {
     NaiveDateTime::parse_from_str(datetime, DATETIME_FORMAT)
         .map_err(|err| {
             error!(
-                "Could not parse datatime string: {} because: {}",
+                "could not parse datatime string: {} because: {}",
                 datetime, err
             );
         })

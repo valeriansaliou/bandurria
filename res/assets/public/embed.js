@@ -199,6 +199,7 @@
             email: input_email.value,
             text: textarea.value,
             reply_to: form.dataset.replyTo || null,
+            alerts_subscribe: true, // TODO: honor user choice
           });
         } else {
           // Require user to provide their name and email

@@ -87,8 +87,14 @@ pub async fn deliver_faillible(
 }
 
 pub async fn deliver(to: &str, subject: String, body: String) {
-    deliver_faillible(to, subject, body)
+    deliver_faillible(to, subject.to_owned(), body.to_owned())
         .await
-        .map_err(|_| error!("Failed delivering email to: {}", to))
+        .map_err(|_| {
+            error!(
+                "failed delivering email to: {}, with subject: '{}'\n\n{}",
+                to, &subject, &body
+            )
+        })
+        .map(|_| info!("delivered email to: {}", to))
         .ok();
 }

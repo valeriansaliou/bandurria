@@ -22,7 +22,7 @@ pub struct CommentData {
     #[validate(length(equal = 64))]
     attestation: String,
 
-    #[validate(length(min = 1))]
+    #[validate(length(min = 1, max = 80))]
     name: String,
 
     #[validate(email)]
@@ -33,6 +33,7 @@ pub struct CommentData {
 
     mints: Vec<String>,
     reply_to: Option<String>,
+    alerts_subscribe: bool,
 }
 
 #[derive(Serialize)]
@@ -105,6 +106,11 @@ pub async fn post_comment(
     let page_id = query::find_or_create_page_id(&mut db, page).await?;
     let author_id = query::find_or_create_author_id(&mut db, &email, &name).await?;
 
+    // Subscribe author to alerts? (store email value)
+    if comment.alerts_subscribe {
+        query::update_author_email(&mut db, &author_id, Some(&email)).await?
+    }
+
     // Insert comment for page and author
     query::insert_comment_for_page_id_and_author_id(
         &mut db,
@@ -162,9 +168,10 @@ pub async fn get_admin_moderate_comment(
     }
 
     // Resolve comment
-    let comment = query::resolve_comment_status(&mut db, comment_id, "approved").await?;
+    let comment =
+        query::resolve_comment_status_and_reply_to_id(&mut db, comment_id, "approved").await?;
 
-    if let Some(comment_status) = comment {
+    if let Some((comment_status, reply_to_id)) = comment {
         // Process moderation
         if action == "approve" {
             if comment_status == true {
@@ -172,6 +179,17 @@ pub async fn get_admin_moderate_comment(
             } else {
                 // Approve comment (mark comment as approved)
                 query::update_comment_status(&mut db, comment_id, "approved", true).await?;
+
+                // Check if should notify parent comment author of this reply?
+                // Notice: this will only notify of replies from administrators.
+                if let Some(reply_to_id) = reply_to_id {
+                    notifier::alert_of_reply_comment_from_admin_if_needed(
+                        &mut db,
+                        &reply_to_id,
+                        comment_id,
+                    )
+                    .await;
+                }
 
                 Ok("Comment approved.")
             }

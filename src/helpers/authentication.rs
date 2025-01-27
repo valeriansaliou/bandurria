@@ -14,6 +14,19 @@ use crate::APP_CONF;
 
 type HmacSha256 = Hmac<Sha256>;
 
+lazy_static! {
+    static ref ADMIN_EMAIL_HASHES: Vec<String> = APP_CONF
+        .site
+        .admin_emails
+        .iter()
+        .map(|admin_email| normalize::email_hash(&admin_email))
+        .collect();
+}
+
+pub fn check_email_hash_is_admin(email_hash: &String) -> bool {
+    ADMIN_EMAIL_HASHES.contains(email_hash)
+}
+
 pub fn sign_payload_bytes(payload: &str) -> Result<Vec<u8>, ()> {
     let mut hmac =
         HmacSha256::new_from_slice(APP_CONF.security.secret_key.as_bytes()).or(Err(()))?;
