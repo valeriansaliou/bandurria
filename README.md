@@ -23,11 +23,11 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 ## Screenshots
 
-**What comments look like:**
+**What Bandurria comments look like:**
 
 ![Bandurria Screenshot 1](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot-1.png)
 
-**Posting a new comment:**
+**Posting a new comment with Bandurria:**
 
 ![Bandurria Screenshot 2](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot-2.png)
 
