@@ -64,7 +64,7 @@ All features might not have yet been implemented, but this is what Bandurria aim
 - [x] Proof of work anti spam mechanism, with progress bar if still computing upon submitting the comment (multiple parallel hash computation), with ability to configure difficulty and parallel games.
 - [x] Remove the trusted flag in the authors database table, and the verified flag in the comments database table (not used anymore).
 - [x] Generate a cool drawing of a Bandurria with AI and include it in this read-me
-- [ ] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
+- [x] Notify of replies to user comments over email to users if they opted to receive replies once the comment passed moderation (enable engagement, which was an issue with other simple commenting systems since users didn’t get notified of replies to their own comments).
 - [ ] Perform a static analysis and security review of the source code, especially the PoW part (once 100% of features have been implemented).
 - [ ] Release first stable version (`v1.0.0`)
 - [ ] Write a personal blog article about Bandurria and direct all demo URLs to this article (instead of the current one).
