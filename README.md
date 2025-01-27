@@ -23,7 +23,17 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 ## Screenshots
 
-![Bandurria Screenshot](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot.png)
+**What comments look like:**
+
+![Bandurria Screenshot 1](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot-1.png)
+
+**Posting a new comment:**
+
+![Bandurria Screenshot 2](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot-2.png)
+
+**Waiting for the anti-bot PoW to complete:**
+
+![Bandurria Screenshot 3](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot-3.png)
 
 ## Features
 
