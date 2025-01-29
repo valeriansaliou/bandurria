@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: bandurria
--- Generation Time: 2025-01-26 20:19:52.4200
+-- Generation Time: 2025-01-29 14:41:56.4860
 -- -------------------------------------------------------------
 
 
@@ -26,6 +26,20 @@ CREATE TABLE `authors` (
   `created_at` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_hash` (`email_hash`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `avatars` (
+  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+  `mime` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data` blob,
+  `bytes_size` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `pixels_size` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `author_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `refresh_at` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `created_at` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `author_id` (`author_id`) USING BTREE,
+  CONSTRAINT `avatars_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `comments` (
