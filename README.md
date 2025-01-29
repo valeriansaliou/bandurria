@@ -42,6 +42,7 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 * **Zero-dependencies server runtime (4MB)** and **lightweight JavaScript script (9KB)**
 * **Compatible with any static website** or blog system (as long as your can add 1 line of JavaScript)
 * **Customize it in a few lines of CSS** to match your website or blog style
+* **Avatars of comment authors** can be shown (this relies on Gravatar, although images are served from your domain name and cached there)
 
 Bandurria provides no administration interface. It solely relies on email notifications for moderation and Magic Links for approving or rejecting comments. It also does not provide any built-in CSS styles, only CSS classes in its injected HTML that you can freely style to match your blog or website style. For convenience, it comes with an [example CSS](https://github.com/valeriansaliou/bandurria/blob/master/res/assets/dev/test-page/bandurria.css) you can copy and paste to start with.
 
