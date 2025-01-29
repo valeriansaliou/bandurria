@@ -5,6 +5,7 @@
 // License: Mozilla Public License v2.0 (MPL v2.0)
 
 pub mod authentication;
+pub mod avatar;
 pub mod checker;
 pub mod formatter;
 pub mod mint;

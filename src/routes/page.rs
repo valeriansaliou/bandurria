@@ -23,8 +23,8 @@ struct CommentsOptions<'a> {
 
 #[derive(Serialize)]
 struct CommentsOptionsAvatar {
+    avatar_endpoint: String,
     size_image: u16,
-    size_full: u16,
 }
 
 lazy_static! {
@@ -32,8 +32,8 @@ lazy_static! {
         i18n: &APP_CONF.i18n,
         avatar: if APP_CONF.avatar.gravatar {
             Some(CommentsOptionsAvatar {
+                avatar_endpoint: format!("{}/image/avatar", APP_CONF.site.comments_url),
                 size_image: APP_CONF.avatar.size_pixels,
-                size_full: APP_CONF.avatar.size_pixels * APP_CONF.avatar.scale_factor as u16,
             })
         } else {
             None

@@ -4,6 +4,8 @@
 // Copyright: 2025, Valerian Saliou <valerian@valeriansaliou.name>
 // License: Mozilla Public License v2.0 (MPL v2.0)
 
+use std::time::Duration;
+
 use chrono::offset::Utc;
 use chrono::NaiveDateTime;
 
@@ -17,6 +19,10 @@ const FALLBACK_DATETIME_STRING: &'static str = "(?)";
 
 pub fn now_datetime_string() -> String {
     Utc::now().format(DATETIME_FORMAT).to_string()
+}
+
+pub fn now_after_datetime_string(after: Duration) -> String {
+    (Utc::now() + after).format(DATETIME_FORMAT).to_string()
 }
 
 pub fn parse_datetime_string(datetime: &str) -> Option<NaiveDateTime> {

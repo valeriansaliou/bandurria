@@ -4,7 +4,7 @@
             <li class="bandurria-comment" id="comment-{{id}}">
                 <div class="bandurria-metas">
                     {{#if ../ctx.avatar}}
-                        <img class="bandurria-avatar" loading="lazy" src="https://gravatar.com/avatar/{{avatar}}?s={{../ctx.avatar.size_full}}&r=g&d=mp" alt="" width="{{../ctx.avatar.size_image}}" height="{{../ctx.avatar.size_image}}" />
+                        <img class="bandurria-avatar" loading="lazy" src="{{../ctx.avatar.avatar_endpoint}}/{{author_id}}/" alt="" width="{{../ctx.avatar.size_image}}" height="{{../ctx.avatar.size_image}}" />
                     {{/if}}
 
                     <span class="bandurria-author">{{name}}</span>

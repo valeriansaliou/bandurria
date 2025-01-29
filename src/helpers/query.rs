@@ -4,20 +4,25 @@
 // Copyright: 2025, Valerian Saliou <valerian@valeriansaliou.name>
 // License: Mozilla Public License v2.0 (MPL v2.0)
 
-use std::collections::HashMap;
+use std::{collections::HashMap, time::Duration};
 
+use chrono::NaiveDateTime;
 use rocket::http::Status;
 use rocket_db_pools::{sqlx, sqlx::Row};
 use serde::Serialize;
 use uuid::Uuid;
 
-use super::{checker, normalize, time};
+use super::{
+    avatar::{self, AvatarBytesSize, AvatarData, AvatarMIME, AvatarPixelsSize},
+    checker, normalize, time,
+};
 use crate::{managers::http::DbConn, APP_CONF};
 
 #[derive(Serialize)]
 pub struct Comment {
     pub id: String,
     pub parent_id: Option<String>,
+    pub author_id: String,
     pub name: String,
     pub avatar: String,
     pub lines: Vec<String>,
@@ -143,6 +148,27 @@ pub async fn find_or_create_author_id(
             Ok(author_id)
         }
     }
+}
+
+pub async fn resolve_author_email_hash(
+    db: &mut DbConn,
+    author_id: &str,
+) -> Result<Option<String>, Status> {
+    let author = sqlx::query("SELECT email_hash FROM authors WHERE id = ?")
+        .bind(author_id)
+        .fetch_optional(&mut ***db)
+        .await
+        .map_err(|err| {
+            error!(
+                "failed resolving author email hash: {}, because: {}",
+                author_id, err
+            );
+
+            Status::InternalServerError
+        })?
+        .map(|author| author.get("email_hash"));
+
+    Ok(author)
 }
 
 pub async fn update_author_email(
@@ -327,7 +353,8 @@ pub async fn list_comments_for_page_id(
 ) -> Result<(Vec<Comment>, HashMap<String, Vec<String>>), Status> {
     let comments: Vec<Comment> = sqlx::query(
         r#"SELECT comments.id, comments.text, comments.created_at,
-                comments.reply_to_id, authors.name, authors.email_hash
+                comments.reply_to_id,
+                authors.id as author_id, authors.name, authors.email_hash
             FROM comments INNER JOIN authors ON authors.id = comments.author_id
             WHERE comments.page_id = ? AND comments.approved = 1
             ORDER BY comments.created_at DESC"#,
@@ -361,6 +388,7 @@ pub async fn list_comments_for_page_id(
         Comment {
             id: comment.get("id"),
             parent_id: comment.get("reply_to_id"),
+            author_id: comment.get("author_id"),
             name: comment.get("name"),
             avatar: email_hash.to_lowercase(),
             lines: text_lines,
@@ -452,6 +480,95 @@ pub async fn insert_comment_for_page_id_and_author_id(
     .await
     .map_err(|err| {
         error!("failed inserting comment: {}", err);
+
+        Status::InternalServerError
+    })?;
+
+    Ok(())
+}
+
+pub async fn resolve_avatar(
+    db: &mut DbConn,
+    author_id: &str,
+) -> Result<Option<(avatar::AvatarMaybe, AvatarPixelsSize, Option<NaiveDateTime>)>, Status> {
+    let avatar_data = sqlx::query(
+        r#"SELECT mime, data, bytes_size, pixels_size, refresh_at
+            FROM avatars
+            WHERE author_id = ?"#,
+    )
+    .bind(author_id)
+    .fetch_optional(&mut ***db)
+    .await
+    .map_err(|err| {
+        error!("failed resolving avatar: {}, because: {}", author_id, err);
+
+        Status::InternalServerError
+    })?
+    .map(|avatar| {
+        let (pixels_size, refresh_at): (AvatarPixelsSize, String) =
+            (avatar.get("pixels_size"), avatar.get("refresh_at"));
+
+        // Parse datetime from string
+        let refresh_at_datetime = time::parse_datetime_string(&refresh_at);
+
+        (
+            avatar::AvatarMaybe {
+                data: avatar.get("data"),
+                mime: avatar.get("mime"),
+                size: avatar.get("bytes_size"),
+            },
+            pixels_size,
+            refresh_at_datetime,
+        )
+    });
+
+    Ok(avatar_data)
+}
+
+pub async fn insert_or_update_avatar(
+    db: &mut DbConn,
+    author_id: &str,
+    avatar: &Option<avatar::Avatar>,
+    refresh_after: Duration,
+) -> Result<(), Status> {
+    // Unpack avatar values
+    let (mime, data, size): (Option<&AvatarMIME>, Option<&AvatarData>, AvatarBytesSize);
+
+    if let Some(avatar) = avatar {
+        mime = Some(&avatar.mime);
+        data = Some(&avatar.data);
+        size = avatar.size;
+    } else {
+        mime = None;
+        data = None;
+        size = 0;
+    }
+
+    sqlx::query(
+        r#"INSERT INTO avatars (
+            id, mime, data, bytes_size, pixels_size, author_id,
+                refresh_at, created_at
+        )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+                mime=VALUES(mime),
+                data=VALUES(data),
+                bytes_size=VALUES(bytes_size),
+                pixels_size=VALUES(pixels_size),
+                refresh_at=VALUES(refresh_at)"#,
+    )
+    .bind(&Uuid::new_v4().to_string())
+    .bind(mime)
+    .bind(data)
+    .bind(size)
+    .bind(&*avatar::AVATAR_SIZE_FULL)
+    .bind(author_id)
+    .bind(time::now_after_datetime_string(refresh_after))
+    .bind(time::now_datetime_string())
+    .execute(&mut ***db)
+    .await
+    .map_err(|err| {
+        error!("failed inserting avatar: {}", err);
 
         Status::InternalServerError
     })?;

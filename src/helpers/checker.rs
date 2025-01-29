@@ -10,9 +10,17 @@ use reqwest::{redirect, Client};
 
 use crate::APP_CONF;
 
-static HTTP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
+static HTTP_USER_AGENT: &'static str = concat!(
+    env!("CARGO_PKG_NAME"),
+    "/",
+    env!("CARGO_PKG_VERSION"),
+    " (checker)"
+);
 
 lazy_static! {
+    // Notice: accept invalid certificates, because the root CA chain \
+    //   contained in Bandurria might expire if it is not re-compiled, and we \
+    //   are dealing with simple proof-of-existence here.
     static ref HTTP_CLIENT: Client = Client::builder()
         .timeout(Duration::from_secs(10))
         .read_timeout(Duration::from_secs(5))

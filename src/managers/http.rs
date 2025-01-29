@@ -16,7 +16,7 @@ use rocket_db_pools::{Connection, Database};
 use rocket_dyn_templates::Template;
 
 use crate::helpers::template;
-use crate::routes::{api, page};
+use crate::routes::{api, image, page};
 use crate::APP_CONF;
 
 #[derive(Database)]
@@ -72,6 +72,7 @@ pub async fn bootstrap() -> rocket::Rocket<rocket::Build> {
             ],
         )
         .mount("/page", rocket::routes![page::get_comments])
+        .mount("/image", rocket::routes![image::get_avatar])
         .mount("/assets", FileServer::from(assets_path("public")))
         .mount("/dev", FileServer::from(assets_path("dev")))
 }
