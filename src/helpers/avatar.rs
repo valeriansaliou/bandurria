@@ -114,12 +114,12 @@ async fn pull_cache(db: &mut DbConn, author_id: &str) -> Result<(Option<Avatar>,
 
                 // Return as 'cache stale' (with stale avatar)
                 return Ok((avatar, CacheStatus::Stale));
-            } else {
-                error!(
-                    "cached avatar refresh date unknown for: {} (unexpected)",
-                    author_id
-                );
             }
+        } else {
+            warn!(
+                "cached avatar refresh date unknown for: {} (unexpected)",
+                author_id
+            );
         }
 
         info!("cached avatar acquired and still valid for: {author_id}");
@@ -238,7 +238,7 @@ async fn pull_network(email_hash: &str) -> Result<Option<Avatar>, ()> {
 
             // Avatar does not exist?
             if status == StatusCode::NOT_FOUND {
-                warn!("avatar pulled and found not to exist at: {}", gravatar_url);
+                info!("avatar pulled and found not to exist at: {}", gravatar_url);
 
                 // No avatar found (but no error)
                 return Ok(None);
