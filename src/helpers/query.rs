@@ -19,6 +19,7 @@ pub struct Comment {
     pub id: String,
     pub parent_id: Option<String>,
     pub name: String,
+    pub avatar: String,
     pub lines: Vec<String>,
     pub datetime: CommentDateTime,
 }
@@ -326,7 +327,7 @@ pub async fn list_comments_for_page_id(
 ) -> Result<(Vec<Comment>, HashMap<String, Vec<String>>), Status> {
     let comments: Vec<Comment> = sqlx::query(
         r#"SELECT comments.id, comments.text, comments.created_at,
-                comments.reply_to_id, authors.name
+                comments.reply_to_id, authors.name, authors.email_hash
             FROM comments INNER JOIN authors ON authors.id = comments.author_id
             WHERE comments.page_id = ? AND comments.approved = 1
             ORDER BY comments.created_at DESC"#,
@@ -341,7 +342,11 @@ pub async fn list_comments_for_page_id(
     })?
     .into_iter()
     .map(|comment| {
-        let (text, created_at): (String, String) = (comment.get("text"), comment.get("created_at"));
+        let (text, email_hash, created_at): (&str, &str, &str) = (
+            comment.get("text"),
+            comment.get("email_hash"),
+            comment.get("created_at"),
+        );
 
         // Parse datetime from string
         let datetime = time::parse_datetime_string(&created_at);
@@ -357,6 +362,7 @@ pub async fn list_comments_for_page_id(
             id: comment.get("id"),
             parent_id: comment.get("reply_to_id"),
             name: comment.get("name"),
+            avatar: email_hash.to_lowercase(),
             lines: text_lines,
             datetime: CommentDateTime {
                 date: time::datetime_to_date_string(&datetime),

@@ -165,6 +165,12 @@ You can also use environment variables with string interpolation in your configu
 * `problems_parallel` (type: _integer_, allowed: any number, default: `10`) — Number of antispam PoW problems to solve in parallel (this value should usually not be changed)
 * `solutions_require` (type: _integer_, allowed: any number, default: `6`) — Number of antispam PoW problems to solve to pass the test (should be less or equal to `problems_parallel`, 60% of its value is a sweet spot, [read why](https://friendlycaptcha.com/insights/controlling-variance-in-proof-of-work-algorithms/))
 
+**[avatar]**
+
+* `gravatar` (type: _boolean_, allowed: `true`, `false`, default: `false`) — Whether to enable the Gravatar service to show comment author avatars (**this uses a 3rd party service**)
+* `size_pixels` (type: _integer_, allowed: any number, default: `20`) — Size of avatars in pixels (as displayed in comments)
+* `scale_factor` (type: _integer_, allowed: any number, default: `3`) — Scale factor of avatars, so that a high-resolution image is loaded for high DPI screens (a 20px sized avatar with a x3 scale factor results in a 60px sized image being loaded)
+
 **[i18n]**
 
 * `field_write_your_comment` (type: _string_, allowed: any string, default: `Write your comment...`) — Translated string for the comment textarea

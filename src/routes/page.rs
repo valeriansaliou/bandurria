@@ -10,9 +10,36 @@ use rocket::get;
 use rocket::http::Status;
 use rocket_dyn_templates::{context, Template};
 
+use crate::config::config::ConfigI18N;
 use crate::helpers::query;
 use crate::managers::http::DbConn;
 use crate::APP_CONF;
+
+#[derive(Serialize)]
+struct CommentsOptions<'a> {
+    i18n: &'a ConfigI18N,
+    avatar: Option<CommentsOptionsAvatar>,
+}
+
+#[derive(Serialize)]
+struct CommentsOptionsAvatar {
+    size_image: u16,
+    size_full: u16,
+}
+
+lazy_static! {
+    static ref COMMENTS_OPTIONS: CommentsOptions<'static> = CommentsOptions {
+        i18n: &APP_CONF.i18n,
+        avatar: if APP_CONF.avatar.gravatar {
+            Some(CommentsOptionsAvatar {
+                size_image: APP_CONF.avatar.size_pixels,
+                size_full: APP_CONF.avatar.size_pixels * APP_CONF.avatar.scale_factor as u16,
+            })
+        } else {
+            None
+        }
+    };
+}
 
 #[get("/comments?<page>")]
 pub async fn get_comments(mut db: DbConn, page: &str) -> Result<Template, Status> {
@@ -24,6 +51,6 @@ pub async fn get_comments(mut db: DbConn, page: &str) -> Result<Template, Status
 
     Ok(Template::render(
         "bandurria",
-        context! { comments, replies, i18n: &APP_CONF.i18n },
+        context! { comments, replies, ctx: &*COMMENTS_OPTIONS },
     ))
 }

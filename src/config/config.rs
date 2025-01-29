@@ -19,6 +19,7 @@ pub struct Config {
     pub site: ConfigSite,
     pub security: ConfigSecurity,
     pub antispam: ConfigAntispam,
+    pub avatar: ConfigAvatar,
     pub i18n: ConfigI18N,
 }
 
@@ -105,6 +106,18 @@ pub struct ConfigAntispam {
 
     #[serde(default = "defaults::antispam_solutions_require")]
     pub solutions_require: MintSolutions,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct ConfigAvatar {
+    #[serde(default = "defaults::avatar_gravatar")]
+    pub gravatar: bool,
+
+    #[serde(default = "defaults::avatar_size_pixels")]
+    pub size_pixels: u16,
+
+    #[serde(default = "defaults::avatar_scale_factor")]
+    pub scale_factor: u8,
 }
 
 #[derive(Deserialize, Serialize)]

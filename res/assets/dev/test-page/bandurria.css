@@ -243,6 +243,13 @@ li.bandurria-comment.bandurria-comment--anchored .bandurria-body {
     margin-bottom: 10px;
 }
 
+.bandurria-avatar {
+    background-color: whitesmoke;
+    margin: -5px 0.15em -5px 0;
+    border-radius: 50%;
+    display: inline-block;
+}
+
 .bandurria-author {
     font-weight: bold;
 }

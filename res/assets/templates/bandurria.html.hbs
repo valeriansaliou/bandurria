@@ -10,28 +10,28 @@
                 cols="1"
                 rows="1"
                 name="comment_text"
-                placeholder="{{i18n.field_write_your_comment}}"
+                placeholder="{{ctx.i18n.field_write_your_comment}}"
             ></textarea>
 
             <span class="bandurria-identity" style="display: none">
                 <input
                     type="text"
                     name="comment_name"
-                    placeholder="{{i18n.field_whats_your_name}}"
+                    placeholder="{{ctx.i18n.field_whats_your_name}}"
                 />
                 <input
                     type="email"
                     name="comment_email"
-                    placeholder="{{i18n.field_whats_your_email}}"
+                    placeholder="{{ctx.i18n.field_whats_your_email}}"
                 />
             </span>
 
-            <button class="bandurria-submit" type="submit" disabled>{{i18n.button_post_comment}}</button>
+            <button class="bandurria-submit" type="submit" disabled>{{ctx.i18n.button_post_comment}}</button>
 
             <span class="bandurria-consent" style="display: none">
                 <label>
                     <input type="checkbox" name="alerts_subscribe" />
-                    {{i18n.label_subscribe_replies}}
+                    {{ctx.i18n.label_subscribe_replies}}
                 </label>
             </span>
 
@@ -39,7 +39,7 @@
                 class="bandurria-banner bandurria-banner--presubmit"
                 style="display: none"
             >
-                {{i18n.banner_presubmit}}
+                {{ctx.i18n.banner_presubmit}}
             </span>
 
             <span
@@ -52,33 +52,33 @@
                     <span></span>
                 </span>
 
-                {{i18n.banner_submitting}}
+                {{ctx.i18n.banner_submitting}}
             </span>
 
             <span
                 class="bandurria-banner bandurria-banner--submitted"
                 style="display: none"
             >
-                <strong>{{i18n.banner_submitted_important}}</strong>
-                {{i18n.banner_submitted_notice}}
+                <strong>{{ctx.i18n.banner_submitted_important}}</strong>
+                {{ctx.i18n.banner_submitted_notice}}
             </span>
 
             <span
                 class="bandurria-banner bandurria-banner--submiterror"
                 style="display: none"
             >
-                {{i18n.banner_submiterror}}
+                {{ctx.i18n.banner_submiterror}}
             </span>
         </template>
 
         <form class="bandurria-form bandurria-form--main">
-            <p>{{i18n.label_leave_a_comment}}</p>
+            <p>{{ctx.i18n.label_leave_a_comment}}</p>
 
             <!-- Form template will be injected after this line. -->
         </form>
 
         {{#if comments}}
-            {{> partials/comments comments=comments replies=replies i18n=i18n }}
+            {{> partials/comments comments=comments replies=replies ctx=ctx }}
         {{/if}}
     </body>
 </html>

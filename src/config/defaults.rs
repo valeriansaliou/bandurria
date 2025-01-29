@@ -74,6 +74,20 @@ pub fn antispam_solutions_require() -> MintSolutions {
     6
 }
 
+/* [avatar] */
+
+pub fn avatar_gravatar() -> bool {
+    false
+}
+
+pub fn avatar_size_pixels() -> u16 {
+    20
+}
+
+pub fn avatar_scale_factor() -> u8 {
+    3
+}
+
 /* [i18n] */
 
 pub fn i18n_field_write_your_comment() -> String {

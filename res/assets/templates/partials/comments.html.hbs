@@ -3,6 +3,10 @@
         {{#if (eq ../thread_id parent_id)}}
             <li class="bandurria-comment" id="comment-{{id}}">
                 <div class="bandurria-metas">
+                    {{#if ../ctx.avatar}}
+                        <img class="bandurria-avatar" loading="lazy" src="https://gravatar.com/avatar/{{avatar}}?s={{../ctx.avatar.size_full}}&r=g&d=mp" alt="" width="{{../ctx.avatar.size_image}}" height="{{../ctx.avatar.size_image}}" />
+                    {{/if}}
+
                     <span class="bandurria-author">{{name}}</span>
 
                     <span class="bandurria-date">
@@ -22,11 +26,11 @@
                         <button
                             class="bandurria-reply"
                             type="button"
-                        >{{../i18n.button_reply}}</button>
+                        >{{../ctx.i18n.button_reply}}</button>
                     </form>
 
                     {{#if (lookup ../replies id)}}
-                        {{> partials/comments thread_id=id comments=../comments replies=../replies i18n=../i18n }}
+                        {{> partials/comments thread_id=id comments=../comments replies=../replies ctx=../ctx }}
                     {{/if}}
                 </div>
             </li>
