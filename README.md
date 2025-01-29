@@ -50,6 +50,8 @@ Spam is prevented by requiring user browsers to submit the result to a Proof of 
 
 Upon submission of their comment, the user will be informed that their comment has been submitted and is awaiting moderation. Then, you (the administrator) will receive the user comment over email for moderation. Bandurria also notifies people of new replies to their comments from administrators, over email (if they opted in to receive reply alerts).
 
+Bandurria can optionally show user avatars next to their names, using the 3rd party [Gravatar](https://gravatar.com/) service. Avatars are fetched from Gravatar and cached in your MySQL database, then periodically refreshed. Avatars are limited to a maximum size of `64KB`, so make sure not to configure Bandurria to request large avatar sizes (in pixels).
+
 **Oh and what about that name?!** Well, the Bandurria name refers to the _Bandurria Austral_ ([Black-faced Ibis](https://en.wikipedia.org/wiki/Black-faced_ibis)), which is a bird that can be found across Patagonia. It emits interesting [metallic sounds](https://www.youtube.com/watch?v=S5iLNFumfFM).
 
 ## How to use it?
