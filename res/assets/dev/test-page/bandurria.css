@@ -212,7 +212,7 @@ li.bandurria-comment.bandurria-comment--anchored .bandurria-body {
 /* Bandurria > Nested Comments */
 
 .bandurria-body > ul.bandurria-comments {
-    margin: 0.8rem 0 0;
+    margin: 1.1rem 0 0;
 }
 
 .bandurria-body > ul.bandurria-comments .bandurria-body {
