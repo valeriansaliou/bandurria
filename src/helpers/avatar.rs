@@ -179,14 +179,23 @@ async fn pull_network(email_hash: &str) -> Result<Option<Avatar>, ()> {
                         return Err(());
                     }
 
-                    if content_length == 0 || content_length > AvatarBytesSize::MAX as u32 {
-                        error!(
-                            "would pull empty or over-sized avatar at: {} (got size: {})",
-                            gravatar_url, content_length
-                        );
+                    if content_length == 0 {
+                        error!("would pull empty avatar at: {}", gravatar_url);
 
                         // Return error
                         return Err(());
+                    }
+
+                    if content_length > AvatarBytesSize::MAX as u32 {
+                        warn!(
+                            "considering oversized avatar as no avatar at: {} (got size: {})",
+                            gravatar_url, content_length
+                        );
+
+                        // Consider as no avatar (and no error)
+                        // Notice: this is required so that we do not retry \
+                        //   pulling this over-sized avatar over and over again.
+                        return Ok(None);
                     }
 
                     // Assign acquired values
