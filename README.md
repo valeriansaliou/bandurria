@@ -35,6 +35,10 @@ _Tested at Rust version: `rustc 1.84.0 (9fc6b4312 2025-01-07)`_
 
 ![Bandurria Screenshot 3](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot-3.png)
 
+**Bandurria comments with avatars enabled:**
+
+![Bandurria Screenshot 4](https://valeriansaliou.github.io/bandurria/images/bandurria-screenshot-4.png)
+
 ## Features
 
 * **Built-in spam control** with a Proof of Work anti-bot system (without annoying CAPTCHAs!)
