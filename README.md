@@ -3,7 +3,7 @@ Bandurria
 
 [![Test and Build](https://github.com/valeriansaliou/bandurria/actions/workflows/test.yml/badge.svg)](https://github.com/valeriansaliou/bandurria/actions/workflows/test.yml) [![Build and Release](https://github.com/valeriansaliou/bandurria/actions/workflows/build.yml/badge.svg)](https://github.com/valeriansaliou/bandurria/actions/workflows/build.yml) [![dependency status](https://deps.rs/repo/github/valeriansaliou/bandurria/status.svg)](https://deps.rs/repo/github/valeriansaliou/bandurria) [![Buy Me A Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg)](https://www.buymeacoffee.com/valeriansaliou)
 
-**Bandurria is a self-hosted lightweight comment system for static websites and blogs. Built in Rust, it consumes only 4MB of RAM. Can be included with a single line of JavaScript (9KB!).**
+**Bandurria is a self-hosted lightweight comment system for static websites and blogs, with a built-in Proof-of-Work powered anti-bot. Built in Rust, it consumes only 4MB of RAM. Can be included with a single line of JavaScript (9KB!).**
 
 ---
 
