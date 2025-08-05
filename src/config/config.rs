@@ -85,6 +85,9 @@ pub struct ConfigSite {
     pub site_url: String,
     pub comments_url: String,
     pub admin_emails: Vec<String>,
+
+    #[serde(default = "defaults::site_show_imprint")]
+    pub show_imprint: bool,
 }
 
 #[derive(Deserialize)]
@@ -142,6 +145,9 @@ pub struct ConfigI18N {
 
     #[serde(default = "defaults::i18n_label_subscribe_replies")]
     pub label_subscribe_replies: String,
+
+    #[serde(default = "defaults::i18n_label_comments_by")]
+    pub label_comments_by: String,
 
     #[serde(default = "defaults::i18n_banner_presubmit")]
     pub banner_presubmit: String,

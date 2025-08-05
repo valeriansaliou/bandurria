@@ -18,7 +18,13 @@ use crate::APP_CONF;
 #[derive(Serialize)]
 struct CommentsOptions<'a> {
     i18n: &'a ConfigI18N,
+    modifiers: CommentsOptionsModifiers,
     avatar: Option<CommentsOptionsAvatar>,
+}
+
+#[derive(Serialize)]
+struct CommentsOptionsModifiers {
+    imprint: bool,
 }
 
 #[derive(Serialize)]
@@ -30,6 +36,9 @@ struct CommentsOptionsAvatar {
 lazy_static! {
     static ref COMMENTS_OPTIONS: CommentsOptions<'static> = CommentsOptions {
         i18n: &APP_CONF.i18n,
+        modifiers: CommentsOptionsModifiers {
+            imprint: APP_CONF.site.show_imprint,
+        },
         avatar: if APP_CONF.avatar.gravatar {
             Some(CommentsOptionsAvatar {
                 avatar_endpoint: format!("{}/image/avatar", APP_CONF.site.comments_url),

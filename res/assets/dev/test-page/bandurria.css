@@ -90,6 +90,34 @@
     margin: 0 7px 0 1px;
 }
 
+/* Bandurria > Header */
+
+.bandurria-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 8px;
+}
+
+.bandurria-header > .bandurria-imprint {
+    text-align: right;
+}
+
+/* Bandurria > Imprint */
+
+.bandurria-imprint {
+    font-size: 0.95em;
+}
+
+.bandurria-imprint,
+.bandurria-imprint > a {
+    color: #959595;
+}
+
+.bandurria-imprint > a:hover {
+    color: #636363;
+}
+
 /* Bandurria > Banners */
 
 .bandurria-banner {

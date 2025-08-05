@@ -46,6 +46,12 @@ pub fn email_identity_from_name() -> String {
     "Comments".into()
 }
 
+/* [site] */
+
+pub fn site_show_imprint() -> bool {
+    true
+}
+
 /* [security] */
 
 pub fn security_secret_key() -> String {
@@ -116,6 +122,10 @@ pub fn i18n_label_leave_a_comment() -> String {
 
 pub fn i18n_label_subscribe_replies() -> String {
     "I want to get notified over email when the site owner replies.".into()
+}
+
+pub fn i18n_label_comments_by() -> String {
+    "Comments by".into()
 }
 
 pub fn i18n_banner_presubmit() -> String {

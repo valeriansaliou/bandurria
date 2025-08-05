@@ -160,6 +160,7 @@ You can also use environment variables with string interpolation in your configu
 * `admin_emails` (type: _array[string]_, allowed: email addresses, default: no default) — Email addresses of site administrators
 * `site_url` (type: _string_, allowed: URL, default: no default) — URL of the site
 * `comments_url` (type: _string_, allowed: URL, default: no default) — URL of the comment system
+* `show_imprint` (type: _boolean_, allowed: `true`, `false`, default: `true`) — Whether to show an imprint letting users know that the comment system runs on Bandurria (_show your love by leaving it enabled!_)
 
 **[security]**
 
@@ -187,6 +188,7 @@ You can also use environment variables with string interpolation in your configu
 * `button_reply` (type: _string_, allowed: any string, default: `Reply`) — Translated string for the reply button
 * `label_leave_a_comment` (type: _string_, allowed: any string, default: `Leave a comment:`) — Translated string for the main label
 * `label_subscribe_replies` (type: _string_, allowed: any string, default: `I want to get notified over email when the site owner replies.`) — Translated string for the replies subscribe label
+* `label_comments_by` (type: _string_, allowed: any string, default: `Comments by`) — Translated string for the Bandurria imprint label
 * `banner_presubmit` (type: _string_, allowed: any string, default: `Your email is only stored if you opt-in to receive replies to your comment.`) — Translated string for the pre-submit banner
 * `banner_submitting` (type: _string_, allowed: any string, default: `Sending and proving you are not a bot. This might take a few seconds...`) — Translated string for the submitting banner
 * `banner_submitted_important` (type: _string_, allowed: any string, default: `Your comment has been submitted.`) — Translated string for the submitted banner (important part)

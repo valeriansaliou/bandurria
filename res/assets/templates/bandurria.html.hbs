@@ -72,7 +72,15 @@
         </template>
 
         <form class="bandurria-form bandurria-form--main">
-            <p>{{ctx.i18n.label_leave_a_comment}}</p>
+            <div class="bandurria-header">
+                <p>{{ctx.i18n.label_leave_a_comment}}</p>
+
+                {{#if ctx.modifiers.imprint}}
+                    <p class="bandurria-imprint">
+                        {{ctx.i18n.label_comments_by}} <a href="https://github.com/valeriansaliou/bandurria" target="_blank">Bandurria</a>
+                    </p>
+                {{/if}}
+            </div>
 
             <!-- Form template will be injected after this line. -->
         </form>
