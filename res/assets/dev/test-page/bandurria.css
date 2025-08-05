@@ -114,6 +114,10 @@
     color: #959595;
 }
 
+.bandurria-imprint > a {
+    text-decoration: underline;
+}
+
 .bandurria-imprint > a:hover {
     color: #636363;
 }
