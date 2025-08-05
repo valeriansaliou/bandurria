@@ -1,4 +1,4 @@
-FROM rust:1.84.0-alpine AS build
+FROM rust:1.86.0-alpine AS build
 
 RUN rustc --version && \
     cargo --version
