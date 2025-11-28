@@ -1,25 +1,45 @@
-FROM rust:1.86.0-alpine AS build
+FROM rust:latest AS build
 
-RUN rustc --version && \
-    cargo --version
+ARG PREBUILT_TAG
+ARG TARGETPLATFORM
 
-RUN apk add --no-cache musl-dev
+ENV PREBUILT_TAG=$PREBUILT_TAG
 
-WORKDIR /build
+WORKDIR /app
+COPY . /app
 
-COPY . /build
+RUN case ${TARGETPLATFORM} in \
+    "linux/amd64")  echo "x86_64" > .arch && echo "x86_64-unknown-linux-musl" > .toolchain ;; \
+    "linux/arm64")  echo "aarch64" > .arch && echo "aarch64-unknown-linux-musl" > .toolchain ;; \
+    *)              echo "Unsupported platform: $TARGETPLATFORM" && exit 1 ;; \
+    esac
 
-RUN cargo build --release
-RUN mv ./target/release/bandurria .
+# Run full build?
+RUN if [ -z "$PREBUILT_TAG" ]; then \
+    apt-get update && \
+        apt-get install -y musl-tools && \
+        rustup target add $(cat .toolchain) \
+    ; fi
+RUN if [ -z "$PREBUILT_TAG" ]; then \
+    cargo build --release --target $(cat .toolchain) && \
+        mkdir -p ./bandurria/ && \
+        mv ./target/$(cat .toolchain)/release/bandurria ./bandurria/ && \
+        cp -rp ./res config.cfg ./bandurria/ \
+    ; fi
+
+# Pull pre-built binary?
+RUN if [ ! -z "$PREBUILT_TAG" ]; then \
+    wget https://github.com/valeriansaliou/bandurria/releases/download/$PREBUILT_TAG/$PREBUILT_TAG-$(cat .arch).tar.gz && \
+        tar -xzf $PREBUILT_TAG-$(cat .arch).tar.gz \
+    ; fi
 
 FROM scratch
 
 WORKDIR /usr/src/bandurria
 
-COPY --from=build /build/bandurria /usr/local/bin/bandurria
-
-COPY ./res/assets/ ./res/assets/
-COPY config.cfg /etc/bandurria.cfg
+COPY --from=build /app/bandurria/bandurria /usr/local/bin/bandurria
+COPY --from=build /app/bandurria/res/assets/ ./res/assets/
+COPY --from=build /app/bandurria/config.cfg /etc/bandurria.cfg
 
 CMD [ "bandurria", "-c", "/etc/bandurria.cfg" ]
 
