@@ -37,7 +37,10 @@ chrono = { version = "0.4", features = ["clock"] }
 rocket = { version = "0.5", default-features = false, features = ["json"] }
 rocket_dyn_templates = { version = "0.2", features = ["handlebars"] }
 rocket_db_pools = { version = "0.2", features = ["sqlx_mysql"] }
-reqwest = { version = "0.13", features = ["rustls"], default-features = false }
+rustls = { version = "0.23", features = ["ring"] }
+reqwest = { version = "0.13", features = [
+    "rustls-no-provider"
+], default-features = false }
 lettre = { version = "0.11", default-features = false, features = [
     "rustls-tls",
     "smtp-transport",

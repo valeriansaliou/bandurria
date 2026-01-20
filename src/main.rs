@@ -73,6 +73,11 @@ async fn main() {
         LevelFilter::from_str(&APP_CONF.server.log_level).expect("invalid log level"),
     );
 
+    // Install `ring` as default provider for `rustls` (required by `reqwest`)
+    rustls::crypto::ring::default_provider()
+        .install_default()
+        .expect("failed to install rustls crypto provider");
+
     info!("starting up");
 
     // Ensure all states are bound
