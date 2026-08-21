@@ -4,6 +4,7 @@
 // Copyright: 2025, Valerian Saliou <valerian@valeriansaliou.name>
 // License: Mozilla Public License v2.0 (MPL v2.0)
 
+use std::sync::LazyLock;
 use std::time::Duration;
 
 use reqwest::{redirect, Client};
@@ -17,11 +18,11 @@ static HTTP_USER_AGENT: &'static str = concat!(
     " (checker)"
 );
 
-lazy_static! {
-    // Notice: accept invalid certificates, because the root CA chain \
-    //   contained in Bandurria might expire if it is not re-compiled, and we \
-    //   are dealing with simple proof-of-existence here.
-    static ref HTTP_CLIENT: Client = Client::builder()
+// Notice: accept invalid certificates, because the root CA chain \
+//   contained in Bandurria might expire if it is not re-compiled, and we \
+//   are dealing with simple proof-of-existence here.
+static HTTP_CLIENT: LazyLock<Client> = LazyLock::new(|| {
+    Client::builder()
         .timeout(Duration::from_secs(10))
         .read_timeout(Duration::from_secs(5))
         .connect_timeout(Duration::from_secs(5))
@@ -31,8 +32,8 @@ lazy_static! {
         .redirect(redirect::Policy::limited(1))
         .user_agent(HTTP_USER_AGENT)
         .build()
-        .unwrap();
-}
+        .unwrap()
+});
 
 pub async fn page_url_exists(page_url: &str) -> bool {
     let site_base_url = &APP_CONF.site.site_url;

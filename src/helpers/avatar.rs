@@ -4,6 +4,7 @@
 // Copyright: 2025, Valerian Saliou <valerian@valeriansaliou.name>
 // License: Mozilla Public License v2.0 (MPL v2.0)
 
+use std::sync::LazyLock;
 use std::time::Duration;
 
 use chrono::Utc;
@@ -56,14 +57,16 @@ pub struct AvatarMaybe {
     pub size: AvatarBytesSize,
 }
 
-lazy_static! {
-    pub static ref AVATAR_SIZE_FULL: AvatarPixelsSize = APP_CONF.avatar.size_pixels * APP_CONF.avatar.scale_factor as AvatarPixelsSize;
+pub static AVATAR_SIZE_FULL: LazyLock<AvatarPixelsSize> = LazyLock::new(|| {
+    APP_CONF.avatar.size_pixels * APP_CONF.avatar.scale_factor as AvatarPixelsSize
+});
 
-    // Notice: accept invalid certificates, because the root CA chain \
-    //   contained in Bandurria might expire if it is not re-compiled, and we \
-    //   are dealing with avatars here, so there are not much security risks \
-    //   except risk of cache pollution attacks.
-    static ref HTTP_CLIENT: Client = Client::builder()
+// Notice: accept invalid certificates, because the root CA chain \
+//   contained in Bandurria might expire if it is not re-compiled, and we \
+//   are dealing with avatars here, so there are not much security risks \
+//   except risk of cache pollution attacks.
+static HTTP_CLIENT: LazyLock<Client> = LazyLock::new(|| {
+    Client::builder()
         .timeout(Duration::from_secs(10))
         .read_timeout(Duration::from_secs(5))
         .connect_timeout(Duration::from_secs(5))
@@ -73,8 +76,8 @@ lazy_static! {
         .redirect(redirect::Policy::none())
         .user_agent(HTTP_USER_AGENT)
         .build()
-        .unwrap();
-}
+        .unwrap()
+});
 
 async fn pull_cache(db: &mut DbConn, author_id: &str) -> Result<(Option<Avatar>, CacheStatus), ()> {
     debug!("attempting to pull avatar from cache for: {author_id}");

@@ -5,6 +5,7 @@
 // License: Mozilla Public License v2.0 (MPL v2.0)
 
 use std::collections::HashMap;
+use std::sync::LazyLock;
 
 use rocket::get;
 use rocket::http::Status;
@@ -33,22 +34,20 @@ struct CommentsOptionsAvatar {
     size_image: u16,
 }
 
-lazy_static! {
-    static ref COMMENTS_OPTIONS: CommentsOptions<'static> = CommentsOptions {
-        i18n: &APP_CONF.i18n,
-        modifiers: CommentsOptionsModifiers {
-            imprint: APP_CONF.site.show_imprint,
-        },
-        avatar: if APP_CONF.avatar.gravatar {
-            Some(CommentsOptionsAvatar {
-                avatar_endpoint: format!("{}/image/avatar", APP_CONF.site.comments_url),
-                size_image: APP_CONF.avatar.size_pixels,
-            })
-        } else {
-            None
-        }
-    };
-}
+static COMMENTS_OPTIONS: LazyLock<CommentsOptions<'static>> = LazyLock::new(|| CommentsOptions {
+    i18n: &APP_CONF.i18n,
+    modifiers: CommentsOptionsModifiers {
+        imprint: APP_CONF.site.show_imprint,
+    },
+    avatar: if APP_CONF.avatar.gravatar {
+        Some(CommentsOptionsAvatar {
+            avatar_endpoint: format!("{}/image/avatar", APP_CONF.site.comments_url),
+            size_image: APP_CONF.avatar.size_pixels,
+        })
+    } else {
+        None
+    },
+});
 
 #[get("/comments?<page>")]
 pub async fn get_comments(mut db: DbConn, page: &str) -> Result<Template, Status> {

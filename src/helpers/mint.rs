@@ -7,6 +7,7 @@
 // See: https://therootcompany.com/blog/http-hashcash/
 
 use std::collections::HashSet;
+use std::sync::LazyLock;
 use std::time::{Duration, SystemTime};
 
 use base64_url;
@@ -25,10 +26,9 @@ type MintTimestamp = u64;
 const VALIDITY: Duration = Duration::from_secs(300);
 const ALGORITHM: &'static str = "SHA-256";
 
-lazy_static! {
-    static ref SOLUTION_REGEX: Regex =
-        Regex::new(r"^H:([0-9]+):([0-9]+):([^:/]+)/([0-9]+):([^:]+):([^:]+):([^:]+)$").unwrap();
-}
+static SOLUTION_REGEX: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"^H:([0-9]+):([0-9]+):([^:/]+)/([0-9]+):([^:]+):([^:]+):([^:]+)$").unwrap()
+});
 
 pub fn challenge(comment_id: &str) -> Result<(Vec<String>, MintDifficulty, MintSolutions), ()> {
     // Generate expire time (the challenge has a validity period)

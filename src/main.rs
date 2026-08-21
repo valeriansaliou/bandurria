@@ -7,8 +7,6 @@
 #[macro_use]
 extern crate log;
 #[macro_use]
-extern crate lazy_static;
-#[macro_use]
 extern crate serde_derive;
 
 mod config;
@@ -18,6 +16,7 @@ mod routes;
 
 use std::ops::Deref;
 use std::str::FromStr;
+use std::sync::LazyLock;
 
 use clap::{Arg, Command};
 use config::config::Config;
@@ -30,10 +29,8 @@ struct AppArgs {
     config: String,
 }
 
-lazy_static! {
-    static ref APP_ARGS: AppArgs = make_app_args();
-    static ref APP_CONF: Config = ConfigReader::make();
-}
+static APP_ARGS: LazyLock<AppArgs> = LazyLock::new(make_app_args);
+static APP_CONF: LazyLock<Config> = LazyLock::new(ConfigReader::make);
 
 fn make_app_args() -> AppArgs {
     let matches = Command::new(clap::crate_name!())
