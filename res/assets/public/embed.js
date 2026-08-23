@@ -300,8 +300,65 @@
     difficulty_expect,
     solutions_expect,
   ) {
+    // Check if Bandurria is loaded from a 3rd party domain (cross-domain), \
+    //   and thus its Web Worker should be loaded as 'fetch-and-blob' rather \
+    //   than being spawned as a native Web Worker (preferred).
+    var is_cross_domain = !embed_script.src.startsWith(window.location.origin),
+      native_worker_url = options.base_url + worker_mint_path,
+      local_worker_url = null;
+
+    // Cross domain? Fetch and create temporary local blob URL
+    if (is_cross_domain === true) {
+      return fetch(native_worker_url)
+        .then(function (response) {
+          if (!response.ok) {
+            console.error(
+              "[Bandurria] Could not fetch anti-bot: check your CORS policy?",
+              error
+            );
+
+            return Promise.reject("Cannot fetch worker script");
+          }
+
+          return response.text();
+        })
+        .then(function (worker_script) {
+          // Assign local worker URL
+          local_worker_url = URL.createObjectURL(
+            new Blob([worker_script], {
+              type: "application/javascript",
+            })
+          );
+
+          // Run local worker URL
+          return spawn_worker_and_mint_challenge_solutions(
+            local_worker_url, problems, difficulty_expect, solutions_expect
+          );
+        })
+        .finally(function () {
+          // Revoke local worker URL? (after failure or success)
+          if (local_worker_url !== null) {
+            URL.revokeObjectURL(local_worker_url);
+
+            local_worker_url = null;
+          }
+        });
+    }
+
+    // Not cross domain, run at native worker URL
+    return spawn_worker_and_mint_challenge_solutions(
+      native_worker_url, problems, difficulty_expect, solutions_expect
+    );
+  }
+
+  var spawn_worker_and_mint_challenge_solutions = function (
+    worker_url,
+    problems,
+    difficulty_expect,
+    solutions_expect,
+  ) {
     return new Promise(function (resolve, reject) {
-      var worker = new Worker(options.base_url + worker_mint_path);
+      var worker = new Worker(worker_url);
 
       worker.addEventListener("message", function (event) {
         worker.terminate();
